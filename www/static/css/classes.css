@@ -396,7 +396,8 @@ form {
     padding: 0 15px;
 }
 
-.listing-item {
+.listing-item,
+.listing-enter-time {
     background: #e5f8fc; /* Old browsers */
     background: -moz-linear-gradient(left,  #dcf1f7 0%, #e8f7fc 50%, #dcf1f7 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right top, color-stop(0%,#dcf1f7), color-stop(50%,#e8f7fc), color-stop(100%,#dcf1f7)); /* Chrome,Safari4+ */
@@ -678,6 +679,14 @@ form {
     .listing-item-reserved .listing-item-time-range:after {
         border-width: 0 1em 1em 0;
     }
+
+    .spinner {
+        border-radius: 1em;
+        border-bottom: 0.15em solid white;
+        height: 2em;
+        width: 2em;
+    }
+
 }
 
 @media (min-width:481px) {
