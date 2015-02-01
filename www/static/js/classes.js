@@ -2,7 +2,7 @@
 
     var currentUser = api.getCurrentUser(),
         classesByDate,
-        reservedClassSlots,
+        myReservedClassSlots,
         classDetails,
 
         selectors = {
@@ -28,13 +28,13 @@
         refreshClasses = function(date) {
             Parse.Promise.when(
                     api.getClassesByUniversityAndDate(currentUser.get('universityId'), date),
-                    api.getClassReservationsByUniversityAndDate(currentUser.get('universityId'), date)
+                    api.getClassReservationsByUser(currentUser, date)
                 )
                 .then(function(a, b) {
                     classesByDate = a;
-                    reservedClassSlots = [];
+                    myReservedClassSlots = [];
                     for (var i = 0; i < b.length; i++) {
-                        reservedClassSlots.push(b[i].get('slot'));
+                        myReservedClassSlots.push(b[i].get('slot'));
                     }
                     renderClasses();
                 });
@@ -51,7 +51,8 @@
                     gymName : classesByDate[i].get('gym').get('name'),
                     startTime : classesByDate[i].get('start_time'),
                     endTime : classesByDate[i].get('end_time'),
-                    reserved : ($.inArray(classesByDate[i].id, reservedClassSlots) !== -1),
+                    reservedByMe : ($.inArray(classesByDate[i].id, myReservedClassSlots) !== -1),
+                    available : (parseInt(classesByDate[i].get('reserved_spots')) < parseInt(classesByDate[i].get('class').get('spots'))),
                     totalOccupancy : classesByDate[i].get('class').get('room').get('totalOccupancy'),
                     reservedOccupancy : classesByDate[i].get('class').get('room').get('reservedOccupancy')
                 };
@@ -69,8 +70,10 @@
         },
 
         renderClassDetails = function () {
+            var available = (parseInt(classDetails.get('reserved_spots')) < parseInt(classDetails.get('class').get('spots'))),
+                reservedByMe = ($.inArray(classDetails.id, myReservedClassSlots) !== -1);
             console.log(classDetails);
-        },
+        };
 
         dateSelected = function(evt, el) {
             var parseDate = $(el).data('parse-date');

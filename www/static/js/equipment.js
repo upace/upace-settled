@@ -3,6 +3,7 @@
     var currentUser = api.getCurrentUser(),
         equipmentByDate,
         reservedEquipmentSlots,
+        myReservedEquipmentSlots,
         equipmentDetails,
 
         initializeEquipment = function() {
@@ -10,6 +11,7 @@
             if (!date) {
                 date = formatDateForParse(new Date());
             }
+
             Parse.Promise.when(
                     api.getEquipmentByUniversity(currentUser.get('universityId')),
                     api.getEquipmentReservationsByUniversityAndDate(currentUser.get('universityId'), date)
@@ -29,8 +31,12 @@
                         equipmentByDate = [];
                     }
                     reservedEquipmentSlots = [];
+                    myReservedEquipmentSlots = [];
                     for (var i = 0; i < b.length; i++) {
                         reservedEquipmentSlots.push(b[i].get('slot'));
+                        if (b[i].get('userId').id === currentUser.id) {
+                            myReservedEquipmentSlots.push(b[i].get('slot'));
+                        }
                     }
                     renderEquipment();
                 });
@@ -46,7 +52,8 @@
                     gymName : equipmentByDate[i].get('gymId').get('name'),
                     startTime : equipmentByDate[i].get('start_time'),
                     endTime : equipmentByDate[i].get('end_time'),
-                    reserved : ($.inArray(equipmentByDate[i].id, reservedEquipmentSlots) !== -1)
+                    reservedByMe : ($.inArray(equipmentByDate[i].id, myReservedEquipmentSlots) === -1),
+                    available : ($.inArray(equipmentByDate[i].id, reservedEquipmentSlots) === -1)
                 };
                 // console.log(slotData);
             }
@@ -60,6 +67,8 @@
         },
 
         renderEquipmentDetails = function () {
+            var available = ($.inArray(equipmentDetails.id, reservedEquipmentSlots)),
+                reservedByMe = ($.inArray(equipmentDetails.id, myReservedEquipmentSlots) !== -1);
             console.log(equipmentDetails);
         };
 
