@@ -3,11 +3,12 @@ body {
     height: 100%;
     font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #fff;
+    background: url('/static/images/classes-bg.png') no-repeat center center fixed;
     background-color: #d4f2fa;
     -webkit-background-size: cover;
     -moz-background-size: cover;
-    background-size: cover;
     -o-background-size: cover;
+    background-size: cover;
 }
 
 html {
@@ -372,16 +373,48 @@ form {
     height: 5.25em;
 }
 
+.navchev {
+    border-radius: 50%;
+    width: 2.5em;
+    height: 2.5em;
+    padding-right: .05em;
+    border: 1px solid #fff;
+    margin: 0.25em 0 0;
+    box-shadow: none;
+}
+
+.navfabar {
+    border-radius: 50%;
+    width: 2.5em;
+    height: 2.5em;
+    border: 1px solid #fff;
+    margin: 0.25em 0 0;
+    box-shadow: none;
+}
+
 .listings-wrap {
     padding: 0 15px;
 }
 
 .listing-item {
-    box-shadow: 0px 1px 1px rgba(0,0,0,0.1);
+    background: #e5f8fc; /* Old browsers */
+    background: -moz-linear-gradient(left,  #dcf1f7 0%, #e8f7fc 50%, #dcf1f7 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#dcf1f7), color-stop(50%,#e8f7fc), color-stop(100%,#dcf1f7)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #dcf1f7 0%,#e8f7fc 50%,#dcf1f7 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #dcf1f7 0%,#e8f7fc 50%,#dcf1f7 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #dcf1f7 0%,#e8f7fc 50%,#dcf1f7 100%); /* IE10+ */
+    background: linear-gradient(to right,  #dcf1f7 0%,#e8f7fc 50%,#dcf1f7 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dcf1f7', endColorstr='#dcf1f7',GradientType=1 ); /* IE6-9 */
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     cursor: pointer;
     display: block;
     margin-bottom: 0.3em;
     overflow: hidden;
+    transition: none;
+}
+
+.listing-item:hover {
+    background: #e9f9fd;
 }
 
 .listing-item-room-gym {
@@ -390,14 +423,6 @@ form {
 
 .listing-item-time-range {
     text-align: right;
-}
-
-a.listing-item:hover .formcol-height {
-    background: #f3fbfd;
-}
-
-.formcol-height {
-    transition: background .15s;
 }
 
 .no-classes-found {
@@ -419,10 +444,20 @@ a.listing-item:hover .formcol-height {
 @-webkit-keyframes sweep { to { -webkit-transform: rotate(360deg); } }
 
 .reserved-by-me {
-    background: #43be00;
 }
 
-
+.listing-item-reserved .listing-item-time-range:after {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 1.3em 1.3em 0;
+    border-color: transparent #43be00 transparent transparent;
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    top: 0;
+    content: '';
+}
 
 
 
@@ -434,23 +469,9 @@ a.listing-item:hover .formcol-height {
 /* media queries */
 
 @media (max-width:480px) {
-    .navchev {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-right: .05em;
-        border: 1px #fff solid;
-        margin: 1em 0 0 0;
-        box-shadow: none;
-    }
-
+    .navchev,
     .navfabar {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-top: .04em;
-        border: 1px #fff solid;
-        margin: 1em 0 0 0;
+        margin-top: 0.5em;
     }
 
     .navbar-reserve,
@@ -560,7 +581,6 @@ a.listing-item:hover .formcol-height {
     .formcol-height {
         height: 3em;
         line-height: 2.9em;
-        background: #e9f9fd;
     }
 
     .formcol-1ab,
@@ -655,27 +675,12 @@ a.listing-item:hover .formcol-height {
         font-size: 0.7em;
     }
 
+    .listing-item-reserved .listing-item-time-range:after {
+        border-width: 0 1em 1em 0;
+    }
 }
 
 @media (min-width:481px) {
-    .navchev {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-right: .05em;
-        border: 1px #fff solid;
-        margin: 10px 0 0 0;
-    }
-
-    .navfabar {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-top: .04em;
-        border: 1px #fff solid;
-        margin: 10px 0 0 0;
-    }
-
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
@@ -759,7 +764,6 @@ a.listing-item:hover .formcol-height {
     .formcol-height {
         height: 4em;
         line-height: 3.9em;
-        background: #e9f9fd;
     }
 
     .formcol-1ab {
@@ -811,7 +815,7 @@ a.listing-item:hover .formcol-height {
 
     .formcol-3 {
         color: #333;
-        font-size: 0.7em;
+        font-size: 0.8em;
     }
 
     .footer-margin {
@@ -853,24 +857,6 @@ a.listing-item:hover .formcol-height {
 }
 
 @media (min-width:768px) {
-    .navchev {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-right: .05em;
-        border: 1px #fff solid;
-        margin: 10px 0 0 0;
-    }
-
-    .navfabar {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-top: .04em;
-        border: 1px #fff solid;
-        margin: 10px 0 0 0;
-    }
-
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
@@ -950,7 +936,6 @@ a.listing-item:hover .formcol-height {
     .formcol-height {
         height: 5em;
         line-height: 4.9em;
-        background: #e9f9fd;
     }
 
     .formcol-1ab,
@@ -1028,24 +1013,6 @@ a.listing-item:hover .formcol-height {
 }
 
 @media (min-width:992px) {
-    .navchev {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-right: .05em;
-        border: 1px #fff solid;
-        margin: 10px 0 0 0;
-    }
-
-    .navfabar {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-top: .04em;
-        border: 1px #fff solid;
-        margin: 10px 0 0 0;
-    }
-
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
@@ -1129,7 +1096,6 @@ a.listing-item:hover .formcol-height {
     .formcol-height {
         height: 6em;
         line-height: 5.9em;
-        background: #e9f9fd;
     }
 
     .formcol-1ab,
@@ -1200,27 +1166,14 @@ a.listing-item:hover .formcol-height {
         height: 2.2em;
         font-size: 1.25em;
     }
+
+    .listing-item-reserved .listing-item-time-range:after {
+        border-width: 0 1.6em 1.6em 0;
+    }
+
 }
 
 @media (min-width:1200px) {
-    .navchev {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-right: .05em;
-        border: 1px #fff solid;
-        margin: 10px 0 0 0;
-    }
-
-    .navfabar {
-        border-radius: 50%;
-        width: 1.5em;
-        height: 1.5em;
-        padding-top: .04em;
-        border: 1px #fff solid;
-        margin: 10px 0 0 0;
-    }
-
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
@@ -1283,7 +1236,6 @@ a.listing-item:hover .formcol-height {
     .formcol-height {
         height: 6em;
         line-height: 5.9em;
-        background: #e9f9fd;
     }
 
     .formcol-1ab,
@@ -1304,7 +1256,7 @@ a.listing-item:hover .formcol-height {
 
     .formcol-1b {
         color: #666;
-        font-size: 1.5em;
+        font-size: 1.4em;
         text-transform: uppercase;
     }
 
@@ -1315,7 +1267,7 @@ a.listing-item:hover .formcol-height {
 
     .formcol-2b {
         color: #299eb6;
-        font-size: 1.5em;
+        font-size: 1.4em;
         text-transform: uppercase;
     }
 
@@ -1341,4 +1293,9 @@ a.listing-item:hover .formcol-height {
     .modal-title-body {
         font-size: 2em
     }
+
+    .listing-item-reserved .listing-item-time-range:after {
+        border-width: 0 2em 2em 0;
+    }
+
 }
