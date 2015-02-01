@@ -409,9 +409,11 @@ form {
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     cursor: pointer;
     display: block;
+    letter-spacing: -0.1em;
     margin-bottom: 0.3em;
     overflow: hidden;
     transition: none;
+    white-space: nowrap;
 }
 
 .listing-item:hover {
@@ -444,9 +446,6 @@ form {
 }
 @-webkit-keyframes sweep { to { -webkit-transform: rotate(360deg); } }
 
-.reserved-by-me {
-}
-
 .listing-item-reserved .listing-item-time-range:after {
     width: 0;
     height: 0;
@@ -460,8 +459,61 @@ form {
     content: '';
 }
 
+.listing-item-selected,
+.listing-item-selected:hover {
+    background: #3c484a;
+}
 
+.listing-item-selected .formcol-1a,
+.listing-item-selected .formcol-1b,
+.listing-item-selected .formcol-2a,
+.listing-item-selected .formcol-2b,
+.listing-item-selected .formcol-3 {
+    color: #fff;
+}
 
+.multi-select-btn {
+    background-color: rgba(33,33,33,0.7);
+    display: block;
+    font-size: .5em;
+    padding: 0.9em 0 0;
+    text-align: center;
+    border-radius: 50%;
+    width: 6.5em;
+    height: 6.5em;
+    margin: 0 0 0.5em;
+    position: absolute;
+    top: -7em;
+    right: 0.5em;
+}
+
+.multi-select-btn .multi-select-btn-close {
+    border: 0.1em solid white;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    padding-top: 0.1em;
+    margin-bottom: 0.4em;
+}
+
+.multi-select-btn .multi-select-btn-close:before {
+    font-size: 1.5em;
+}
+
+.multi-select-cancel-all-btn,
+.multi-select-reserve-all-btn {
+    background: #4db2c7;
+    cursor: pointer;
+    display: block;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.multi-select-cancel-all-btn {
+    background: #f00;
+}
 
 
 
@@ -676,6 +728,10 @@ form {
         font-size: 0.7em;
     }
 
+    .listing-item {
+        letter-spacing: -0.05em;
+    }
+
     .listing-item-reserved .listing-item-time-range:after {
         border-width: 0 1em 1em 0;
     }
@@ -863,6 +919,11 @@ form {
     .share {
         font: 3em
     }
+
+    .listing-item {
+        letter-spacing: -0.07em;
+    }
+
 }
 
 @media (min-width:768px) {

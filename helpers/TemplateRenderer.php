@@ -16,7 +16,7 @@ class TemplateRenderer
             'debug' => true,
             'charset' => 'utf-8',
             'cache' => $this->siteConfig['templates_cache_path'],
-            'strict_variables' => false,
+            'strict_variables' => false
         );
         $templateDirs = array_merge(
             array($this->siteConfig['templates_path'])

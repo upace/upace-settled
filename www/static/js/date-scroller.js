@@ -16,6 +16,9 @@
         },
 
         initializeDateScroller = function() {
+            // bind event handlers
+            $(document).on('click', selectors.dateSlide, handleDateSlideClick);
+
             updateHeaderDate(new Date());
             populateDateSlider();
             initDateCarousel();
@@ -49,7 +52,6 @@
                     }
                 }
             });
-            $(selectors.dateSlide).on('click', handleDateSlideClick);
         },
 
         populateDateSlider = function() {
