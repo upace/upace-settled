@@ -199,6 +199,11 @@ a:focus {
     padding-right: 0;
 }
 
+.container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 button,
 .btn,
 .btn-danger,
@@ -367,7 +372,12 @@ form {
     height: 5.25em;
 }
 
+.listings-wrap {
+    padding: 0 15px;
+}
+
 .listing-item {
+    box-shadow: 0px 1px 1px rgba(0,0,0,0.1);
     cursor: pointer;
     display: block;
     margin-bottom: 0.3em;
@@ -408,6 +418,17 @@ a.listing-item:hover .formcol-height {
 }
 @-webkit-keyframes sweep { to { -webkit-transform: rotate(360deg); } }
 
+.reserved-by-me {
+    background: #43be00;
+}
+
+
+
+
+
+
+
+
 
 
 /* media queries */
@@ -419,7 +440,7 @@ a.listing-item:hover .formcol-height {
         height: 1.5em;
         padding-right: .05em;
         border: 1px #fff solid;
-        margin: 10px 0 0 0;
+        margin: 1em 0 0 0;
         box-shadow: none;
     }
 
@@ -429,14 +450,14 @@ a.listing-item:hover .formcol-height {
         height: 1.5em;
         padding-top: .04em;
         border: 1px #fff solid;
-        margin: 10px 0 0 0;
+        margin: 1em 0 0 0;
     }
 
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
-        font-size: 6.0125pt;
-        line-height: 7em;
+        font-size: 0.7em;
+        line-height: 5em;
     }
 
     .upace-date {
@@ -658,8 +679,8 @@ a.listing-item:hover .formcol-height {
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
-        font-size: .5em;
-        line-height: 4.5em;
+        font-size: 0.8em;
+        line-height: 3.7em;
     }
 
     .modal-title {
@@ -853,8 +874,8 @@ a.listing-item:hover .formcol-height {
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
-        font-size: .61em;
-        line-height: 4.5em;
+        font-size: 0.8em;
+        line-height: 3.9em;
     }
 
     .upace-date {
@@ -1028,8 +1049,8 @@ a.listing-item:hover .formcol-height {
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
-        font-size: 1em;
-        line-height: 2.5em;
+        font-size: 1.1em;
+        line-height: 2.7em;
     }
 
     .modal-title {
@@ -1203,9 +1224,9 @@ a.listing-item:hover .formcol-height {
     .navbar-reserve,
     .navbar-date {
         text-transform: uppercase;
-        font-size: 1em;
-        line-height: 2.5em;
-    }
+        font-size: 1.1em;
+        line-height: 2.7em;
+}
 
     .upace-date {
         background: #4db2c7;

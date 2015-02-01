@@ -7,7 +7,8 @@
 
         selectors = {
             'classListings' : '#class-listings',
-            'classItemTemplate' : '#class-listings-item'
+            'classItemTemplate' : '#class-listings-item',
+            'reserveModal' : '#reserve-modal'
         },
 
         templates = {
@@ -20,6 +21,7 @@
 
         initializeClasses = function() {
             $(document).on('date_carousel:date_selected', dateSelected);
+            $(document).on('click', '.listing-item', handleListingItemClick);
             var date = getUrlParameter('dt');
             if (!date) {
                 date = formatDateForParse(new Date());
@@ -51,17 +53,19 @@
             console.log('All Classes', classesByDate);
             var html = '';
             for (var i = 0; i < classesByDate.length; i++) {
+                var c = classesByDate[i];
                 var slotData = {
-                    slotId : classesByDate[i].id,
-                    className : classesByDate[i].get('class').get('name'),
-                    roomName : classesByDate[i].get('class').get('room').get('name'),
-                    gymName : classesByDate[i].get('gym').get('name'),
-                    startTime : classesByDate[i].get('start_time'),
-                    endTime : classesByDate[i].get('end_time'),
-                    reservedByMe : ($.inArray(classesByDate[i].id, myReservedClassSlots) !== -1),
-                    available : (parseInt(classesByDate[i].get('reserved_spots')) < parseInt(classesByDate[i].get('class').get('spots'))),
-                    totalOccupancy : classesByDate[i].get('class').get('room').get('totalOccupancy'),
-                    reservedOccupancy : classesByDate[i].get('class').get('room').get('reservedOccupancy')
+                    classId : c.get('classId'),
+                    slotId : c.id,
+                    className : c.get('class').get('name'),
+                    roomName : c.get('class').get('room').get('name'),
+                    gymName : c.get('gym').get('name'),
+                    startTime : c.get('start_time'),
+                    endTime : c.get('end_time'),
+                    reservedByMe : ($.inArray(c.id, myReservedClassSlots) !== -1),
+                    available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
+                    totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
+                    reservedOccupancy : c.get('class').get('room').get('reservedOccupancy')
                 };
                 slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
                 html += templates.classListingsItem.render(slotData);
@@ -90,8 +94,18 @@
         noClassesFound = function(date) {
             var html = '<div class="no-classes-found">No classes available on '+ date + '.</div>';
             $(selectors.classListings).html(html);
-        };
+        },
 
+        handleListingItemClick = function(e) {
+            var $l = $(e.currentTarget);
+            Parse.Promise.when(
+                    api.saveClassReservation(currentUser, $l.data('class-id'), $l.data('slot-id'))
+                )
+                .then(function(a) {
+                    console.log(a);
+                });
+            //$(selectors.reserveModal).modal('show');
+        };
 
     initializeClasses();
     // loadClassDetails('ZeGQRFqoe1');
