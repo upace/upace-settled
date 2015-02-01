@@ -1,4 +1,4 @@
-<a id="{{ slotId }}" data-toggle="modal" data-target="#reserve-modal" class="container listing-item">
+<a id="{{ slotId }}" data-toggle="modal" data-target="#reserve-modal" class="container listing-item {% if reservedByMe %}reserved-by-me{% endif %}">
     <div class="col-xs-4 formcol-height formcol-1ab">
         <span class="formcol-1a">{{ className }}</span><br/>
         <span class="formcol-1b">{{ spotsRemaining }} Spots</span>

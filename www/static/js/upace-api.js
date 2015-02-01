@@ -213,7 +213,7 @@ if (!window.api) {
             return q.find();
         },
 
-        getClassesByUniversityAndDate = api.getClassesByUniversityAndDate = function (universityId, date) {
+        getClassesByUniversityAndDate = api.getClassesByUniversityAndDate = function (universityId, date, startTime) {
             var o = Parse.Object.extend('classes');
             var q = new Parse.Query(o);
             var dbDate = dbFormattedDate(date);
@@ -496,22 +496,39 @@ if (!window.api) {
             return o.save();
         },
 
-        deleteRow = api.deleteRow = function (resId, objType) {
+        deleteRow = api.deleteRow = function (objId, objType) {
             var o = Parse.Object.extend(objType);
             var q = new Parse.Query(o);
-            return q.get(resId).then(
-                function (model, response, options) {
-                    return m.destroy({});
+            return q.get(objId).then(
+                function (row) {
+                    return row.destroy({});
                 }
             );
         },
 
-        deleteClassReservation = api.deleteClassReservation = function (resId) {
-            return deleteRow(resId, 'class_reservation');
+        deleteRows = api.deleteRows = function (objIds, objType) {
+            var o = Parse.Object.extend(objType);
+            var q = new Parse.Query(o);
+            q.containedIn('objectId', objIds);
+            return q.find().then(
+                function(rows) {
+                    return rows.destroy({});
+                }
+            );
         },
 
-        deleteEquipmentReservation = api.deleteEquipmentReservation = function (resId) {
-            return deleteRow(resId, 'equipment_occupancy');
+        deleteClassReservations = api.deleteClassReservation = function (resId) {
+            if (!$.isArray(resId)) {
+                resId = [resId];
+            }
+            return deleteRows(resId, 'class_reservation');
+        },
+
+        deleteEquipmentReservations = api.deleteEquipmentReservation = function (resId) {
+            if (!$.isArray(resId)) {
+                resId = [resId];
+            }
+            return deleteRows(resId, 'equipment_occupancy');
         },
 
         sendNotificationEmail = api.sendNotificationEmail = function (email, subject, message) {

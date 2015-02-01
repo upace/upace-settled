@@ -88,7 +88,7 @@
         },
 
         noClassesFound = function(date) {
-            var html = '<div class="no-classes-found">No classes available on '+ date + '.<br/><br/>:(</div>';
+            var html = '<div class="no-classes-found">No classes available on '+ date + '.</div>';
             $(selectors.classListings).html(html);
         };
 
