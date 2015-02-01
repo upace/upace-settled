@@ -4,9 +4,7 @@
             'dateCarousel' : '#classes-date-slider',
             'dateSlide' : '.date-placeholder',
             'dateItemTemplate' : '#date-scroller-item',
-            'hdrDay' : '#header-active-day',
-            'hdrMonth' : '#header-active-month',
-            'hdrYear' : '#header-active-year'
+            'hdrDate' : '#header-active-date'
         },
 
         activeDateClass = "date-active",
@@ -72,10 +70,13 @@
         },
 
         updateHeaderDate = function(date) {
-            var day = (isToday(date)) ? 'Today' : date.getDate();
-            $(selectors.hdrDay).html(day);
-            $(selectors.hdrMonth).html(months[date.getMonth()]);
-            $(selectors.hdrYear).html(date.getFullYear());
+            var html = '';
+            if(isToday(date)) {
+                html = 'Today';
+            } else {
+                html = months[date.getMonth()] + ' ' + date.getFullYear();
+            }
+            $(selectors.hdrDate).html(html);
         },
 
         handleDateSlideClick = function(e) {

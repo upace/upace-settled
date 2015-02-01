@@ -4,6 +4,7 @@
         classesByDate,
         myReservedClassSlots,
         classDetails,
+        multiSelectEnabled = false,
 
         selectors = {
             'classListings' : '#class-listings',
