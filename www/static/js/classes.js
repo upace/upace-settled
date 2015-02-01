@@ -144,6 +144,9 @@
         },
 
         formatTimeRange = function(start, end) {
+            if(!start && !end){
+                return '';
+            }
             var s = start.replace(/\s+|PM|AM/g, ''),
                 e = end.replace(/\s+/g, '');
             if (s.charAt(0) === '0') s = s.substr(1);

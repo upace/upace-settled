@@ -213,7 +213,7 @@ if (!window.api) {
             return q.find();
         },
 
-        getClassesByUniversityAndDate = api.getClassesByUniversityAndDate = function (universityId, date) {
+        getClassesByUniversityAndDate = api.getClassesByUniversityAndDate = function (universityId, date, startTime) {
             var o = Parse.Object.extend('classes');
             var q = new Parse.Query(o);
             var dbDate = dbFormattedDate(date);
@@ -223,17 +223,6 @@ if (!window.api) {
                 return getClassSlotsByClasses(results);
             });
         },
-		
-		getClassesByGymAndDate = api.getClassesByGymAndDate = function (gymId, date) {
-			var o = Parse.Object.extend('classes');
-            var q = new Parse.Query(o);
-            var dbDate = dbFormattedDate(date);
-            q.equalTo('gymId', gymId);
-            q.equalTo('date', dbDate);
-            return q.find().then(function(results) {
-                return getClassSlotsByClasses(results);
-            });
-		},
 
         getClassSlotsByClasses = api.getClassSlotsByClasses = function (classes) {
             var o = Parse.Object.extend('class_slot');
@@ -281,16 +270,6 @@ if (!window.api) {
             var q = new Parse.Query(o);
             q.equalTo('universityId', universityId);
             q.include('gymId');
-            q.include('equipId');
-            q.include('roomId');
-            q.descending('equipId');
-            return q.find();
-        },
-		
-		getEquipmentByGym = api.getEquipmentByGym = function (gymId) {
-            var o = Parse.Object.extend('slots');
-            var q = new Parse.Query(o);
-            q.equalTo('gymId', gymId);
             q.include('equipId');
             q.include('roomId');
             q.descending('equipId');
