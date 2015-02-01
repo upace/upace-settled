@@ -390,6 +390,12 @@ a.listing-item:hover .formcol-height {
     transition: background .15s;
 }
 
+.no-classes-found {
+    text-align: center;
+    color: #333;
+    font-size: 1.2em;
+    margin: 1em 0;
+}
 
 
 
@@ -611,6 +617,10 @@ a.listing-item:hover .formcol-height {
         border-radius: 0;
         -webkit-box-shadow: none;
         box-shadow: none;
+    }
+
+    .no-classes-found {
+        font-size: 0.7em;
     }
 
 }

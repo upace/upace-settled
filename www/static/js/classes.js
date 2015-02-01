@@ -31,12 +31,16 @@
                     api.getClassReservationsByUser(currentUser, date)
                 )
                 .then(function(a, b) {
-                    classesByDate = a;
-                    myReservedClassSlots = [];
-                    for (var i = 0; i < b.length; i++) {
-                        myReservedClassSlots.push(b[i].get('slot'));
+                    if(a.length) {
+                        classesByDate = a;
+                        myReservedClassSlots = [];
+                        for (var i = 0; i < b.length; i++) {
+                            myReservedClassSlots.push(b[i].get('slot'));
+                        }
+                        renderClasses();
+                    } else {
+                        noClassesFound(date);
                     }
-                    renderClasses();
                 });
         },
 
@@ -73,12 +77,18 @@
             var available = (parseInt(classDetails.get('reserved_spots')) < parseInt(classDetails.get('class').get('spots'))),
                 reservedByMe = ($.inArray(classDetails.id, myReservedClassSlots) !== -1);
             console.log(classDetails);
-        };
+        },
 
         dateSelected = function(evt, el) {
             var parseDate = $(el).data('parse-date');
             refreshClasses(parseDate);
+        },
+
+        noClassesFound = function(date) {
+            var html = '<div class="no-classes-found">No classes available on '+ date + '.<br/><br/>:(</div>';
+            $(selectors.classListings).html(html);
         };
+
 
     initializeClasses();
     // loadClassDetails('ZeGQRFqoe1');
