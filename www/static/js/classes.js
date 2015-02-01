@@ -16,6 +16,8 @@
             })
         },
 
+        spinner = '<div class="spinner"></div>',
+
         initializeClasses = function() {
             $(document).on('date_carousel:date_selected', dateSelected);
             var date = getUrlParameter('dt');
@@ -26,6 +28,7 @@
         },
 
         refreshClasses = function(date) {
+            $(selectors.classListings).html(spinner);
             Parse.Promise.when(
                     api.getClassesByUniversityAndDate(currentUser.get('universityId'), date),
                     api.getClassReservationsByUser(currentUser, date)

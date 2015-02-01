@@ -397,6 +397,17 @@ a.listing-item:hover .formcol-height {
     margin: 1em 0;
 }
 
+.spinner {
+    border-radius: 2em;
+    border-bottom: 0.2em solid white;
+    height: 4em;
+    width: 4em;
+    -webkit-animation: sweep 1s infinite linear;
+    margin: 0 auto;
+    text-align: center;
+}
+@-webkit-keyframes sweep { to { -webkit-transform: rotate(360deg); } }
+
 
 
 /* media queries */
