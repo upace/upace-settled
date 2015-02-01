@@ -58,9 +58,9 @@
                     if(a.length) {
                         classesByDate = a;
 						classesByDate.sort(sortParseResultsByStartTime);
-                        myReservedClassSlots = [];
+                        myReservedClassSlots = {};
                         for (var i = 0; i < b.length; i++) {
-                            myReservedClassSlots.push(b[i].get('slotId'));
+                            myReservedClassSlots[b[i].get('slotId')] = b[i].id;
                         }
                         renderClasses();
                     } else {
@@ -83,7 +83,7 @@
                     startTime : c.get('start_time'),
                     endTime : c.get('end_time'),
                     timeRange : formatTimeRange(c.get('start_time'), c.get('end_time')),
-                    reservedByMe : ($.inArray(c.id, myReservedClassSlots) !== -1),
+                    myReservation : myReservedClassSlots[c.id] || false,
                     available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
                     totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
                     reservedOccupancy : c.get('class').get('room').get('reservedOccupancy')
@@ -103,7 +103,7 @@
 
         renderClassDetails = function () {
             var available = (parseInt(classDetails.get('reserved_spots')) < parseInt(classDetails.get('class').get('spots'))),
-                reservedByMe = ($.inArray(classDetails.id, myReservedClassSlots) !== -1);
+                myReservation = myReservedClassSlots[classDetails.id] || false;
             console.log(classDetails);
         },
 
