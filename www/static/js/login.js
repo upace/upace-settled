@@ -34,7 +34,7 @@
         api.login(f.username, f.password).then(
             function(user) {
                 console.log('user logged in');
-                window.location = 'index.html'; // TODO: change this to root
+                window.location = '/';
             },
             function() {
                 console.error('login failed -- handle this in UI');

@@ -39,6 +39,7 @@
                 .then(function(a, b) {
                     if(a.length) {
                         classesByDate = a;
+						classesByDate.sort(sortParseResultsByStartTime);
                         myReservedClassSlots = [];
                         for (var i = 0; i < b.length; i++) {
                             myReservedClassSlots.push(b[i].get('slotId'));

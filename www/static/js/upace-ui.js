@@ -43,6 +43,21 @@ var
         }
         return dateArray;
     },
+	
+	sortParseResultsByStartTime = function(a, b) {
+		return Date.parse('01/01/2000 ' + a.get('start_time')) - Date.parse('01/01/2000 ' + b.get('start_time'));
+	},
+	
+	filterParseResultsByStartTime = function(results, earliestTime) {
+		var filtered = [],
+			earliestDate = Date.parse('01/01/2000 ' + earliestTime);
+		for (var i = 0; i < results.length; i++) {
+			if (Date.parse('01/01/2000 ' + results[i].get('start_time')) >= earliestDate) {
+				filtered.push(results[i]);
+			}
+		}
+		return filtered;
+	},
 
     isToday = function(date) {
         var today = new Date();

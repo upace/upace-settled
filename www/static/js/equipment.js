@@ -26,6 +26,7 @@
                     catch (ex) {}
                     if (openOnDt) {
                         equipmentByDate = a;
+						equipmentByDate.sort(sortParseResultsByStartTime);
                     }
                     else {
                         equipmentByDate = [];
