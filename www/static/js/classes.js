@@ -59,7 +59,7 @@
                         classesByDate = a;
                         myReservedClassSlots = [];
                         for (var i = 0; i < b.length; i++) {
-                            myReservedClassSlots.push(b[i].get('slot'));
+                            myReservedClassSlots.push(b[i].get('slotId'));
                         }
                         renderClasses();
                     } else {

@@ -33,9 +33,9 @@
                     reservedEquipmentSlots = [];
                     myReservedEquipmentSlots = [];
                     for (var i = 0; i < b.length; i++) {
-                        reservedEquipmentSlots.push(b[i].get('slot'));
+                        reservedEquipmentSlots.push(b[i].id);
                         if (b[i].get('userId').id === currentUser.id) {
-                            myReservedEquipmentSlots.push(b[i].get('slot'));
+                            myReservedEquipmentSlots.push(b[i].id);
                         }
                     }
                     renderEquipment();
@@ -55,7 +55,6 @@
                     reservedByMe : ($.inArray(equipmentByDate[i].id, myReservedEquipmentSlots) === -1),
                     available : ($.inArray(equipmentByDate[i].id, reservedEquipmentSlots) === -1)
                 };
-                // console.log(slotData);
             }
         },
 
