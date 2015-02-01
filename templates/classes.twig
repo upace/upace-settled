@@ -630,33 +630,25 @@
 </div>
 </div>
 </div>
-
 <!-- /Settings Modal -->
+
 <!-- Navbar Bottom -->
-
 <div class="navbar navbar-fixed-bottom" style="border:0">
-
     <section class="slide collapse" id="collapse-reserve">
         <div class="container-fluid">
-            <a>
-                <div class="col-xs-3 col-xs-offset-9"
-                     style="background-color:#333;padding-top: .5em; padding-bottom: .5em; font-size:.5em">
-                    <center><span>Multi Select Rows<span></center>
-                </div>
-            </a>
+            <div id="main-multi-select-btn" class="multi-select-btn">
+                <a data-toggle="collapse" href="#collapse-reserve" aria-expanded="false" aria-controls="collapse-reserve">
+                    <span class="fa fa-times multi-select-btn-close"></span>
+                </a>
+                <span>Multiselect rows</span>
+            </div>
         </div>
         <div class="container-fluid">
-            <a>
-                <div class="col-xs-6 rowselect"
-                     style="background-color:#4db2c7;padding-top: .5em; padding-bottom:.5em;">
-                    <center><span>RESERVE ALL<span></center>
-                </div>
+            <a class="multi-select-reserve-all-btn col-xs-6 rowselect">
+                <span>Reserve All</span>
             </a>
-            <a>
-                <div class="col-xs-6 rowselect"
-                     style="background-color:#f00;padding-top: .5em; padding-bottom: .5em;">
-                    <center><span>CANCEL ALL<span></center>
-                </div>
+            <a class="multi-select-cancel-all-btn col-xs-6 rowselect">
+                <span>Cancel All</span>
             </a>
         </div>
     </section>
@@ -684,9 +676,7 @@
         </a>
     </div>
 </div>
-
 <!-- /Navbar Bottom -->
-
 <!-- Navbar Bottom Content -->
 
 <!-- Available Times -->
@@ -722,8 +712,8 @@
 
 <!-- Tab panes -->
 <div class="tab-content container" style="background:#d4f2fa; padding-top:.5em">
-<!-- Time -->
 
+<!-- Time -->
 <section class="upace-form content slide collapse row" id="collapse-add-time-modal">
     <div class="container">
         <div class="col-xs-6 col-sm-7 formcol-height">
@@ -738,270 +728,11 @@
         </div>
     </div>
 </section>
-
 <!-- /Time -->
+
+<!-- disabled for now
 <div role="tabpanel" class="col-xs-12 tab-pane fade in active" id="classes" style="margin-bottom:3em">
 <ul>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
-<li>
-    <section class="upace-form row">
-        <a href="#">
-            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-            </div>
-            <div class="col-sm-3 col-xs-4 formcol-height">
-                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-            </div>
-        </a>
-    </section>
-</li>
 <li>
     <section class="upace-form row">
         <a href="#">
@@ -1086,100 +817,39 @@
                 </a>
             </section>
         </li>
-        <li>
-            <section class="upace-form row">
-                <a href="#">
-                    <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                        <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                        <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                        <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                        <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height">
-                        <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height">
-                        <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-                    </div>
-                </a>
-            </section>
-        </li>
-        <li>
-            <section class="upace-form row">
-                <a href="#">
-                    <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                        <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                        <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                        <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                        <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height">
-                        <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height">
-                        <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-                    </div>
-                </a>
-            </section>
-        </li>
-        <li>
-            <section class="upace-form row">
-                <a href="#">
-                    <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
-                        <center><span class="formcol-2a" style="color:#000">10/12</span></center>
-                        <center><span class="formcol-2a" style="color:#000">SUN</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
-                        <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span></center>
-                        <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height">
-                        <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
-                    </div>
-                    <div class="col-sm-3 col-xs-4 formcol-height">
-                        <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
-                    </div>
-                </a>
-            </section>
-        </li>
     </ul>
 </div>
+-->
+
 </div>
 <!-- /Tab panes -->
 </div>
 </div>
 </div>
 </div>
+
 <div class="navbar navbar-fixed-bottom " style="border:0">
     <section class="slide collapse" id="collapse-reserve-modal">
         <div class="container-fluid">
-            <a>
-                <div class="col-xs-3 col-xs-offset-9"
-                     style="background-color:#333;padding-top: .5em; padding-bottom: .5em; font-size:.5em">
-                    <center><span>Multi Select Rows<span></center>
-                </div>
-            </a>
+            <div class="col-xs-4 col-xs-offset-8">
+                <a class="multi-select-btn">Multiselect rows</a>
+            </div>
         </div>
         <div class="container-fluid">
             <a>
                 <div class="col-xs-6 rowselect"
                      style="background-color:#4db2c7;padding-top: .5em; padding-bottom:.5em;">
-                    <center><span>RESERVE ALL<span></center>
+                    <center><span>RESERVE ALL</span></center>
                 </div>
             </a>
             <a>
                 <div class="col-xs-6 rowselect"
                      style="background-color:#f00;padding-top: .5em; padding-bottom: .5em;">
-                    <center><span>CANCEL ALL<span></center>
+                    <center><span>CANCEL ALL</span></center>
                 </div>
             </a>
         </div>
     </section>
-
     <div class="col-xs-4 navbar-icon">
         <a data-toggle="collapse" href="#collapse-add-time-modal" aria-expanded="false"
            aria-controls="collapse-add-time">
@@ -1201,6 +871,7 @@
     </div>
 </div>
 </div>
+
 <!-- /Available Times -->
 
 <!-- Locations -->
@@ -1242,9 +913,6 @@
     </div>
 </div>
 <!-- /Locations -->
-
-
-
 
 <!-- /Navbar Bottom Content -->
 
@@ -1404,24 +1072,21 @@
     <div class="navbar navbar-fixed-bottom " style="border:0">
         <section class="slide collapse" id="collapse-reserve-modal-class">
             <div class="container-fluid">
-                <a>
-                    <div class="col-xs-3 col-xs-offset-9"
-                         style="background-color:#333;padding-top: .5em; padding-bottom: .5em; font-size:.5em">
-                        <center><span>Multi Select Rows<span></center>
-                    </div>
-                </a>
+                <div class="col-xs-4 col-xs-offset-8">
+                    <a class="multi-select-btn">Multiselect rows</a>
+                </div>
             </div>
             <div class="container-fluid">
                 <a>
                     <div class="col-xs-6 rowselect"
                          style="background-color:#4db2c7;padding-top: .5em; padding-bottom:.5em;">
-                        <center><span>RESERVE ALL<span></center>
+                        <center><span>RESERVE ALL</span></center>
                     </div>
                 </a>
                 <a>
                     <div class="col-xs-6 rowselect"
                          style="background-color:#f00;padding-top: .5em; padding-bottom: .5em;">
-                        <center><span>CANCEL ALL<span></center>
+                        <center><span>CANCEL ALL</span></center>
                     </div>
                 </a>
             </div>
