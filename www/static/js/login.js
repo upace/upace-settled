@@ -25,7 +25,17 @@
         renderUniversityGyms = function() {
             // console.log(selectedUniversityGyms);
         };
-
+		
+	// Initialize FB login
+	api.initializeFacebookPlugin().then(
+		function() {
+			// TODO: add click event to Facebook button that fires off api.loginWithFacebook()
+		},
+		function() {
+			console.error('failed to load Facebook plugin -- handle this in UI');
+		}
+	);
+	
     $('#login-form').on('submit', function(evt) {
         evt.preventDefault();
 

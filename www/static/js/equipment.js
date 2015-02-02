@@ -1,10 +1,10 @@
 (function (window, document, $, Parse, api) {
 
     var currentUser = api.getCurrentUser(),
-        equipmentByDate,
-        reservedEquipmentSlots,
-        myReservedEquipmentSlots,
-        equipmentDetails,
+        equipmentByDate, // All equipment for provided date (Array of Parse objects).
+        reservedEquipmentSlots, // All equipment reservations for provided date (Array of Parse objects).
+        myReservedEquipmentSlots, // My reserved slots ({slotId:reservationId}).
+		equipmentData, // Equipment converted into template-digestible objects (Array).
 
         initializeEquipment = function() {
             var date = getUrlParameter('dt');
@@ -32,11 +32,11 @@
                         equipmentByDate = [];
                     }
                     reservedEquipmentSlots = [];
-                    myReservedEquipmentSlots = [];
+                    myReservedEquipmentSlots = {};
                     for (var i = 0; i < b.length; i++) {
                         reservedEquipmentSlots.push(b[i].id);
                         if (b[i].get('userId').id === currentUser.id) {
-                            myReservedEquipmentSlots.push(b[i].id);
+                            myReservedEquipmentSlots[b[i].get('slotId')] = b[i].id;
                         }
                     }
                     renderEquipment();
@@ -45,31 +45,40 @@
 
         renderEquipment = function () {
             console.log('All Equipment', equipmentByDate);
+			equipmentData = [];
             for (var i = 0; i < equipmentByDate.length; i++) {
+				var eq = equipmentByDate[i];
                 var slotData = {
-                    slotId : equipmentByDate[i].id,
-                    equipmentName : equipmentByDate[i].get('equipId').get('name'),
-                    roomName : equipmentByDate[i].get('roomId').get('name'),
-                    gymName : equipmentByDate[i].get('gymId').get('name'),
-                    startTime : equipmentByDate[i].get('start_time'),
-                    endTime : equipmentByDate[i].get('end_time'),
-                    reservedByMe : ($.inArray(equipmentByDate[i].id, myReservedEquipmentSlots) === -1),
-                    available : ($.inArray(equipmentByDate[i].id, reservedEquipmentSlots) === -1)
+                    slotId : eq.id,
+                    equipmentName : eq.get('equipId').get('name'),
+                    roomName : eq.get('roomId').get('name'),
+                    gymName : eq.get('gymId').get('name'),
+                    startTime : eq.get('start_time'),
+                    endTime : eq.get('end_time'),
+                    myReservation : myReservedEquipmentSlots[eq.id] || false,
+                    available : ($.inArray(eq.id, reservedEquipmentSlots) === -1)
                 };
+				equipmentData.push(slotData);
             }
         },
 
         loadEquipmentDetails = function (slotId) {
             api.getEquipmentDetails(slotId).then(function(a) {
-                equipmentDetails = a;
-                renderEquipmentDetails();
+                renderEquipmentDetails(a);
             });
         },
 
-        renderEquipmentDetails = function () {
-            var available = ($.inArray(equipmentDetails.id, reservedEquipmentSlots)),
-                reservedByMe = ($.inArray(equipmentDetails.id, myReservedEquipmentSlots) !== -1);
-            console.log(equipmentDetails);
+        renderEquipmentDetails = function (equipmentDetails) {
+            var slotData;
+			for (var i = 0; i < equipmentData.length; i++) {
+				if (equipmentData[i].slotId === equipmentDetails.id) {
+					slotData = equipmentData[i];
+					break;
+				}
+			}
+            // console.log(equipmentDetails);
+			// console.log(slotData);
+			// TODO: loop through equipmentData to get additional times.
         };
 
     initializeEquipment();

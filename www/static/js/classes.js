@@ -1,9 +1,9 @@
 (function (window, document, $, Parse, api) {
 
     var currentUser = api.getCurrentUser(),
-        classesByDate,
-        myReservedClassSlots,
-        classDetails,
+        classesByDate, // All classes for provided date (Array of Parse objects).
+        myReservedClassSlots, // My reserved slots ({slotId:reservationId}).
+		classesData, // Classes converted into template-digestible objects (Array).
         startTime,
 
         selectors = {
@@ -17,10 +17,10 @@
             'reserveTool' : '#collapse-reserve',
             'startTimeFilterWrap' : '#collapse-add-time',
             'startTimeFilterForm' : '.listing-enter-time-form',
-            'startTimeFilterInput' : '.form-add-time'
+            'startTimeFilterInput' : '.listing-enter-time-form-input'
         },
 
-        classes = {
+        cssClasses = {
             'multiBtnSelected' : 'listing-item-selected'
         },
 
@@ -48,8 +48,8 @@
             $(document).on('click', selectors.multiReserveButtons, onMultiReserve);
             $reserveTool.on('hide.bs.collapse', onCollapseReserveTool);
             $startTimeFilterWrap.on('show.bs.collapse', onOpenStartTimeFilter);
-            $startTimeFilterWrap.on('hide.bs.collapse', onCloseStartTimeFilter);
             $startTimeFilterForm.on('submit', onStartTimeFormSubmit);
+            $(document).on('input', selectors.startTimeFilterInput, onStartTimeInputKeyup);
 
             var date = getUrlParameter('dt');
             if (!date) {
@@ -69,12 +69,9 @@
                     if(a.length) {
                         classesByDate = a;
 						classesByDate.sort(sortParseResultsByStartTime);
-                        if(startTime) {
-                            classesByDate = filterParseResultsByStartTime(classesByDate, startTime);
-                        }
-                        myReservedClassSlots = [];
+                        myReservedClassSlots = {};
                         for (var i = 0; i < b.length; i++) {
-                            myReservedClassSlots.push(b[i].get('slotId'));
+                            myReservedClassSlots[b[i].get('slotId')] = b[i].id;
                         }
                         renderClasses();
                     } else {
@@ -84,10 +81,15 @@
         },
 
         renderClasses = function () {
-            console.log('All Classes', classesByDate);
+            var renderDates = classesByDate;
+            if(startTime) {
+                renderDates = filterParseResultsByStartTime(classesByDate, startTime);
+            }
+            console.log('All Classes', renderDates);
             var html = '';
-            for (var i = 0; i < classesByDate.length; i++) {
-                var c = classesByDate[i];
+			classesData = [];
+            for (var i = 0; i < renderDates.length; i++) {
+                var c = renderDates[i];
                 var slotData = {
                     classId : c.get('classId'),
                     slotId : c.id,
@@ -97,28 +99,35 @@
                     startTime : c.get('start_time'),
                     endTime : c.get('end_time'),
                     timeRange : formatTimeRange(c.get('start_time'), c.get('end_time')),
-                    reservedByMe : ($.inArray(c.id, myReservedClassSlots) !== -1),
+                    myReservation : myReservedClassSlots[c.id] || false,
                     available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
                     totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
                     reservedOccupancy : c.get('class').get('room').get('reservedOccupancy')
                 };
                 slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
                 html += templates.classListingsItem.render(slotData);
+				classesData.push(slotData);
             }
             $classListings.html(html);
         },
 
         loadClassDetails = function (slotId) {
             api.getClassDetails(slotId).then(function(a) {
-                classDetails = a;
-                renderClassDetails();
+                renderClassDetails(a);
             });
         },
 
-        renderClassDetails = function () {
-            var available = (parseInt(classDetails.get('reserved_spots')) < parseInt(classDetails.get('class').get('spots'))),
-                reservedByMe = ($.inArray(classDetails.id, myReservedClassSlots) !== -1);
-            console.log(classDetails);
+        renderClassDetails = function (classDetails) {
+            var slotData;
+			for (var i = 0; i < classesData.length; i++) {
+				if (classesData[i].slotId === classDetails.id) {
+					slotData = classesData[i];
+					break;
+				}
+			}
+            // console.log(classDetails);
+			// console.log(slotData);
+			// TODO: loop through classesData to get additional times.
         },
 
         dateSelected = function(evt, el) {
@@ -134,7 +143,7 @@
         onListingItemClick = function(e) {
             var $l = $(e.currentTarget);
             if($reserveTool.is(':visible')) {
-                $l.toggleClass(classes.multiBtnSelected);
+                $l.toggleClass(cssClasses.multiBtnSelected);
                 return;
             }
             Parse.Promise.when(
@@ -147,7 +156,7 @@
         },
 
         onCollapseReserveTool = function() {
-            $classListings.find('.' + classes.multiBtnSelected).removeClass(classes.multiBtnSelected);
+            $classListings.find('.' + cssClasses.multiBtnSelected).removeClass(cssClasses.multiBtnSelected);
         },
 
         onMultiReserve = function() {
@@ -173,18 +182,13 @@
             $('html, body').animate({ scrollTop: 0 }, 200);
         },
 
-        onCloseStartTimeFilter = function() {
-            $(selectors.startTimeFilterInput).val('');
-            resetStartTime();
-        },
-
         resetStartTime = function() {
             var d = new Date();
             if(isToday(d)) {
                 var h = d.getHours(),
                     ampm = (h >= 12)? 'PM' : 'AM',
-                    h = ((h + 11) % 12 + 1);
-                startTime = h + ':' + d.getMinutes() + ' ' + ampm;
+                    hh = ((h + 11) % 12 + 1);
+                startTime = hh + ':' + d.getMinutes() + ' ' + ampm;
             } else {
                 startTime = null;
             }
@@ -192,16 +196,19 @@
 
         onStartTimeFormSubmit = function(e) {
             e.preventDefault();
-            var val = $(e.currentTarget).find(selectors.startTimeFilterInput).val();
-            if(!val) {
-                startTime = null;
-                $(selectors.startTimeFilterWrap).collapse('hide');
-            } else if(val.match(startTimeFilterRegex)) {
-                if(val.indexOf(' ') == -1) {
-                    // add a space before AM/PM since Parse is picky
-                    val = val.slice(0, -2) + ' ' + val.slice(-2);
+        },
+
+        onStartTimeInputKeyup = function(e) {
+            var val = $(e.currentTarget).val();
+            if(val.length >= 6) {
+                if(val.match(startTimeFilterRegex)) {
+                    if(val.indexOf(' ') == -1) {
+                        // add a space before AM/PM since Parse is picky
+                        val = val.slice(0, -2) + ' ' + val.slice(-2);
+                    }
+                    startTime = val;
+                    renderClasses();
                 }
-                startTime = val;
             }
         };
 

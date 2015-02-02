@@ -10,6 +10,7 @@ if (!window.api) {
     var
         facebookAppId = '513297188812943', // App ID from the app dashboard
         facebookChannelUrl = '//localhost.local/XXXXX/channel.html', // Channel file for x-domain comms
+		facebookPluginUrl = '//connect.facebook.net/en_US/all.js',
 
     // Login used on login page (originally in functions.php)
         login = api.login = function (username, password) {
@@ -20,6 +21,66 @@ if (!window.api) {
         logout = api.logout = function (user) {
             return Parse.User.logOut();
         },
+		
+	// Facebook login pulled from login page
+		initializeFacebookPlugin = api.initializeFacebookPlugin = function() {
+			return $.getScript(facebookPluginUrl).then(initializeFacebookUtils);
+		},
+		
+		initializeFacebookUtils = function() {
+			return Parse.FacebookUtils.init({
+				appId : facebookAppId, // App ID from the app dashboard
+				channelUrl : facebookChannelUrl, // Channel file for x-domain comms
+				status : false, // Check Facebook Login status
+				xfbml : true, // Look for social plugins on the page
+				logging : true
+			});
+		},
+	
+		// TODO: can we replace the next three methods with this?
+		loginWithFacebook = api.loginWithFacebook = function() {
+			return Parse.FacebookUtils.logIn('email');
+		};
+	
+		loginWithFacebookOld = function() {
+			var promise = new Parse.Promise.as();
+			FB.login(function (response) {
+				if (!response || response.status !== 'connected') {
+					promise.reject('Facebook login failed');
+					return;
+				} 
+				promise = promise.then(getUserDataFromFacebook);
+			}, {
+				scope : 'email'
+			});
+			return promise;
+		},
+		
+		getUserDataFromFacebook = function() {
+			var promise = new Parse.Promise.as();
+			FB.api('/me', function (fbdata) {
+				console.log(fbdata);
+				promise = promise.then(function() {
+					return loginWithFacebookData(fbdata.email, fbdata.id);
+				});
+			});
+			return promise;
+		},
+		
+		loginWithFacebookData = function (email, fbId) {
+			var o = Parse.Object.extend('User');
+			var q = new Parse.Query(o);
+			q.equalTo('email', email);
+			q.equalTo('fbId', fbId);
+			return q.first().then(
+				function(result) {
+					console.log(result);
+					if (result) {
+						return Parse.FacebookUtils.logIn();
+					}
+				}
+			);
+		},
 
     // Registration used on login page (originally in functions.php)
         registerNewUser = api.registerNewUser = function (params) {
@@ -32,6 +93,7 @@ if (!window.api) {
             user.set('username', params.username);
             user.set('password', params.password);
             user.set('universityId', params.universityId);
+			user.set('universityGymId', params.gymId);
             user.set('memberType', params.memberType);
             user.set('gymFrequency', params.gymFrequency);
             user.set('userType', 'user');
@@ -53,8 +115,8 @@ if (!window.api) {
             );
         },
 
-    // Registration found in site.js -- deprecated?
-        registerNewUser2 = function (params) {
+    // Registration found in site.js for Facebook users
+        registerNewUserWithFacebook = api.registerNewUserWithFacebook = function (params) {
             var user = new Parse.User();
             user.set('lastname', params.lastname);
             user.set('firstname', params.firstname);
@@ -64,23 +126,16 @@ if (!window.api) {
             user.set('username', params.username);
             user.set('password', params.password);
             user.set('universityId', params.universityId);
+			user.set('universityGymId', params.gymId);
             user.set('memberType', params.memberType);
-            // user.set('gymFrequency', params.gymFrequency);
+            user.set('gymFrequency', params.gymFrequency);
             user.set('userType', 'user');
             user.set('isActive', 1);
-            user.set('universityGymId', params.gym);
             user.set('fbId', params.fbId);
 
             // FINISH
             return user.signUp().then(
                 function (user) {
-                    Parse.FacebookUtils.init({
-                        appId : facebookAppId,
-                        channelUrl : facebookChannelUrl,
-                        status : false, // Check Facebook Login status
-                        xfbml : true, // Look for social plugins on the page
-                        logging : true
-                    });
                     if (!Parse.FacebookUtils.isLinked(user)) {
                         Parse.FacebookUtils.link(user, null, {
                             success : function (user) {
@@ -213,7 +268,7 @@ if (!window.api) {
             return q.find();
         },
 
-        getClassesByUniversityAndDate = api.getClassesByUniversityAndDate = function (universityId, date, startTime) {
+        getClassesByUniversityAndDate = api.getClassesByUniversityAndDate = function (universityId, date) {
             var o = Parse.Object.extend('classes');
             var q = new Parse.Query(o);
             var dbDate = dbFormattedDate(date);
@@ -223,6 +278,17 @@ if (!window.api) {
                 return getClassSlotsByClasses(results);
             });
         },
+		
+		getClassesByGymAndDate = api.getClassesByGymAndDate = function (gymId, date) {
+			var o = Parse.Object.extend('classes');
+            var q = new Parse.Query(o);
+            var dbDate = dbFormattedDate(date);
+            q.equalTo('gymId', gymId);
+            q.equalTo('date', dbDate);
+            return q.find().then(function(results) {
+                return getClassSlotsByClasses(results);
+            });
+		},
 
         getClassSlotsByClasses = api.getClassSlotsByClasses = function (classes) {
             var o = Parse.Object.extend('class_slot');
@@ -270,6 +336,16 @@ if (!window.api) {
             var q = new Parse.Query(o);
             q.equalTo('universityId', universityId);
             q.include('gymId');
+            q.include('equipId');
+            q.include('roomId');
+            q.descending('equipId');
+            return q.find();
+        },
+		
+		getEquipmentByGym = api.getEquipmentByGym = function (gymId) {
+            var o = Parse.Object.extend('slots');
+            var q = new Parse.Query(o);
+            q.equalTo('gymId', gymId);
             q.include('equipId');
             q.include('roomId');
             q.descending('equipId');
