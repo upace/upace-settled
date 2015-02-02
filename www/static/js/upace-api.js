@@ -10,6 +10,7 @@ if (!window.api) {
     var
         facebookAppId = '513297188812943', // App ID from the app dashboard
         facebookChannelUrl = '//localhost.local/XXXXX/channel.html', // Channel file for x-domain comms
+		facebookPluginUrl = '//connect.facebook.net/en_US/all.js',
 
     // Login used on login page (originally in functions.php)
         login = api.login = function (username, password) {
@@ -20,6 +21,62 @@ if (!window.api) {
         logout = api.logout = function (user) {
             return Parse.User.logOut();
         },
+		
+	// Facebook login pulled from login page
+		initializeFacebookPlugin = api.initializeFacebookPlugin = function() {
+			return $.getScript(facebookPluginUrl, function () {
+				FB.init({
+					appId : facebookAppId
+				});
+			});
+		},
+	
+		loginWithFacebook = api.loginWithFacebook = function() {
+			var promise = new Parse.Promise.as();
+			FB.login(function (response) {
+				if (!response || response.status !== 'connected') {
+					promise.reject('Facebook login failed');
+					return;
+				} 
+				promise = promise.then(getUserDataFromFacebook());
+			}, {
+				scope : 'email'
+			});
+			return promise;
+		},
+		
+		getUserDataFromFacebook = function() {
+			var promise = new Parse.Promise.as();
+			FB.api('/me', function (fbdata) {
+				console.log(fbdata);
+				promise = promise.then(function() {
+					return loginWithFacebookData(fbdata.email, fbdata.id);
+				});
+			});
+			return promise;
+		},
+		
+		loginWithFacebookData = function (email, fbId) {
+			var o = Parse.Object.extend('User');
+			var q = new Parse.Query(o);
+			q.equalTo('email', email);
+			q.equalTo('fbId', fbId);
+			return q.first().then(
+				function(result) {
+					console.log(result);
+					if (result) {
+						Parse.FacebookUtils.init({
+							appId : facebookAppId, // App ID from the app dashboard
+							channelUrl : facebookChannelUrl, // Channel file for x-domain comms
+							status : false, // Check Facebook Login status
+							xfbml : true, // Look for social plugins on the page
+							logging : true
+						});
+						return Parse.FacebookUtils.logIn();
+					}
+				}
+			);
+		},
 
     // Registration used on login page (originally in functions.php)
         registerNewUser = api.registerNewUser = function (params) {
