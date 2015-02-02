@@ -1,4 +1,9 @@
 <?php
+// Parse keys
+define('API', 'nN7dcS3c3LNXlkOgMhmVxcu2L4b1zeUDuaSXIfzr');
+define('REST_API', 'rD5RqXmCez2ZbQ3T67Sag85borrt1m2G4pk1wmGf');
+define('MASTER_KEY', 'iQTtB6OeotyyKWP29H3zpf1uL8DYlzkSHLconPtt');
+define('JSKEY', 'thCEUZ2AV4ShhzGlQpxYucpLI0uwj7JNBizIrThe');
 
 $SITE = array(
     "name" => "UPACE",
