@@ -17,7 +17,7 @@
     */
   
    
-    require 'parse/autoload.php';
+    require '../../parse/autoload.php';
     use Parse\ParseClient;
     use Parse\ParseObject;
     use Parse\ParseQuery;
