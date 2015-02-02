@@ -1,9 +1,9 @@
 (function (window, document, $, Parse, api) {
 
     var currentUser = api.getCurrentUser(),
-        classesByDate,
-        myReservedClassSlots,
-        classDetails,
+        classesByDate, // All classes for provided date (Array of Parse objects).
+        myReservedClassSlots, // My reserved slots ({slotId:reservationId}).
+		classesData, // Classes converted into template-digestible objects (Array).
 
         selectors = {
             'classListings' : '#class-listings',
@@ -72,6 +72,7 @@
         renderClasses = function () {
             console.log('All Classes', classesByDate);
             var html = '';
+			classesData = [];
             for (var i = 0; i < classesByDate.length; i++) {
                 var c = classesByDate[i];
                 var slotData = {
@@ -90,21 +91,28 @@
                 };
                 slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
                 html += templates.classListingsItem.render(slotData);
+				classesData.push(slotData);
             }
             $classListings.html(html);
         },
 
         loadClassDetails = function (slotId) {
             api.getClassDetails(slotId).then(function(a) {
-                classDetails = a;
-                renderClassDetails();
+                renderClassDetails(a);
             });
         },
 
-        renderClassDetails = function () {
-            var available = (parseInt(classDetails.get('reserved_spots')) < parseInt(classDetails.get('class').get('spots'))),
-                myReservation = myReservedClassSlots[classDetails.id] || false;
-            console.log(classDetails);
+        renderClassDetails = function (classDetails) {
+            var slotData;
+			for (var i = 0; i < classesData.length; i++) {
+				if (classesData[i].slotId === classDetails.id) {
+					slotData = classesData[i];
+					break;
+				}
+			}
+            // console.log(classDetails);
+			// console.log(slotData);
+			// TODO: loop through classesData to get additional times.
         },
 
         dateSelected = function(evt, el) {
