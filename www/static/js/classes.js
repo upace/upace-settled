@@ -5,6 +5,7 @@
         myReservedClassSlots, // My reserved slots ({slotId:reservationId}).
 		classesData, // Classes converted into template-digestible objects (Array).
         startTime,
+        selectedDate,
 
         selectors = {
             'classListings' : '#class-listings',
@@ -48,22 +49,19 @@
             $(document).on('click', selectors.multiReserveButtons, onMultiReserve);
             $reserveTool.on('hide.bs.collapse', onCollapseReserveTool);
             $startTimeFilterWrap.on('show.bs.collapse', onOpenStartTimeFilter);
+            $startTimeFilterWrap.on('hide.bs.collapse', onCloseStartTimeFilter);
             $startTimeFilterForm.on('submit', onStartTimeFormSubmit);
-            $(document).on('input', selectors.startTimeFilterInput, onStartTimeInputKeyup);
+            $(document).on('input', selectors.startTimeFilterInput, onStartTimeInput);
 
-            var date = getUrlParameter('dt');
-            if (!date) {
-                date = formatDateForParse(new Date());
-            }
-            resetStartTime();
-            refreshClasses(date);
+            var parseDate = formatDateForParse(new Date());
+            refreshClasses(parseDate);
         },
 
-        refreshClasses = function(date) {
+        refreshClasses = function(parseDate) {
             $classListings.html(spinner);
             Parse.Promise.when(
-                    api.getClassesByUniversityAndDate(currentUser.get('universityId'), date),
-                    api.getClassReservationsByUser(currentUser, date)
+                    api.getClassesByUniversityAndDate(currentUser.get('universityId'), parseDate),
+                    api.getClassReservationsByUser(currentUser, parseDate)
                 )
                 .then(function(a, b) {
                     if(a.length) {
@@ -75,40 +73,58 @@
                         }
                         renderClasses();
                     } else {
-                        noClassesFound(date);
+                        noClassesFound();
                     }
                 });
         },
 
-        renderClasses = function () {
-            var renderDates = classesByDate;
+        renderClasses = function() {
+            var renderDates = classesByDate,
+                renderTime;
             if(startTime) {
-                renderDates = filterParseResultsByStartTime(classesByDate, startTime);
+                renderTime = startTime;
+            } else {
+                if(!selectedDate) {
+                    renderTime = getTodayStartTime();
+                } else if(selectedDate) {
+                    if(isToday(selectedDate)) {
+                        renderTime = getTodayStartTime();
+                    }
+                }
             }
-            console.log('All Classes', renderDates);
+            if(renderTime) {
+                renderDates = filterParseResultsByStartTime(classesByDate, renderTime);
+                console.log('Filtered Classes', renderDates);
+            } else {
+                console.log('All Classes', renderDates);
+            }
             var html = '';
 			classesData = [];
-            for (var i = 0; i < renderDates.length; i++) {
-                var c = renderDates[i];
-                var slotData = {
-                    classId : c.get('classId'),
-                    slotId : c.id,
-                    className : c.get('class').get('name'),
-                    roomName : c.get('class').get('room').get('name'),
-                    gymName : c.get('gym').get('name'),
-                    startTime : c.get('start_time'),
-                    endTime : c.get('end_time'),
-                    timeRange : formatTimeRange(c.get('start_time'), c.get('end_time')),
-                    myReservation : myReservedClassSlots[c.id] || false,
-                    available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
-                    totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
-                    reservedOccupancy : c.get('class').get('room').get('reservedOccupancy')
-                };
-                slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
-                html += templates.classListingsItem.render(slotData);
-				classesData.push(slotData);
+            if(renderDates.length > 0) {
+                for (var i = 0; i < renderDates.length; i++) {
+                    var c = renderDates[i];
+                    var slotData = {
+                        classId : c.get('classId'),
+                        slotId : c.id,
+                        className : c.get('class').get('name'),
+                        roomName : c.get('class').get('room').get('name'),
+                        gymName : c.get('gym').get('name'),
+                        startTime : c.get('start_time'),
+                        endTime : c.get('end_time'),
+                        timeRange : formatTimeRange(c.get('start_time'), c.get('end_time')),
+                        myReservation : myReservedClassSlots[c.id] || false,
+                        available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
+                        totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
+                        reservedOccupancy : c.get('class').get('room').get('reservedOccupancy')
+                    };
+                    slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
+                    html += templates.classListingsItem.render(slotData);
+                    classesData.push(slotData);
+                }
+                $classListings.html(html);
+            } else {
+                noClassesFound();
             }
-            $classListings.html(html);
         },
 
         loadClassDetails = function (slotId) {
@@ -132,11 +148,12 @@
 
         dateSelected = function(evt, el) {
             var parseDate = $(el).data('parse-date');
+            selectedDate = new Date($(el).data('full-date'));
             refreshClasses(parseDate);
         },
 
-        noClassesFound = function(date) {
-            var html = '<div class="no-classes-found">No classes available on '+ date + '.</div>';
+        noClassesFound = function() {
+            var html = '<div class="no-classes-found">No classes found.</div>';
             $classListings.html(html);
         },
 
@@ -182,34 +199,36 @@
             $('html, body').animate({ scrollTop: 0 }, 200);
         },
 
-        resetStartTime = function() {
-            var d = new Date();
-            if(isToday(d)) {
-                var h = d.getHours(),
-                    ampm = (h >= 12)? 'PM' : 'AM',
-                    hh = ((h + 11) % 12 + 1);
-                startTime = hh + ':' + d.getMinutes() + ' ' + ampm;
-            } else {
-                startTime = null;
-            }
+        onCloseStartTimeFilter = function() {
+            $(selectors.startTimeFilterInput).val('');
+            startTime = null;
+            renderClasses();
         },
 
         onStartTimeFormSubmit = function(e) {
             e.preventDefault();
         },
 
-        onStartTimeInputKeyup = function(e) {
+        onStartTimeInput = function(e) {
             var val = $(e.currentTarget).val();
-            if(val.length >= 6) {
-                if(val.match(startTimeFilterRegex)) {
-                    if(val.indexOf(' ') == -1) {
-                        // add a space before AM/PM since Parse is picky
-                        val = val.slice(0, -2) + ' ' + val.slice(-2);
-                    }
-                    startTime = val;
-                    renderClasses();
+            if(val.match(startTimeFilterRegex)) {
+                if(val.indexOf(' ') == -1) {
+                    // add a space before AM/PM since Parse is picky
+                    val = val.slice(0, -2) + ' ' + val.slice(-2);
                 }
+                startTime = val;
+            } else {
+                startTime = null;
             }
+            renderClasses();
+        },
+
+        getTodayStartTime = function() {
+            var d = new Date(),
+                h = d.getHours(),
+                ampm = (h >= 12)? 'PM' : 'AM',
+                hh = ((h + 11) % 12 + 1);
+            return hh + ':' + d.getMinutes() + ' ' + ampm;
         };
 
         initializeClasses();
