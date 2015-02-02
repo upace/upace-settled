@@ -24,21 +24,32 @@ if (!window.api) {
 		
 	// Facebook login pulled from login page
 		initializeFacebookPlugin = api.initializeFacebookPlugin = function() {
-			return $.getScript(facebookPluginUrl, function () {
-				FB.init({
-					appId : facebookAppId
-				});
+			return $.getScript(facebookPluginUrl).then(initializeFacebookUtils);
+		},
+		
+		initializeFacebookUtils = function() {
+			return Parse.FacebookUtils.init({
+				appId : facebookAppId, // App ID from the app dashboard
+				channelUrl : facebookChannelUrl, // Channel file for x-domain comms
+				status : false, // Check Facebook Login status
+				xfbml : true, // Look for social plugins on the page
+				logging : true
 			});
 		},
 	
+		// TODO: can we replace the next three methods with this?
 		loginWithFacebook = api.loginWithFacebook = function() {
+			return Parse.FacebookUtils.logIn('email');
+		};
+	
+		loginWithFacebookOld = function() {
 			var promise = new Parse.Promise.as();
 			FB.login(function (response) {
 				if (!response || response.status !== 'connected') {
 					promise.reject('Facebook login failed');
 					return;
 				} 
-				promise = promise.then(getUserDataFromFacebook());
+				promise = promise.then(getUserDataFromFacebook);
 			}, {
 				scope : 'email'
 			});
@@ -65,13 +76,6 @@ if (!window.api) {
 				function(result) {
 					console.log(result);
 					if (result) {
-						Parse.FacebookUtils.init({
-							appId : facebookAppId, // App ID from the app dashboard
-							channelUrl : facebookChannelUrl, // Channel file for x-domain comms
-							status : false, // Check Facebook Login status
-							xfbml : true, // Look for social plugins on the page
-							logging : true
-						});
 						return Parse.FacebookUtils.logIn();
 					}
 				}
@@ -89,6 +93,7 @@ if (!window.api) {
             user.set('username', params.username);
             user.set('password', params.password);
             user.set('universityId', params.universityId);
+			user.set('universityGymId', params.gymId);
             user.set('memberType', params.memberType);
             user.set('gymFrequency', params.gymFrequency);
             user.set('userType', 'user');
@@ -110,8 +115,8 @@ if (!window.api) {
             );
         },
 
-    // Registration found in site.js -- deprecated?
-        registerNewUser2 = function (params) {
+    // Registration found in site.js for Facebook users
+        registerNewUserWithFacebook = api.registerNewUserWithFacebook = function (params) {
             var user = new Parse.User();
             user.set('lastname', params.lastname);
             user.set('firstname', params.firstname);
@@ -121,23 +126,16 @@ if (!window.api) {
             user.set('username', params.username);
             user.set('password', params.password);
             user.set('universityId', params.universityId);
+			user.set('universityGymId', params.gymId);
             user.set('memberType', params.memberType);
-            // user.set('gymFrequency', params.gymFrequency);
+            user.set('gymFrequency', params.gymFrequency);
             user.set('userType', 'user');
             user.set('isActive', 1);
-            user.set('universityGymId', params.gym);
             user.set('fbId', params.fbId);
 
             // FINISH
             return user.signUp().then(
                 function (user) {
-                    Parse.FacebookUtils.init({
-                        appId : facebookAppId,
-                        channelUrl : facebookChannelUrl,
-                        status : false, // Check Facebook Login status
-                        xfbml : true, // Look for social plugins on the page
-                        logging : true
-                    });
                     if (!Parse.FacebookUtils.isLinked(user)) {
                         Parse.FacebookUtils.link(user, null, {
                             success : function (user) {
