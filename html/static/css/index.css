@@ -73,13 +73,10 @@ body {
     color: #dcc600;
 }
 
-.land-room-occupied-spots-wrap {
-    margin-bottom: 0.05em;
-}
-
 .gymname {
     font-weight: bold;
     line-height: 1;
+    margin-top: 0.5em;
     text-align: center;
     text-transform: uppercase;
 }
