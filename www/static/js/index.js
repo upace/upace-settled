@@ -9,6 +9,20 @@
         currentRooms,
         currentOccupancy,
 
+        selectors = {
+            'roomOccupancyItemTemplate' : '#room-occupancy-item-template',
+            'roomOccupancyItem' : '.land-room-occupied-spots-wrap'
+        },
+
+        templates = {
+            'roomOccupancyItem' : twig({
+                data: $(selectors.roomOccupancyItemTemplate).html()
+            })
+        },
+
+        // cache selectors wherever possible
+        $roomCarousel = $('.owl-current'),
+
         initializeDashboard = function() {
             Parse.Promise.when(
                     api.getUniversityById(currentUniversityId),
@@ -37,37 +51,30 @@
         },
 
         renderCurrentGym = function() {
-            var percentage = Math.floor(currentOccupancy / currentGym.get('capacity') * 100),
-                color = 'g';
-            if (percentage > 50) color = 'y';
-            if (percentage > 90) color = 'r';
-            // TODO: use templating system instead
-            var gymHtml = '<center><span class="land-data-average" id="land-data-average">'
-            gymHtml += percentage;
-            gymHtml += '</span><span class="land-data-average" style="font-weight:100">%</span></center></br><center class="land-data-members"><span id="land-current-member">';
-            gymHtml += currentOccupancy;
-            gymHtml += '</span>/<span id="land-total-member">';
-            gymHtml += currentGym.get('capacity');
-            gymHtml += '</span> <span>MEMBERS</span></center></br><center class="land-data-occupancy"><span>TOTAL OCCUPANCY</span></center></br><center class="land-data-gym"><span id="land-current-gym">';
-            gymHtml += currentGym.get('name');
-            gymHtml += '</span></center></br>';
-            $('#land-data-color')
-                .html(gymHtml)
-                .addClass('land-data-' + color)
-            ;
+            var percentage = Math.floor(currentOccupancy / currentGym.get('capacity') * 100);
+            $('#land-data-average').text(percentage);
+            $('#land-current-member').text(currentOccupancy);
+            $('#land-total-member').text(currentGym.get('capacity'));
+            $('#land-current-gym').text(currentGym.get('name'));
+            $('#land-data-color').addClass('land-data-' + getOccupancyColor(percentage)).show();
         },
 
         renderRooms = function() {
-            // TODO: use templating system instead
             var roomHtml = '';
+            console.log(currentRooms);
             for (var i = 0; i < currentRooms.length; i++) {
-                roomHtml += '<div><div class="land-data-placeholder"><center><span id="land-data-figure" class="land-data-figure">';
-                roomHtml += parseInt(currentRooms[i].get('male')) + parseInt(currentRooms[i].get('female'));
-                roomHtml += '</span></center></div><center><span id="land-gymname" class="gymname">';
-                roomHtml += currentRooms[i].get('name');
-                roomHtml += '</span></center></div>';
+                var occupiedSpots = parseInt(currentRooms[i].get('male')) + parseInt(currentRooms[i].get('female')),
+                    percentage = Math.floor(occupiedSpots / parseInt(currentRooms[i].get('reservedOccupancy')) * 100),
+                    data = {
+                        'roomName' : currentRooms[i].get('name'),
+                        'perc' : percentage,
+                        'percColor' : getOccupancyColor(percentage),
+                        'occupiedSpots' : occupiedSpots,
+                        'roomId' : currentRooms[i].id
+                    };
+                roomHtml += templates.roomOccupancyItem.render(data);
             }
-            $('.owl-current').html(roomHtml);
+            $roomCarousel.html(roomHtml);
             activateRoomCarousel();
         },
 
@@ -78,12 +85,36 @@
         activateRoomCarousel = function() {
             $('.owl-current').owlCarousel({
                 stagePadding: 50,
-                loop:true,
-                margin:0,
-                nav:false,
-                responsive:{
+                loop: true,
+                margin: 0,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 2
+                    },
+                    768: {
+                        items: 3
+                    },
+                    915: {
+                        items: 4
+                    },
+                    1600: {
+                        items: 5
+                    }
+                }
+            });
+        },
+
+        activateDeckCarousel = function() {
+            $('.owl-ondeck').owlCarousel({
+                stagePadding: 0,
+                loop: true,
+                margin: 0,
+                nav: false,
+                center: false,
+                responsive: {
                     0:{
-                        items:2
+                        items:3
                     },
 
                     420:{
@@ -100,29 +131,11 @@
             });
         },
 
-        activateDeckCarousel = function() {
-            $('.owl-ondeck').owlCarousel({
-                stagePadding: 50,
-                loop:true,
-                margin:0,
-                nav:false,
-                responsive:{
-                    0:{
-                        items:3
-                    },
-
-                    420:{
-                        items:3
-                    },
-
-                    600:{
-                        items:3
-                    },
-                    1000:{
-                        items: 3
-                    }
-                }
-            });
+        getOccupancyColor = function(percentage) {
+            var color = 'g';
+            if (percentage > 50) color = 'y';
+            if (percentage > 90) color = 'r';
+            return color;
         };
 
     initializeDashboard();

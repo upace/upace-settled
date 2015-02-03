@@ -79,96 +79,57 @@
     </div>
     <a data-toggle="modal" class="reserve-modal" data-target="#occupancy-modal">
         <div class="col-xs-4 col-sm-2 col-md-2">
-            <div style="text-align: center; background: #000; margin: 0.3em auto;border-radius: 50px; border:2px solid #fff; width: 85px;height: 50px; font-size: 20px; opacity:.7;">
-                <i class="fa fa-circle" style="margin:0.65em 0; color:green"></i>
-                <i class="fa fa-circle" style="margin:0.65em 0; color:yellow"></i>
-                <i class="fa fa-circle" style="margin:0.65em 0; color:red"></i>
+            <div class="occupancy-key-toggle">
+                <div class="occupancy-key-circle occupancy-key-circle-g"></div>
+                <div class="occupancy-key-circle occupancy-key-circle-y"></div>
+                <div class="occupancy-key-circle occupancy-key-circle-r"></div>
             </div>
         </div>
     </a>
 </section>
 
-<section class="land content slide" style="margin-top:2.5em; margin-bottom:2.5em">
+<section class="land content slide">
     <div class="land-body">
         <div class="land-data" id="land-data-color">
-            <center><span class="land-data-average" id="land-data-average">100</span><span class="land-data-average"
-                                                                                           style="font-weight:100">%</span>
+            <center>
+                <span class="land-data-average" id="land-data-average"></span>
+                <span class="land-data-average" style="font-weight:100">%</span>
             </center>
             <br/>
-            <center class="land-data-members"><span id="land-current-member">15</span>/<span id="land-total-member">100</span>
-                <span>MEMBERS</span></center>
+            <center class="land-data-members">
+                <span id="land-current-member"></span>/<span id="land-total-member"></span>
+                <span>MEMBERS</span>
+            </center>
             <br/>
-            <center class="land-data-occupancy"><span>TOTAL OCCUPANCY</span></center>
+            <center class="land-data-occupancy">
+                <span>TOTAL OCCUPANCY</span>
+            </center>
             <br/>
-            <center class="land-data-gym"><span id="land-current-gym">HAMILTON GYM</span></center>
-            <br/>
+            <center class="land-data-gym">
+                <span id="land-current-gym"></span>
+            </center>
         </div>
     </div>
 </section>
 
-<!--Calender-->
+<!-- Room Occupancy Slider -->
 <section class="land-current content slide">
     <div class="owl-current">
-        <div>
-            <div class="land-data-placeholder">
-                <center><span id="land-data-figure" class="land-data-figure">1</span></center>
-            </div>
-            <center><span id="land-gymname" class="gymname">room name</span></center>
-        </div>
-        <diV>
-            <div class="land-data-placeholder">
-                <center><span id="land-data-figure" class="land-data-figure">1</span></center>
-            </div>
-            <center><span id="land-gymname" class="gymname">room name</span></center>
-        </div>
-        <diV>
-            <div class="land-data-placeholder">
-                <center><span id="land-data-figure" class="land-data-figure">1</span></center>
-            </div>
-            <center><span id="land-gymname" class="gymname">room name</span></center>
-        </div>
-        <diV>
-            <div class="land-data-placeholder">
-                <center><span id="land-data-figure" class="land-data-figure">1</span></center>
-            </div>
-            <center><span id="land-gymname" class="gymname">room name</span></center>
-        </div>
-        <diV>
-            <div class="land-data-placeholder">
-                <center><span id="land-data-figure" class="land-data-figure">1</span></center>
-            </div>
-            <center><span id="land-gymname" class="gymname">room name</span></center>
-        </div>
-        <diV>
-            <div class="land-data-placeholder">
-                <center><span id="land-data-figure" class="land-data-figure">1</span></center>
-            </div>
-            <center><span id="land-gymname" class="gymname">room name</span></center>
-        </div>
-        <diV>
-            <div class="land-data-placeholder">
-                <center><span id="land-data-figure" class="land-data-figure">1</span></center>
-            </div>
-            <center><span id="land-gymname" class="gymname">room name</span></center>
-        </div>
-        <diV>
-            <div class="land-data-placeholder">
-                <center><span id="land-data-figure" class="land-data-figure">1</span></center>
-            </div>
-            <center><span id="land-gymname" class="gymname">room name</span></center>
-        </div>
+        <!-- filled in by js -->
     </div>
 </section>
-<!--/Calender-->
+<script id="room-occupancy-item-template" type="text/x-twig-template">
+    {{ source('./partials/index-room-occupancy-item.twig') }}
+</script>
+<!--/Room Occupancy Slider -->
 
 <section class="land-ondeck content slide">
     <a href="#">
-        <div class="col-xs-3 ondeck" style="background:rgba(255,255,255,.3);">
+        <div class="col-xs-3 ondeck">
             <span class="ondeckon">ON</span><br/>
             <span class="ondeckdeck">DECK</span>
         </div>
     </a>
-
     <div class="owl-ondeck">
         <div><a data-toggle="modal" class="reserve-modal" data-target="#reserve-modal">
                 <div class="ondecksequence">
@@ -230,43 +191,37 @@
     </div>
     <div class="col-xs-2 land-other-gyms">
         <div class="closeg" id="land-other-avg-color">
-            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average"
-                                                                                  style="font-weight:100">5%</span>
+            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average">5%</span>
         </div>
         <center><span class="land-other-name" id="land-other-name">PLACE</span></center>
     </div>
     <div class="col-xs-2 land-other-gyms">
         <div class="farr" id="land-other-avg-color">
-            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average"
-                                                                                  style="font-weight:100">95%</span>
+            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average">95%</span>
         </div>
         <center><span class="land-other-name" id="land-other-name">PLACE</span></center>
     </div>
     <div class="col-xs-2 land-other-gyms">
         <div class="closeg" id="land-other-avg-color">
-            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average"
-                                                                                  style="font-weight:100">5%</span>
+            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average">5%</span>
         </div>
         <center><span class="land-other-name" id="land-other-name">PLACE</span></center>
     </div>
     <div class="col-xs-2 land-other-gyms" id="land-other-name">
         <div class="midy" id="land-other-avg-color">
-            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average"
-                                                                                  style="font-weight:100">51%</span>
+            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average">51%</span>
         </div>
         <center><span class="land-other-name" id="land-other-name">PLACE</span></center>
     </div>
     <div class="col-xs-2 land-other-gyms">
         <div class="closeg" id="land-other-avg-color">
-            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average"
-                                                                                  style="font-weight:100">5%</span>
+            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average">5%</span>
         </div>
         <center><span class="land-other-name">PLACE</span></center>
     </div>
     <div class="col-xs-2 land-other-gyms">
         <div class="farr" id="land-other-avg-color">
-            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average"
-                                                                                  style="font-weight:100">91%</span>
+            <span class="land-other-average" id="land-other-average"></span><span class="land-other-average">91%</span>
         </div>
         <center><span class="land-other-name" id="land-other-name">PLACE</span></center>
     </div>
@@ -275,7 +230,6 @@
 
 
 <!--Search Modal -->
-
 <div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -302,11 +256,11 @@
         </div>
     </div>
 </div>
-
 <!--/Search Modal-->
 
-<!--Reserve Modal -->
 
+
+<!--Reserve Modal -->
 <div class="modal fade" id="reserve-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -441,7 +395,6 @@
         </div>
     </div>
 </div>
-
 <!--/Reserve Modal -->
 
 <!-- Settings Modal -->
@@ -825,17 +778,17 @@
                                 class="fa fa-times"></i></a></center>
             </div>
             <div class="col-sm-4">
-                <div class="land-data-key" style="background-color:rgba(0,255,0,.5)">
+                <div class="land-data-key land-data-key-r">
                     <center><span class="land-data-key-figure">0-50%</span></center>
                 </div>
             </div>
             <div class="col-sm-4">
-                <div class="land-data-key" style="background-color:rgba(255,255,0,.5)">
+                <div class="land-data-key land-data-key-y">
                     <center><span class="land-data-key-figure">51-90%</span></center>
                 </div>
             </div>
             <div class="col-sm-4">
-                <div class="land-data-key" style="background-color:rgba(255,0,0,.5)">
+                <div class="land-data-key land-data-key-g">
                     <center><span class="land-data-key-figure">91-100%</span></center>
                 </div>
             </div>
