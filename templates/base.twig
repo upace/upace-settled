@@ -54,6 +54,18 @@
         <meta name="msapplication-config" content="{{ site.images_path }}/icons/browserconfig.xml">
         <meta name="theme-color" content="#ffffff">
     {% endblock favicons %}
+	
+	{% block parse %}
+		<script src="{{ site.js_path }}/libs/parse-1.2.12.min.js"></script>
+		<script type="text/javascript">
+			Parse.initialize('{{ site.parse_app_id }}', '{{ site.parse_js_key }}');
+			(function() {
+				var anonAllowed = !!('{{ anonymousUsersAllowed }}'), currentUser = Parse.User.current();
+				if (!currentUser && !anonAllowed) window.location = '/login' ;
+				else if (currentUser && anonAllowed) window.location = '/';
+			})();
+		</script>
+	{% endblock parse %}
 
     {% block stylesheets %}
         <link href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -96,7 +108,6 @@
     <script src="{{ site.js_path }}/libs/owl.carousel.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/twig.js/0.6.0/twig.js"></script>
-    <script src="{{ site.js_path }}/libs/parse-1.2.12.min.js"></script>
     <script src="{{ site.js_path }}/upace-api.js"></script>
     <script src="{{ site.js_path }}/upace-ui.js"></script>
 

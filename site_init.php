@@ -1,13 +1,11 @@
 <?php
-// Parse keys
-define('API', 'nN7dcS3c3LNXlkOgMhmVxcu2L4b1zeUDuaSXIfzr');
-define('REST_API', 'rD5RqXmCez2ZbQ3T67Sag85borrt1m2G4pk1wmGf');
-define('MASTER_KEY', 'iQTtB6OeotyyKWP29H3zpf1uL8DYlzkSHLconPtt');
-define('JSKEY', 'thCEUZ2AV4ShhzGlQpxYucpLI0uwj7JNBizIrThe');
-
 $SITE = array(
     "name" => "UPACE",
     "base_url" => "http://upace.com",
+	"parse_app_id" => "nN7dcS3c3LNXlkOgMhmVxcu2L4b1zeUDuaSXIfzr",
+	"parse_js_key" => "thCEUZ2AV4ShhzGlQpxYucpLI0uwj7JNBizIrThe",
+	"parse_rest_api_key" => "rD5RqXmCez2ZbQ3T67Sag85borrt1m2G4pk1wmGf",
+	"parse_master_key" => "iQTtB6OeotyyKWP29H3zpf1uL8DYlzkSHLconPtt",
     "fb_app_id" => "371970302963349",
     "libraries_path" => __DIR__ . '/lib',
     "templates_path" => __DIR__ . '/templates',

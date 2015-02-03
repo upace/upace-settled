@@ -30,6 +30,8 @@ class TemplateRenderer
         // these values will be passed into all templates
         $variables['site'] = array(
             'name' => $this->siteConfig['name'],
+			'parse_app_id' => $this->siteConfig['parse_app_id'],
+			'parse_js_key' => $this->siteConfig['parse_js_key'],
             'fb_app_id' => $this->siteConfig['fb_app_id'],
             'fonts_path' => $this->siteConfig['fonts_path'],
             'css_path' => $this->siteConfig['css_path'],

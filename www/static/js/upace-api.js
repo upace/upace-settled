@@ -4,9 +4,6 @@ if (!window.api) {
 
 (function (window, document, $, Parse, api) {
 
-    // TODO: determine if there's any problem exposing these keys to client
-    Parse.initialize('nN7dcS3c3LNXlkOgMhmVxcu2L4b1zeUDuaSXIfzr', 'thCEUZ2AV4ShhzGlQpxYucpLI0uwj7JNBizIrThe');
-
     var
         facebookAppId = '513297188812943', // App ID from the app dashboard
         facebookChannelUrl = '//localhost.local/XXXXX/channel.html', // Channel file for x-domain comms
