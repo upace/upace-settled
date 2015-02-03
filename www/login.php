@@ -7,4 +7,4 @@ $metadata = array(
     'description' => '',
     'keywords' => ''
 );
-print $renderer->render('login.twig', array('metadata' => $metadata));
+print $renderer->render('login.twig', array('metadata' => $metadata, 'anonymousUsersAllowed' => true));
