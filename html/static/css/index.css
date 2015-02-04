@@ -6,6 +6,11 @@ body {
     background-size: cover;
 }
 
+.owl-stage {
+    /* override owl carousel to center stage when there are only 1 or so items */
+    margin: 0 auto;
+}
+
 .land {
     display: table;
     width: 100%;
@@ -89,11 +94,10 @@ body {
 .land-other-gyms-wrap {
     margin-bottom: 2em;
     text-align: center;
-    text-transform: uppercase;
 }
 
-.land-other-gyms-wrap .col-xs-2 {
-    padding: 0;
+.land-other-gym-name {
+    text-transform: uppercase;
 }
 
 .land-other-gym-perc {

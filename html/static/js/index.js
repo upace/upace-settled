@@ -13,12 +13,16 @@
             'roomOccupancyItemTemplate' : '#room-occupancy-item-template',
             'roomOccupancyItem' : '.land-room-occupied-spots-wrap',
             'deckItem' : '.land-ondeck-item .ondecksequence',
-            'reserveModal' : '#reserve-modal'
+            'reserveModal' : '#reserve-modal',
+            'otherGymItemTemplate' : '#other-gym-item-template'
         },
 
         templates = {
             'roomOccupancyItem' : twig({
                 data: $(selectors.roomOccupancyItemTemplate).html()
+            }),
+            'otherGymItem' : twig({
+                data: $(selectors.otherGymItemTemplate).html()
             })
         },
 
@@ -114,14 +118,14 @@
 							'percColor' : getOccupancyColor(percentage),
 							'gymId' : currentAllGyms[j].id
 						};
-					// otherGymHtml += ..
+                    otherGymHtml += templates.otherGymItem.render(data);
 				}
 			}
 			$gymsCarousel.html(otherGymHtml);
             activateGymsCarousel();
         },
 
-        handleDeckClick = function(e) {
+        handleDeckClick = function() {
             $(selectors.reserveModal).modal('show');
         },
 
