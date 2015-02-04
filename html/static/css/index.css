@@ -73,6 +73,11 @@ body {
     color: #dcc600;
 }
 
+.ondeckgear,
+.ondeckroom {
+    color: #999;
+}
+
 .gymname {
     font-weight: bold;
     line-height: 1;
@@ -84,6 +89,7 @@ body {
 .land-other-gyms-wrap {
     margin-bottom: 2em;
     text-align: center;
+    text-transform: uppercase;
 }
 
 .land-other-gyms-wrap .col-xs-2 {
@@ -256,7 +262,7 @@ body {
     }
 
     .ondecksequence {
-        line-height: .8
+        line-height: 0.95;
     }
 
     .ondeckon {
@@ -268,19 +274,16 @@ body {
     }
 
     .ondecktime {
-        font-size: 1.5em;
+        font-size: 1.7em;
     }
 
     .ondeckdate {
-        font-size: .35em;
+        font-size: 0.8em;
     }
 
-    .ondeckgear {
-        font-size: 6pt;
-    }
-
+    .ondeckgear,
     .ondeckroom {
-        font-size: 6pt;
+        font-size: 0.7em;
     }
 }
 

@@ -11,7 +11,9 @@
 
         selectors = {
             'roomOccupancyItemTemplate' : '#room-occupancy-item-template',
-            'roomOccupancyItem' : '.land-room-occupied-spots-wrap'
+            'roomOccupancyItem' : '.land-room-occupied-spots-wrap',
+            'deckItem' : '.land-ondeck-item .ondecksequence',
+            'reserveModal' : '#reserve-modal'
         },
 
         templates = {
@@ -26,6 +28,9 @@
         $deckCarousel = $('.owl-ondeck'),
 
         initializeDashboard = function() {
+
+            $(document).on('click', selectors.deckItem, handleDeckClick);
+
             Parse.Promise.when(
                     api.getUniversityById(currentUniversityId),
                     api.getGymsByUniversity(currentUniversityId),
@@ -88,6 +93,10 @@
             activateGymsCarousel();
         },
 
+        handleDeckClick = function(e) {
+            $(selectors.reserveModal).modal('show');
+        },
+
         activateRoomCarousel = function() {
             $roomCarousel.owlCarousel({
                 stagePadding: 50,
@@ -145,19 +154,20 @@
                 nav: false,
                 center: false,
                 responsive: {
-                    0:{
-                        items:3
+                    0: {
+                        items: 4
                     },
-
-                    420:{
-                        items:3
+                    768: {
+                        items: 4
                     },
-
-                    600:{
-                        items:3
+                    915: {
+                        items: 5
                     },
-                    1000:{
-                        items: 3
+                    1200: {
+                        items: 6
+                    },
+                    1600: {
+                        items: 7
                     }
                 }
             });
