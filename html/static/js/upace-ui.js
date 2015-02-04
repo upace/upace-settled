@@ -177,6 +177,7 @@ var
         );
     });
 
-    initializeSettings();
+	// No need to run settings code when user is not logged in.
+	if (currentUser) initializeSettings();
 
 })(this, document, jQuery, Parse, api);
