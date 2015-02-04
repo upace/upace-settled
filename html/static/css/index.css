@@ -40,19 +40,19 @@ body {
 
 .land-data-key-g,
 .occupancy-key-circle-g,
-.closeg {
+.land-other-gym-perc-g {
     background-color: rgb(0, 225, 30);
 }
 
 .land-data-key-y,
 .occupancy-key-circle-y,
-.midy {
+.land-other-gym-perc-y {
     background-color: rgb(220, 198, 0);
 }
 
 .land-data-key-r,
 .occupancy-key-circle-r,
-.farr {
+.land-other-gym-perc-r {
     background-color: rgb(242, 62, 46);
 }
 
@@ -81,27 +81,28 @@ body {
     text-transform: uppercase;
 }
 
-.land-other-gyms {
+.land-other-gyms-wrap {
+    margin-bottom: 2em;
     text-align: center;
 }
 
-.land-other-average {
-    font-weight: bold;
+.land-other-gyms-wrap .col-xs-2 {
+    padding: 0;
 }
 
-.land-other > h2 {
+.land-other-gym-perc {
+    border-left: 0.2em solid rgba(0,0,0,0.1);
+    font-weight: bold;
+    margin-bottom: 0.2em;
+}
+
+.land-other-gyms-h2 {
     display: table;
     width: 100%;
     height: 30%;
     text-align: center;
     padding: 0;
     margin: 0.8em 0;
-}
-
-.closeg,
-.midy,
-.farr {
-    height: 3.5em;
 }
 
 .occupancy-key-toggle {
@@ -145,10 +146,6 @@ body {
         width: 100%;
         height: 10%;
         color: #fff;
-    }
-
-    .land-other-name {
-        margin-top: 5px;
     }
 
     .land-room-label {
@@ -231,18 +228,17 @@ body {
         padding: 1.5px;
     }
 
-    .land-other-average {
-        font-size: 1.3em;
-        line-height: 2.7em;
+    .land-other-gym-perc {
+        font-size: 1.6em;
+        line-height: 2.5em;
         letter-spacing: -0.1em;
     }
 
-    .land-other > h2 {
+    .land-other-gyms-h2 {
         font-size: 1.2em;
     }
 
-    .land-other-name {
-        margin-top: 5px;
+    .land-other-gym-name {
         font-size: .5em;
     }
 
@@ -413,22 +409,17 @@ body {
         font-size: 1em;
     }
 
-    .land-other > h2 {
+    .land-other-gyms-h2 {
         font-size: 1.6em;
     }
 
-    .land-other-gyms {
-        height: 10em;
-        padding: 1.5px;
+    .land-other-gym-perc {
+        font-size: 2em;
+        line-height: 2.5em;
+        letter-spacing: -0.1em;
     }
 
-    .land-other-average {
-        line-height: 2.25em;
-        font-size: 1.5em;
-    }
-
-    .land-other-name {
-        margin-top: 5px;
+    .land-other-gym-name {
         font-size: .75em;
     }
 }
@@ -498,7 +489,6 @@ body {
 
     .land-data-gym {
         margin-top: -20px;
-
     }
 
     .land-data-key {
@@ -557,19 +547,16 @@ body {
         font-size: 1.5em;
     }
 
-    .land-other > h2 {
+    .land-other-gyms-h2 {
         font-size: 2.3em;
     }
 
-    .land-other-gyms {
-        height: 10em;
-        padding: 1.5px;
-
+    .land-other-gym-perc {
+        font-size: 2.4em;
     }
 
-    .land-other-average {
-        line-height: 2.25em;
-        font-size: 1.5em;
+    .land-other-gym-name {
+        font-size: 1em;
     }
 }
 
@@ -688,19 +675,16 @@ body {
         font-size: 1.5em;
     }
 
-    .land-other > h2 {
+    .land-other-gyms-h2 {
         font-size: 2.8em;
     }
 
-    .land-other-gyms {
-        height: 10em;
-        padding: 1.5px;
-
+    .land-other-gym-perc {
+        font-size: 3em;
     }
 
-    .land-other-average {
-        line-height: 2.25em;
-        font-size: 1.5em;
+    .land-other-gym-name {
+        font-size: 1.2em;
     }
 }
 
@@ -812,19 +796,11 @@ body {
         font-size: 1.5em;
     }
 
-    .land-other > h2 {
+    .land-other-gyms-h2 {
         font-size: 3em;
     }
 
-    .land-other-gyms {
-        height: 10em;
-        padding: 1.5px;
-
+    .land-other-gym-name {
+        font-size: 1.4em;
     }
-
-    .land-other-average {
-        line-height: 2.25em;
-        font-size: 1.5em;
-    }
-
 }

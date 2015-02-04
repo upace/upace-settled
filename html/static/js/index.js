@@ -22,6 +22,8 @@
 
         // cache selectors wherever possible
         $roomCarousel = $('.owl-current'),
+        $gymsCarousel = $('.owl-other-gyms'),
+        $deckCarousel = $('.owl-ondeck'),
 
         initializeDashboard = function() {
             Parse.Promise.when(
@@ -43,10 +45,10 @@
                         currentOccupancy += parseInt(currentRooms[i].get('male'));
                         currentOccupancy += parseInt(currentRooms[i].get('female'));
                     }
-
                     renderCurrentGym();
                     renderRooms();
                     renderDeck();
+                    renderOtherGyms();
                 });
         },
 
@@ -61,7 +63,6 @@
 
         renderRooms = function() {
             var roomHtml = '';
-            console.log(currentRooms);
             for (var i = 0; i < currentRooms.length; i++) {
                 var occupiedSpots = parseInt(currentRooms[i].get('male')) + parseInt(currentRooms[i].get('female')),
                     percentage = Math.floor(occupiedSpots / parseInt(currentRooms[i].get('reservedOccupancy')) * 100),
@@ -82,8 +83,13 @@
             activateDeckCarousel();
         },
 
+        renderOtherGyms = function() {
+            console.log(currentAllGyms);
+            activateGymsCarousel();
+        },
+
         activateRoomCarousel = function() {
-            $('.owl-current').owlCarousel({
+            $roomCarousel.owlCarousel({
                 stagePadding: 50,
                 loop: true,
                 margin: 0,
@@ -105,8 +111,34 @@
             });
         },
 
+        activateGymsCarousel = function() {
+            $gymsCarousel.owlCarousel({
+                stagePadding: 20,
+                loop: true,
+                margin: 0,
+                nav: false,
+                responsive: {
+                    0: {
+                        items: 4
+                    },
+                    768: {
+                        items: 4
+                    },
+                    915: {
+                        items: 5
+                    },
+                    1200: {
+                        items: 6
+                    },
+                    1600: {
+                        items: 7
+                    }
+                }
+            });
+        },
+
         activateDeckCarousel = function() {
-            $('.owl-ondeck').owlCarousel({
+            $deckCarousel.owlCarousel({
                 stagePadding: 0,
                 loop: true,
                 margin: 0,
