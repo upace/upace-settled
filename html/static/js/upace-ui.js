@@ -50,7 +50,8 @@ var
 		var filtered = [],
 			earliestDate = Date.parse('01/01/2000 ' + earliestTime);
 		for (var i = 0; i < results.length; i++) {
-			if (Date.parse('01/01/2000 ' + results[i].get('start_time')) >= earliestDate) {
+            var start_time = (results[i].get('equipment') ? results[i].get('slotId').get('start_time') : results[i].get('start_time'));
+			if (Date.parse('01/01/2000 ' + start_time) >= earliestDate) {
 				filtered.push(results[i]);
 			}
 		}

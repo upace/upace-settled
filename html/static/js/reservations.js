@@ -25,7 +25,7 @@
                     roomName : reservedClasses[i].get('class').get('room').get('name'),
                     gymName : reservedClasses[i].get('gym').get('name'),
                     startTime : reservedClasses[i].get('start_time'),
-                    endTime : reservedClasses[i].get('end_time'),
+                    endTime : reservedClasses[i].get('end_time')
                 };
                 // console.log(slotData);
             }
@@ -40,7 +40,7 @@
                     roomName : reservedEquipment[i].get('slotId').get('roomId').get('name'),
                     gymName : reservedEquipment[i].get('gymId').get('name'),
                     startTime : reservedEquipment[i].get('slotId').get('start_time'),
-                    endTime : reservedEquipment[i].get('slotId').get('end_time'),
+                    endTime : reservedEquipment[i].get('slotId').get('end_time')
                 };
                 // console.log(slotData);
             }

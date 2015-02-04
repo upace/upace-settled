@@ -8,6 +8,9 @@
 		currentAllRooms,
         currentGym,
         currentOccupancy,
+        reservedClasses,
+        reservedEquipment,
+        reservations,
 
         selectors = {
             'roomOccupancyItemTemplate' : '#room-occupancy-item-template',
@@ -58,7 +61,7 @@
                     }
                     renderCurrentGym();
                     renderRooms();
-                    renderDeck();
+                    initDeck();
                     renderOtherGyms();
                 });
         },
@@ -90,6 +93,17 @@
             }
             $roomCarousel.html(roomHtml);
             activateRoomCarousel();
+        },
+
+        initDeck = function() {
+            Parse.Promise.when(
+                    api.getClassReservationsByUser(currentUser),
+                    api.getEquipmentReservationsByUser(currentUser)
+                ).then(function(a, b) {
+                    reservedClasses = a;
+                    reservedEquipment = b;
+                    renderDeck();
+                });
         },
 
         renderDeck = function() {
@@ -180,7 +194,7 @@
 
         activateDeckCarousel = function() {
             $deckCarousel.owlCarousel({
-                stagePadding: 0,
+                stagePadding: 15,
                 loop: true,
                 margin: 0,
                 nav: false,

@@ -74,13 +74,22 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, .3);
 }
 
-.ondeckdeck {
-    color: #dcc600;
+.ondeck,
+.ondecksequence {
+    padding: 1em 0;
+}
+
+.ondeck {
+    padding-left: 1em;
 }
 
 .ondeckgear,
 .ondeckroom {
     color: #999;
+}
+
+.ondeckdeck {
+    color: #dcc600;
 }
 
 .gymname {
@@ -256,11 +265,6 @@ body {
         height: 89px;
     }
 
-    .ondeck, .ondecksequence {
-        text-align: center;
-        padding: 1em 0;
-    }
-
     .ondeck {
         line-height: 0.9;
     }
@@ -383,11 +387,6 @@ body {
         height: 112px;
     }
 
-    .ondeck, .ondecksequence {
-        text-align: center;
-        padding: 1em 0;
-    }
-
     .ondeck {
         line-height: .91
     }
@@ -408,12 +407,8 @@ body {
         font-size: .9em;
     }
 
-    .ondeckgear {
-        font-size: .85em;
-    }
-
-    .ondeckroom {
-        font-size: 1em;
+    .ondeckgear, .ondeckroom {
+        font-size: 0.9em;
     }
 
     .land-other-gyms-h2 {
@@ -518,12 +513,7 @@ body {
     }
 
     .land-ondeck {
-        height: 159px;
-    }
-
-    .ondeck, .ondecksequence {
-        text-align: center;
-        padding: 1em 0;
+        height: 170px;
     }
 
     .ondeck {
@@ -535,7 +525,7 @@ body {
     }
 
     .ondeckdeck {
-        font-size: 3.375em;
+        font-size: 3.8em;
     }
 
     .ondecktime {
@@ -546,12 +536,9 @@ body {
         font-size: 1.6em;
     }
 
-    .ondeckgear {
-        font-size: 1.35em;
-    }
-
+    .ondeckgear,
     .ondeckroom {
-        font-size: 1.5em;
+        font-size: 1.4em;
     }
 
     .land-other-gyms-h2 {
@@ -624,17 +611,14 @@ body {
 
     .land-data-members {
         margin-top: -140px;
-
     }
 
     .land-data-occupancy {
         margin-top: -20px;
-
     }
 
     .land-data-gym {
         margin-top: -20px;
-
     }
 
     .land-data-key {
@@ -649,21 +633,8 @@ body {
         font-size: 1.95em;
     }
 
-    .land-ondeck {
-        height: 159px;
-    }
-
-    .ondeck, .ondecksequence {
-        text-align: center;
-        padding: 1em 0;
-    }
-
     .ondeckon {
         font-size: 6.5em;
-    }
-
-    .ondeckdeck {
-        font-size: 3.375em;
     }
 
     .ondecktime {
@@ -672,14 +643,6 @@ body {
 
     .ondeckdate {
         font-size: 1.6em;
-    }
-
-    .ondeckgear {
-        font-size: 1.35em;
-    }
-
-    .ondeckroom {
-        font-size: 1.5em;
     }
 
     .land-other-gyms-h2 {
@@ -770,21 +733,8 @@ body {
         margin-top: -35px;
     }
 
-    .land-ondeck {
-        height: 159px;
-    }
-
-    .ondeck, .ondecksequence {
-        text-align: center;
-        padding: 1em 0;
-    }
-
     .ondeckon {
         font-size: 6.5em;
-    }
-
-    .ondeckdeck {
-        font-size: 3.375em;
     }
 
     .ondecktime {
@@ -793,14 +743,6 @@ body {
 
     .ondeckdate {
         font-size: 1.6em;
-    }
-
-    .ondeckgear {
-        font-size: 1.35em;
-    }
-
-    .ondeckroom {
-        font-size: 1.5em;
     }
 
     .land-other-gyms-h2 {
