@@ -5,8 +5,8 @@
         currentGymId = currentUser.get('universityGymId'),
         currentUniversity,
         currentAllGyms,
+		currentAllRooms,
         currentGym,
-        currentRooms,
         currentOccupancy,
 
         selectors = {
@@ -34,11 +34,11 @@
             Parse.Promise.when(
                     api.getUniversityById(currentUniversityId),
                     api.getGymsByUniversity(currentUniversityId),
-                    api.getRoomsByGym(currentGymId)
+                    api.getRoomsByUniversity(currentUniversityId)
                 ).then(function(a, b, c) {
                     currentUniversity = a;
                     currentAllGyms = b;
-                    currentRooms = c;
+                    currentAllRooms = c;
                     for (var i = 0; i < currentAllGyms.length; i++) {
                         if (currentAllGyms[i].id === currentGymId) {
                             currentGym = currentAllGyms[i];
@@ -46,9 +46,11 @@
                         }
                     }
                     currentOccupancy = 0;
-                    for (var i = 0; i < currentRooms.length; i++) {
-                        currentOccupancy += parseInt(currentRooms[i].get('male'));
-                        currentOccupancy += parseInt(currentRooms[i].get('female'));
+                    for (var i = 0; i < currentAllRooms.length; i++) {
+						if (currentAllRooms[i].get('universityGymId') === currentGymId) {
+							currentOccupancy += parseInt(currentAllRooms[i].get('male'));
+							currentOccupancy += parseInt(currentAllRooms[i].get('female'));
+						}
                     }
                     renderCurrentGym();
                     renderRooms();
@@ -68,17 +70,19 @@
 
         renderRooms = function() {
             var roomHtml = '';
-            for (var i = 0; i < currentRooms.length; i++) {
-                var occupiedSpots = parseInt(currentRooms[i].get('male')) + parseInt(currentRooms[i].get('female')),
-                    percentage = Math.floor(occupiedSpots / parseInt(currentRooms[i].get('reservedOccupancy')) * 100),
-                    data = {
-                        'roomName' : currentRooms[i].get('name'),
-                        'perc' : percentage,
-                        'percColor' : getOccupancyColor(percentage),
-                        'occupiedSpots' : occupiedSpots,
-                        'roomId' : currentRooms[i].id
-                    };
-                roomHtml += templates.roomOccupancyItem.render(data);
+            for (var i = 0; i < currentAllRooms.length; i++) {
+				if (currentAllRooms[i].get('universityGymId') === currentGymId) {
+					var occupiedSpots = parseInt(currentAllRooms[i].get('male')) + parseInt(currentAllRooms[i].get('female')),
+						percentage = Math.floor(occupiedSpots / parseInt(currentAllRooms[i].get('totalOccupancy')) * 100),
+						data = {
+							'roomName' : currentAllRooms[i].get('name'),
+							'perc' : percentage,
+							'percColor' : getOccupancyColor(percentage),
+							'occupiedSpots' : occupiedSpots,
+							'roomId' : currentAllRooms[i].id
+						};
+					roomHtml += templates.roomOccupancyItem.render(data);
+				}
             }
             $roomCarousel.html(roomHtml);
             activateRoomCarousel();
@@ -89,7 +93,31 @@
         },
 
         renderOtherGyms = function() {
-            console.log(currentAllGyms);
+			var occupancyByGym = {},
+				otherGymHtml = '';
+			for (var i = 0; i < currentAllRooms.length; i++) {
+				var gymId = currentAllRooms[i].get('universityGymId');
+				if (gymId !== currentGymId) {
+					if (!occupancyByGym[gymId]) {
+						occupancyByGym[gymId] = 0;
+					}
+					occupancyByGym[gymId] += parseInt(currentAllRooms[i].get('male')) + parseInt(currentAllRooms[i].get('female'))
+				}
+			}
+			for (var j = 0; j < currentAllGyms.length; j++) {
+				if (currentAllGyms[j].id !== currentGymId) {
+					var occupiedSpots = occupancyByGym[currentAllGyms[j].id],
+						percentage = Math.floor(occupiedSpots / parseInt(currentAllGyms[j].get('capacity')) * 100),
+						data = {
+							'gymName' : currentAllGyms[j].get('name'),
+							'perc' : percentage,
+							'percColor' : getOccupancyColor(percentage),
+							'gymId' : currentAllGyms[j].id
+						};
+					// otherGymHtml += ..
+				}
+			}
+			$gymsCarousel.html(otherGymHtml);
             activateGymsCarousel();
         },
 

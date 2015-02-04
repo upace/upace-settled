@@ -255,6 +255,15 @@ if (!window.api) {
             q.include('university');
             return q.find();
         },
+		
+		getRoomsByUniversity = api.getRoomsByUniversity = function (universityId) {
+		    var o = Parse.Object.extend('room');
+            var q = new Parse.Query(o);
+            q.equalTo('universityId', universityId);
+            q.include('university');
+            q.include('university_gym');
+            return q.find();
+		},
 
         getRoomsByGym = api.getRoomsByGym = function (gymId) {
             var o = Parse.Object.extend('room');
