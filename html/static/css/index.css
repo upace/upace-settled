@@ -115,6 +115,14 @@ body {
     margin-bottom: 0.2em;
 }
 
+/* remove post-beta */
+.land-other-gym-item {
+    float: left;
+    margin-bottom: 1em;
+    width: 50%;
+}
+/********************/
+
 .land-other-gyms-h2 {
     display: table;
     width: 100%;

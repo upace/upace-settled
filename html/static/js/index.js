@@ -115,15 +115,15 @@
 				otherGymHtml = '';
 			for (var i = 0; i < currentAllRooms.length; i++) {
 				var gymId = currentAllRooms[i].get('universityGymId');
-				if (gymId !== currentGymId) {
+				// if (gymId !== currentGymId) {
 					if (!occupancyByGym[gymId]) {
 						occupancyByGym[gymId] = 0;
 					}
 					occupancyByGym[gymId] += parseInt(currentAllRooms[i].get('male')) + parseInt(currentAllRooms[i].get('female'))
-				}
+				// }
 			}
 			for (var j = 0; j < currentAllGyms.length; j++) {
-				if (currentAllGyms[j].id !== currentGymId) {
+				// if (currentAllGyms[j].id !== currentGymId) {
 					var occupiedSpots = occupancyByGym[currentAllGyms[j].id],
 						percentage = Math.floor(occupiedSpots / parseInt(currentAllGyms[j].get('capacity')) * 100),
 						data = {
@@ -133,10 +133,10 @@
 							'gymId' : currentAllGyms[j].id
 						};
                     otherGymHtml += templates.otherGymItem.render(data);
-				}
+				// }
 			}
 			$gymsCarousel.html(otherGymHtml);
-            activateGymsCarousel();
+            // activateGymsCarousel();
         },
 
         handleDeckClick = function() {
