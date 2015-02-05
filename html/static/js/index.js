@@ -10,7 +10,7 @@
         currentOccupancy,
         reservedClasses,
         reservedEquipment,
-        reservations,
+        upcomingReservations,
 
         selectors = {
             'roomOccupancyItemTemplate' : '#room-occupancy-item-template',
@@ -102,11 +102,15 @@
                 ).then(function(a, b) {
                     reservedClasses = a;
                     reservedEquipment = b;
+					upcomingReservations = reservedClasses.concat(reservedEquipment);
+					upcomingReservations = filterParseResultsByDateAndStartTime(upcomingReservations);
+					upcomingReservations.sort(sortParseResultsByStartTime);
                     renderDeck();
                 });
         },
 
         renderDeck = function() {
+			console.log(upcomingReservations);
             activateDeckCarousel();
         },
 
