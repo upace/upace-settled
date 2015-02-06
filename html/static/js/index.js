@@ -15,7 +15,9 @@
         selectors = {
             'roomOccupancyItemTemplate' : '#room-occupancy-item-template',
             'roomOccupancyItem' : '.land-room-occupied-spots-wrap',
-            'deckItem' : '.land-ondeck-item .ondecksequence',
+            'onDeckItem' : '.land-ondeck-item',
+            'onDeckNoneFound' : '.land-ondeck-none-found',
+            'onDeckItemTemplate' : '#on-deck-item-template',
             'reserveModal' : '#reserve-modal',
             'otherGymItemTemplate' : '#other-gym-item-template'
         },
@@ -26,17 +28,20 @@
             }),
             'otherGymItem' : twig({
                 data: $(selectors.otherGymItemTemplate).html()
+            }),
+            'onDeckItem' : twig({
+                data: $(selectors.onDeckItemTemplate).html()
             })
         },
 
         // cache selectors wherever possible
         $roomCarousel = $('.owl-current'),
         $gymsCarousel = $('.owl-other-gyms'),
-        $deckCarousel = $('.owl-ondeck'),
+        $onDeckCarousel = $('.owl-ondeck'),
 
         initializeDashboard = function() {
 
-            $(document).on('click', selectors.deckItem, handleDeckClick);
+            $(document).on('click', selectors.onDeckItem, handleOnDeckClick);
 
             Parse.Promise.when(
                     api.getUniversityById(currentUniversityId),
@@ -61,7 +66,7 @@
                     }
                     renderCurrentGym();
                     renderRooms();
-                    initDeck();
+                    initOnDeck();
                     renderOtherGyms();
                 });
         },
@@ -95,23 +100,47 @@
             activateRoomCarousel();
         },
 
-        initDeck = function() {
+        initOnDeck = function() {
             Parse.Promise.when(
                     api.getClassReservationsByUser(currentUser),
                     api.getEquipmentReservationsByUser(currentUser)
                 ).then(function(a, b) {
-                    reservedClasses = a;
-                    reservedEquipment = b;
-					upcomingReservations = reservedClasses.concat(reservedEquipment);
-					upcomingReservations = filterParseResultsByDateAndStartTime(upcomingReservations);
-					upcomingReservations.sort(sortParseResultsByStartTime);
-                    renderDeck();
+                    if(a.length > 0 || b.length > 0) {
+                        reservedClasses = a;
+                        reservedEquipment = b;
+                        upcomingReservations = reservedClasses.concat(reservedEquipment);
+                        upcomingReservations = filterParseResultsByDateAndStartTime(upcomingReservations);
+                        if(upcomingReservations.length > 0) {
+                            upcomingReservations.sort(sortParseResultsByStartTime);
+                            renderOnDeck();
+                        }
+                    }
                 });
         },
 
-        renderDeck = function() {
-			console.log(upcomingReservations);
-            activateDeckCarousel();
+        renderOnDeck = function() {
+            if(upcomingReservations.length > 0) {
+                var onDeckHtml = '',
+                    timeRegExp = new RegExp(/(^0)|(pm|am)$|\s/ig),
+                    dateRegExp = new RegExp(/^([0-9]{2}).([0-9]{2})*./);
+                for(var i = 0; i < upcomingReservations.length; i++) {
+                    var date = upcomingReservations[i].get('date'),
+                        startTime = upcomingReservations[i].get('start_time'),
+                        dateTime = new Date(date + ' ' + startTime),
+                        data = {
+                            'roomName' : upcomingReservations[i].get('class').get('room').get('name'),
+                            'startTime' : ((dateTime.getHours() + 11) % 12 + 1) + ':' + (dateTime.getMinutes() < 10 ? '0' : '') + dateTime.getMinutes(),
+                            'name' : upcomingReservations[i].get('class').get('name'),
+                            'date' : dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate()
+                        }
+                    onDeckHtml += templates.onDeckItem.render(data);
+                    console.log(dateTime);
+                }
+                $onDeckCarousel.html(onDeckHtml);
+                activateOnDeckCarousel();
+            } else {
+                $(selectors.onDeckNoneFound).show();
+            }
         },
 
         renderOtherGyms = function() {
@@ -123,7 +152,7 @@
 					if (!occupancyByGym[gymId]) {
 						occupancyByGym[gymId] = 0;
 					}
-					occupancyByGym[gymId] += parseInt(currentAllRooms[i].get('male')) + parseInt(currentAllRooms[i].get('female'))
+					occupancyByGym[gymId] += parseInt(currentAllRooms[i].get('male')) + parseInt(currentAllRooms[i].get('female'));
 				// }
 			}
 			for (var j = 0; j < currentAllGyms.length; j++) {
@@ -143,7 +172,7 @@
             // activateGymsCarousel();
         },
 
-        handleDeckClick = function() {
+        handleOnDeckClick = function() {
             $(selectors.reserveModal).modal('show');
         },
 
@@ -170,6 +199,7 @@
             });
         },
 
+        // disabled for beta
         activateGymsCarousel = function() {
             $gymsCarousel.owlCarousel({
                 stagePadding: 20,
@@ -196,8 +226,8 @@
             });
         },
 
-        activateDeckCarousel = function() {
-            $deckCarousel.owlCarousel({
+        activateOnDeckCarousel = function() {
+            $onDeckCarousel.owlCarousel({
                 stagePadding: 15,
                 loop: true,
                 margin: 0,

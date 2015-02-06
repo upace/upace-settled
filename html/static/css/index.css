@@ -74,6 +74,18 @@ body {
     border-bottom: 1px solid rgba(255, 255, 255, .3);
 }
 
+.land-ondeck-item {
+    cursor: pointer;
+}
+
+.land-ondeck-none-found {
+    display: none;
+    font-size: 2em;
+    line-height: 1.2em;
+    padding-top: 1.4em;
+    text-align: center;
+}
+
 .ondeck,
 .ondecksequence {
     padding: 1em 0;
@@ -81,11 +93,16 @@ body {
 
 .ondeck {
     padding-left: 1em;
+    z-index: 2;
 }
 
 .ondeckgear,
 .ondeckroom {
     color: #999;
+}
+
+.ondeckdate {
+    text-transform: uppercase;
 }
 
 .ondeckdeck {
@@ -273,6 +290,10 @@ body {
         height: 89px;
     }
 
+    .land-ondeck-none-found {
+        font-size: 1em;
+    }
+
     .ondeck {
         line-height: 0.9;
     }
@@ -393,6 +414,10 @@ body {
 
     .land-ondeck {
         height: 112px;
+    }
+
+    .land-ondeck-none-found {
+        font-size: 1.3em;
     }
 
     .ondeck {
@@ -522,6 +547,10 @@ body {
 
     .land-ondeck {
         height: 170px;
+    }
+
+    .land-ondeck-none-found {
+        font-size: 2em;
     }
 
     .ondeck {

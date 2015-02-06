@@ -130,55 +130,28 @@
 <!--/Room Occupancy Slider -->
 
 <section class="land-ondeck content slide">
-    <a href="#">
-        <div class="col-xs-3 ondeck">
-            <span class="ondeckon">ON</span><br/>
-            <span class="ondeckdeck">DECK</span>
-        </div>
+    <a href="/reservations/" class="col-xs-3 ondeck">
+        <div class="ondeckon">ON</div>
+        <div class="ondeckdeck">DECK</div>
     </a>
     <div class="owl-ondeck owl-carousel">
-        <div class="land-ondeck-item">
+        <!-- filled in by js -->
+        <!--
+        <a class="land-ondeck-item">
             <div class="ondecksequence">
                 <div class="ondecktime">12:30</div>
                 <div class="ondeckdate">THU 10/23</div>
                 <div class="ondeckgear">Treadmill 27</div>
                 <div class="ondeckroom">Blue Room</div>
             </div>
-        </div>
-        <div class="land-ondeck-item">
-            <div class="ondecksequence">
-                <div class="ondecktime">12:30</div>
-                <div class="ondeckdate">THU 10/23</div>
-                <div class="ondeckgear">Treadmill 27</div>
-                <div class="ondeckroom">Blue Room</div>
-            </div>
-        </div>
-        <div class="land-ondeck-item">
-            <div class="ondecksequence">
-                <div class="ondecktime">12:30</div>
-                <div class="ondeckdate">THU 10/23</div>
-                <div class="ondeckgear">Treadmill 27</div>
-                <div class="ondeckroom">Blue Room</div>
-            </div>
-        </div>
-        <div class="land-ondeck-item">
-            <div class="ondecksequence">
-                <div class="ondecktime">12:30</div>
-                <div class="ondeckdate">THU 10/23</div>
-                <div class="ondeckgear">Treadmill 27</div>
-                <div class="ondeckroom">Blue Room</div>
-            </div>
-        </div>
-        <div class="land-ondeck-item">
-            <div class="ondecksequence">
-                <div class="ondecktime">12:30</div>
-                <div class="ondeckdate">THU 10/23</div>
-                <div class="ondeckgear">Treadmill 27</div>
-                <div class="ondeckroom">Blue Room</div>
-            </div>
-        </div>
+        </a>
+        -->
     </div>
+    <div class="land-ondeck-none-found col-xs-8">Nothing on deck.<br/><a href="/reservations/">Go sign up for something!</a></div>
 </section>
+<script id="on-deck-item-template" type="text/x-twig-template">
+    {{ source('./partials/index-on-deck-item.twig') }}
+</script>
 
 <!-- Other Gyms -->
 <section class="land-other-gyms content slide">
