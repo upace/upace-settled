@@ -599,18 +599,20 @@ if (!window.api) {
             );
         },
 
-        deleteClassReservations = api.deleteClassReservation = function (resId) {
-            if (!$.isArray(resId)) {
-                resId = [resId];
+        deleteClassReservations = api.deleteClassReservations = function (resId) {
+            if ($.isArray(resId)) {
+                return deleteRows(resId, 'class_reservation');
+            } else {
+                return deleteRow(resId, 'class_reservation');
             }
-            return deleteRows(resId, 'class_reservation');
         },
 
-        deleteEquipmentReservations = api.deleteEquipmentReservation = function (resId) {
-            if (!$.isArray(resId)) {
-                resId = [resId];
+        deleteEquipmentReservations = api.deleteEquipmentReservations = function (resId) {
+            if ($.isArray(resId)) {
+                return deleteRows(resId, 'equipment_occupancy');
+            } else {
+                return deleteRow(resId, 'equipment_occupancy');
             }
-            return deleteRows(resId, 'equipment_occupancy');
         },
 
         sendNotificationEmail = api.sendNotificationEmail = function (email, subject, message) {

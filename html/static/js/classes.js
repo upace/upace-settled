@@ -12,17 +12,18 @@
             'classListingsItem' : '.listing-item',
             'classItemTemplate' : '#class-listings-item',
             'reserveModal' : '#reserve-modal',
+            'reserveTool' : '#collapse-reserve',
             'multiSelectButtons' : '.multi-select-btn',
             'multiCancelButtons' : '.multi-select-cancel-all-btn',
             'multiReserveButtons' : '.multi-select-reserve-all-btn',
-            'reserveTool' : '#collapse-reserve',
             'startTimeFilterWrap' : '#collapse-add-time',
             'startTimeFilterForm' : '.listing-enter-time-form',
             'startTimeFilterInput' : '.listing-enter-time-form-input'
         },
 
         cssClasses = {
-            'multiBtnSelected' : 'listing-item-selected'
+            'listingSelected' : 'listing-item-selected',
+            'listingReserved' : 'listing-item-reserved'
         },
 
         templates = {
@@ -33,6 +34,7 @@
 
         // cache selectors where we can
         $classListings = $(selectors.classListings),
+        $reserveModal = $(selectors.reserveModal),
         $reserveTool = $(selectors.reserveTool),
         $startTimeFilterWrap = $(selectors.startTimeFilterWrap),
         $startTimeFilterForm = $(selectors.startTimeFilterForm),
@@ -47,7 +49,7 @@
             $(document).on('click', selectors.classListingsItem, onListingItemClick);
             $(document).on('click', selectors.multiCancelButtons, onMultiCancel);
             $(document).on('click', selectors.multiReserveButtons, onMultiReserve);
-            $reserveTool.on('hide.bs.collapse', onCollapseReserveTool);
+            $reserveTool.on('hide.bs.collapse', clearListingSelections);
             $startTimeFilterWrap.on('show.bs.collapse', onOpenStartTimeFilter);
             $startTimeFilterWrap.on('hide.bs.collapse', onCloseStartTimeFilter);
             $startTimeFilterForm.on('submit', onStartTimeFormSubmit);
@@ -63,7 +65,7 @@
                     api.getClassesByUniversityAndDate(currentUser.get('universityId'), parseDate),
                     api.getClassReservationsByUser(currentUser, parseDate)
                 )
-                .then(function(a, b) {
+                .then(function(a, b, c) {
                     if(a.length) {
                         classesByDate = a;
 						classesByDate.sort(sortParseResultsByStartTime);
@@ -94,43 +96,40 @@
             }
             if(renderTime) {
                 renderDates = filterParseResultsByStartTime(classesByDate, renderTime);
-                console.log('Filtered Classes', renderDates);
-            } else {
-                console.log('All Classes', renderDates);
             }
             var html = '';
 			classesData = [];
             if(renderDates.length > 0) {
                 for (var i = 0; i < renderDates.length; i++) {
-                    var c = renderDates[i];
-                    var slotData = {
-                        classId : c.get('classId'),
-                        slotId : c.id,
-                        className : c.get('class').get('name'),
-                        roomName : c.get('class').get('room').get('name'),
-                        gymName : c.get('gym').get('name'),
-                        startTime : c.get('start_time'),
-                        endTime : c.get('end_time'),
-                        timeRange : formatTimeRange(c.get('start_time'), c.get('end_time')),
-                        myReservation : myReservedClassSlots[c.id] || false,
-                        available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
-                        totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
-                        reservedOccupancy : c.get('class').get('room').get('reservedOccupancy')
-                    };
+                    var c = renderDates[i],
+                        slotData = {
+                            classId : c.get('classId'),
+                            slotId : c.id,
+                            className : c.get('class').get('name'),
+                            roomName : c.get('class').get('room').get('name'),
+                            gymName : c.get('gym').get('name'),
+                            startTime : c.get('start_time'),
+                            endTime : c.get('end_time'),
+                            timeRange : formatTimeRange(c.get('start_time'), c.get('end_time')),
+                            myReservation : myReservedClassSlots[c.id] || false,
+                            // TODO: availability and slots do not work currently, there is no c.get('reserved_spots')
+                            available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
+                            totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
+                            reservedOccupancy : c.get('class').get('room').get('reservedOccupancy'),
+                            description : c.get('class').get('description'),
+                            date : c.get('class').get('date')
+                        },
+                        dateTime = new Date(slotData.date),
+                        date = dateAbbr[dateTime.getDay()] + ' ' + dateTime.getDate() + '/' + (dateTime.getMonth() + 1);
+                    slotData.date = date;
                     slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
                     html += templates.classListingsItem.render(slotData);
                     classesData.push(slotData);
                 }
-                $classListings.html(html);
+                $classListings.hide().html(html).fadeIn(1000);
             } else {
                 noClassesFound();
             }
-        },
-
-        loadClassDetails = function (slotId) {
-            api.getClassDetails(slotId).then(function(a) {
-                renderClassDetails(a);
-            });
         },
 
         renderClassDetails = function (classDetails) {
@@ -141,8 +140,16 @@
 					break;
 				}
 			}
-            // console.log(classDetails);
-			// console.log(slotData);
+            $('#reserve-modal-name').text(slotData.className);
+            $('#reserve-modal-room').text(slotData.roomName);
+            $('#reserve-modal-gym').text(slotData.gymName);
+            $('#reserve-modal-date').text(slotData.date);
+            $('#reserve-modal-time-range').text(slotData.timeRange);
+            $('#reserve-modal-status').text(slotData.spotsRemaining + ' SPOTS');
+            $('#reserve-modal-description').text(slotData.description);
+            $(selectors.reserveModal).modal('show');
+            console.log(classDetails);
+			console.log(slotData);
 			// TODO: loop through classesData to get additional times.
         },
 
@@ -160,28 +167,52 @@
         onListingItemClick = function(e) {
             var $l = $(e.currentTarget);
             if($reserveTool.is(':visible')) {
-                $l.toggleClass(cssClasses.multiBtnSelected);
-                return;
-            }
-            Parse.Promise.when(
-                    api.saveClassReservation(currentUser, $l.data('class-id'), $l.data('slot-id'))
+                $l.toggleClass(cssClasses.listingSelected);
+            } else {
+                Parse.Promise.when(
+                    api.getClassDetails($l.data('slot-id'))
                 )
                 .then(function(a) {
-                    console.log(a);
+                    renderClassDetails(a);
                 });
-            $(selectors.reserveModal).modal('show');
-        },
-
-        onCollapseReserveTool = function() {
-            $classListings.find('.' + cssClasses.multiBtnSelected).removeClass(cssClasses.multiBtnSelected);
+            }
         },
 
         onMultiReserve = function() {
-            console.log('reserve all');
+            $('.' + cssClasses.listingSelected)
+                .not('.' + cssClasses.listingReserved)
+                .each(function(i,o){
+                    if($(o).data('class-id')){
+                        var $this = $(o);
+                        Parse.Promise.when(
+                            api.saveClassReservation(currentUser, $(o).data('class-id'), $(o).data('slot-id'))
+                        )
+                        .then(function() {
+                            $this.addClass(cssClasses.listingReserved);
+                        });
+                    }
+            });
+            clearListingSelections();
         },
 
         onMultiCancel = function() {
-            console.log('cancel all');
+            $('.' + cssClasses.listingSelected + '.' + cssClasses.listingReserved)
+                .each(function(i,o){
+                    if($(o).data('class-id')){
+                        var $this = $(o);
+                        Parse.Promise.when(
+                            api.deleteClassReservations($(o).data('reservation-id'))
+                        )
+                        .then(function(a) {
+                            $this.removeClass(cssClasses.listingReserved);
+                        });
+                    }
+                });
+            clearListingSelections();
+        },
+
+        clearListingSelections = function() {
+            $('.' + cssClasses.listingSelected).removeClass(cssClasses.listingSelected);
         },
 
         formatTimeRange = function(start, end) {
@@ -200,9 +231,12 @@
         },
 
         onCloseStartTimeFilter = function() {
-            $(selectors.startTimeFilterInput).val('');
+            var $input = $(selectors.startTimeFilterInput);
             startTime = null;
-            renderClasses();
+            if($input.val() != '') {
+                $input.val('');
+                renderClasses();
+            }
         },
 
         onStartTimeFormSubmit = function(e) {
@@ -217,10 +251,13 @@
                     val = val.slice(0, -2) + ' ' + val.slice(-2);
                 }
                 startTime = val;
+                renderClasses();
             } else {
                 startTime = null;
+                if(val == '') {
+                    renderClasses();
+                }
             }
-            renderClasses();
         },
 
         getTodayStartTime = function() {

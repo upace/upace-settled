@@ -1,5 +1,9 @@
-<a id="{{ slotId }}" data-class-id="{{ classId }}" data-slot-id="{{ slotId }}"
-            class="container listing-item {% if myReservation %}listing-item-reserved{% endif %}">
+<a id="{{ slotId }}"
+   {% if classId %}data-class-id="{{ classId }}"{% endif %}
+   data-slot-id="{{ slotId }}"
+    {% if equipId %}data-equip-id="{{ equipId }}"{% endif %}
+    {% if myReservation %}data-reservation-id="{{ myReservation }}"{% endif %}
+    class="container listing-item {% if myReservation %}listing-item-reserved{% endif %}">
     <div class="col-xs-3 formcol-height formcol-1ab">
         <span class="formcol-1a">{{ className }}</span><br/>
         <span class="formcol-1b">{{ spotsRemaining }} Spots</span>

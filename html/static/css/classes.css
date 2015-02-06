@@ -220,6 +220,14 @@ button, .btn-sm {
     height: 1em;
 }
 
+.btn-reserve {
+    background: #4eb1c8;
+}
+
+.btn-reserve:hover {
+    background: #5fc2d9;
+}
+
 .modal-reserve-button {
     font-size: 1.5em
 }

@@ -1,0 +1,164 @@
+<div class="modal fade" id="reserve-modal" tabindex="-1" role="dialog" aria-labelledby="Power Yoga 1"
+     aria-hidden="true" style="background:#000" data-class-id="{{ classId }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="col-xs-8 col-sm-6 col-lg-8" style="margin-bottom:2%">
+                    <div id="reserve-modal-name" class="modal-title">{{ name }}</div>
+                    <div class="modal-title-body">
+                        <span id="reserve-modal-room">{{ roomName }}</span>
+                        <span>&nbsp;|&nbsp;
+                        <span id="reserve-modal-gym">{{ gymName }}</span>
+                    </div>
+                    <div class="modal-title-body">
+                        <span id="reserve-modal-date">{{ date }}</span>
+                        <span>&nbsp;|&nbsp;</span>
+                        <span id="reserve-modal-time-range">{{ timeRange }}</span>
+                    </div>
+                    <div id="reserve-modal-status" style="color: #fdd400;" class="modal-title-body">{{ status }}</div>
+                    <br/>
+                    <div id="reserve-modal-description" style="margin-top:1em" class="modal-title-body">{{ description }}</div>
+                </div>
+                <div class="col-xs-1 col-xs-offset-2 col-sm-1 col-sm-offset-5 col-lg-1 col-lg-offset-3">
+                    <center style="margin-bottom:2em">
+                        <a data-dismiss="modal" class="modal-reserve-button">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </center>
+                    <!-- removed for beta
+                    <center>
+                        <a data-toggle="modal" class="reserve-modal modal-reserve-button"
+                               data-target="#share-modal">
+                            <i class="fa fa-share-alt"></i>
+                        </a>
+                    </center>
+                    -->
+                </div>
+                <div class="container-fluid">
+                    <div class="col-xs-12">
+                        <button class="btn btn-reserve btn-primary btn-block btn-lg" data-dismiss="modal"
+                                style="margin-bottom:5%">Reserve Class
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-12" style="margin-bottom:20%">
+                    <button class="btn btn-danger btn-block btn-lg" data-dismiss="modal"
+                            style="margin-top:5%; display:none;">Cancel Reservation
+                    </button>
+                </div>
+                <!-- removed for beta
+                <div class="upace-reserve-pick col-xs-12">
+                    <section class="upace-title row" style="margin-bottom:.5em">
+                        <div class="container">
+                            <div class="col-xs-4 upace-title-main" style="padding-top:0;">
+                                <span style="color:#000;">Additional Class Times</span>
+                            </div>
+                            <div class="col-xs-4 col-xs-offset-4 upace-title-sub"
+                                 style="padding-top:0; text-align:right;">
+                                <a data-toggle="modal" class="reserve-modal" data-target="#location-modal-class"
+                                   style="color:#299eb6">
+                                    <span>ALL GYMS</span>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="upace-form content slide collapse row" id="collapse-add-time-modal-class">
+                        <div class="container-fluid">
+                            <div class="col-xs-6 col-sm-7 formcol-height">
+                                <center><span class="formcol-1">Enter a Start Time</span></center>
+                            </div>
+                            <div class="col-xs-6 col-sm-5 formcol-height formcol-2ab">
+                                <form class="enter-star-time-form" action="#">
+                                    <div class="col-xs-12">
+                                        <input class="form-add-time" placeholder="00:00 AM">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="upace-form row">
+                        <a href="#">
+                            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
+                                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
+                                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
+                                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span>
+                                </center>
+                                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span>
+                                </center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height">
+                                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height">
+                                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
+                            </div>
+                        </a>
+                    </section>
+                    <section class="upace-form row">
+                        <a href="#">
+                            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
+                                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
+                                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
+                                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span>
+                                </center>
+                                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span>
+                                </center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height">
+                                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height">
+                                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
+                            </div>
+                        </a>
+                    </section>
+                    <section class="upace-form row">
+                        <a href="#">
+                            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
+                                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
+                                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
+                                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span>
+                                </center>
+                                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span>
+                                </center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height">
+                                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height">
+                                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
+                            </div>
+                        </a>
+                    </section>
+                    <section class="upace-form row">
+                        <a href="#">
+                            <div class="col-sm-3 hidden-xs formcol-height formcol-2ab">
+                                <center><span class="formcol-2a" style="color:#000">10/12</span></center>
+                                <center><span class="formcol-2a" style="color:#000">SUN</span></center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height formcol-2ab">
+                                <center><span class="formcol-2a formcol-room" style="color:#000">Blue Room</span>
+                                </center>
+                                <center><span class="formcol-2b formcol-gym" style="color:#000">HAMILTON</span>
+                                </center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height">
+                                <center><span class="formcol-3" style="color:#000">2 Spots</span></center>
+                            </div>
+                            <div class="col-sm-3 col-xs-4 formcol-height">
+                                <center><span class="formcol-3" style="color:#000">12:30-1:25PM</span></center>
+                            </div>
+                        </a>
+                    </section>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
