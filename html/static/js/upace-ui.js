@@ -43,7 +43,9 @@ var
     },
 	
 	sortParseResultsByStartTime = function(a, b) {
-		return Date.parse('01/01/2000 ' + a.get('start_time')) - Date.parse('01/01/2000 ' + b.get('start_time'));
+		var aDate = a.get('date') || a.get('reservationDate') || '01/01/2000',
+			bDate = b.get('date') || b.get('reservationDate') || '01/01/2000';
+		return Date.parse(aDate + ' ' + a.get('start_time')) - Date.parse(bDate + ' ' + b.get('start_time'));
 	},
 	
 	filterParseResultsByStartTime = function(results, earliestTime) {
@@ -58,6 +60,23 @@ var
 		return filtered;
 	},
 
+	filterParseResultsByDateAndStartTime = function(results, earliestDateAndTime) {
+		var filtered = [],
+			earliestDate;
+		if (!earliestDateAndTime) {
+			earliestDateAndTime = new Date();
+		}
+		earliestDate = Date.parse(earliestDateAndTime);
+		for (var i = 0; i < results.length; i++) {
+			var date = results[i].get('date') || results[i].get('reservationDate'),
+				start_time = (results[i].get('equipment') ? results[i].get('slotId').get('start_time') : results[i].get('start_time'));
+			if (Date.parse(date + ' ' + start_time) >= earliestDate) {
+				filtered.push(results[i]);
+			}
+		}
+		return filtered;
+	},
+	
     isToday = function(date) {
         var today = new Date();
         return (date.toDateString() === today.toDateString());
