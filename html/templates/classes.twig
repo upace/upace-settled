@@ -98,19 +98,19 @@
         </a>
     </div>
     <div class="col-xs-3 navbar-icon">
-        <!-- removed for beta
+        {# removed for beta
             <a data-toggle="modal" class="reserve-modal" data-target="#location-modal">
                 <center><i class="fa fa-sitemap navbar-text"></i></center>
             </a>
-        -->
+        #}
         <center><i class="fa fa-sitemap navbar-text" style="color:#444;"></i></center>
     </div>
     <div class="col-xs-3 navbar-icon">
-        <!-- removed for beta
+        {# removed for beta
             <a data-toggle="modal" class="reserve-modal" data-target="#available-modal">
                 <center><i class="fa fa-plus navbar-text"></i></center>
             </a>
-        -->
+        #}
         <center><i class="fa fa-plus navbar-text" style="color:#444;"></i></center>
     </div>
     <div class="col-xs-3 navbar-icon">
@@ -123,9 +123,8 @@
 
 <!-- Navbar Bottom Content -->
 
+{#
 <!-- Available Times -->
-
-<!-- disabled for beta
 <div class="modal fade" id="available-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog">
@@ -269,7 +268,6 @@
         </div>
     </div>
 </div>
--->
 <!-- /Available Times -->
 
 <!-- Locations -->
@@ -312,14 +310,10 @@
         </div>
     </div>
 </div>
--->
 <!-- /Locations -->
+#}
 
 <!-- /Navbar Bottom Content -->
-
-<!--Reserve Modal -->
-    {% include './partials/listings-item-details.twig' %}
-<!--/Reserve Modal -->
 
 <!-- Location Class Modal -->
 <div class="modal fade" id="location-modal-class" tabindex="-1" role="dialog" aria-labelledby="Gym"

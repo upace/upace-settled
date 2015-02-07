@@ -3,16 +3,21 @@
     var currentUser = api.getCurrentUser(),
         classesByDate, // All classes for provided date (Array of Parse objects).
         myReservedClassSlots, // My reserved slots ({slotId:reservationId}).
-		classesData, // Classes converted into template-digestible objects (Array).
+		classesData, // Classes converted into template-digestible objects.
         startTime,
         selectedDate,
 
         selectors = {
             'classListings' : '#class-listings',
-            'classListingsItem' : '.listing-item',
-            'classItemTemplate' : '#class-listings-item',
+            'listingItem' : '.listing-item',
+            'listingItemTemplate' : '#listing-item-template',
+            'listingDetailTemplate' : '#listing-item-details-template',
             'reserveModal' : '#reserve-modal',
             'reserveTool' : '#collapse-reserve',
+            'reserveModalItemDetails' : '#reserve-modal-item-details',
+            'reserveModalListingInfo' : '.reserve-modal-details',
+            'reserveModalBtnReserve' : '.reserve-modal-reserve-btn',
+            'reserveModalBtnCancel' : '.reserve-modal-cancel-btn',
             'multiSelectButtons' : '.multi-select-btn',
             'multiCancelButtons' : '.multi-select-cancel-all-btn',
             'multiReserveButtons' : '.multi-select-reserve-all-btn',
@@ -27,8 +32,11 @@
         },
 
         templates = {
-            'classListingsItem' : twig({
-                data: $(selectors.classItemTemplate).html()
+            'listingItem' : twig({
+                data: $(selectors.listingItemTemplate).html()
+            }),
+            'listingDetailTemplate' : twig({
+                data: $(selectors.listingDetailTemplate).html()
             })
         },
 
@@ -46,10 +54,12 @@
 
             // bind event handlers
             $(document).on('date_carousel:date_selected', dateSelected);
-            $(document).on('click', selectors.classListingsItem, onListingItemClick);
+            $(document).on('click', selectors.listingItem, onListingItemClick);
             $(document).on('click', selectors.multiCancelButtons, onMultiCancel);
             $(document).on('click', selectors.multiReserveButtons, onMultiReserve);
             $reserveTool.on('hide.bs.collapse', clearListingSelections);
+            $(document).on('click', selectors.reserveModalBtnReserve, onModalBtnClick);
+            $(document).on('click', selectors.reserveModalBtnCancel, onModalBtnClick);
             $startTimeFilterWrap.on('show.bs.collapse', onOpenStartTimeFilter);
             $startTimeFilterWrap.on('hide.bs.collapse', onCloseStartTimeFilter);
             $startTimeFilterForm.on('submit', onStartTimeFormSubmit);
@@ -98,14 +108,14 @@
                 renderDates = filterParseResultsByStartTime(classesByDate, renderTime);
             }
             var html = '';
-			classesData = [];
+			classesData = {};
             if(renderDates.length > 0) {
                 for (var i = 0; i < renderDates.length; i++) {
                     var c = renderDates[i],
                         slotData = {
                             classId : c.get('classId'),
                             slotId : c.id,
-                            className : c.get('class').get('name'),
+                            listingName : c.get('class').get('name'),
                             roomName : c.get('class').get('room').get('name'),
                             gymName : c.get('gym').get('name'),
                             startTime : c.get('start_time'),
@@ -123,8 +133,8 @@
                         date = dateAbbr[dateTime.getDay()] + ' ' + dateTime.getDate() + '/' + (dateTime.getMonth() + 1);
                     slotData.date = date;
                     slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
-                    html += templates.classListingsItem.render(slotData);
-                    classesData.push(slotData);
+                    html += templates.listingItem.render(slotData);
+                    classesData[c.id] = slotData;
                 }
                 $classListings.hide().html(html).fadeIn(1000);
             } else {
@@ -133,23 +143,8 @@
         },
 
         renderClassDetails = function (classDetails) {
-            var slotData;
-			for (var i = 0; i < classesData.length; i++) {
-				if (classesData[i].slotId === classDetails.id) {
-					slotData = classesData[i];
-					break;
-				}
-			}
-            $('#reserve-modal-name').text(slotData.className);
-            $('#reserve-modal-room').text(slotData.roomName);
-            $('#reserve-modal-gym').text(slotData.gymName);
-            $('#reserve-modal-date').text(slotData.date);
-            $('#reserve-modal-time-range').text(slotData.timeRange);
-            $('#reserve-modal-status').text(slotData.spotsRemaining + ' SPOTS');
-            $('#reserve-modal-description').text(slotData.description);
-            $(selectors.reserveModal).modal('show');
-            console.log(classDetails);
-			console.log(slotData);
+            $(selectors.reserveModalItemDetails).html(templates.listingDetailTemplate.render(classesData[classDetails.id]));
+            $reserveModal.modal('show');
 			// TODO: loop through classesData to get additional times.
         },
 
@@ -178,19 +173,22 @@
             }
         },
 
+        onModalBtnClick = function() {
+            var $info = $(this).closest(selectors.reserveModalListingInfo),
+                $listing = $('#' + $info.data('slot-id'));
+            if($info.data('reservation-id')) {
+                cancelReservation($listing);
+            } else {
+                saveReservation($listing);
+            }
+            $reserveModal.modal('hide');
+        },
+
         onMultiReserve = function() {
             $('.' + cssClasses.listingSelected)
                 .not('.' + cssClasses.listingReserved)
                 .each(function(i,o){
-                    if($(o).data('class-id')){
-                        var $this = $(o);
-                        Parse.Promise.when(
-                            api.saveClassReservation(currentUser, $(o).data('class-id'), $(o).data('slot-id'))
-                        )
-                        .then(function() {
-                            $this.addClass(cssClasses.listingReserved);
-                        });
-                    }
+                    saveReservation(o);
             });
             clearListingSelections();
         },
@@ -198,17 +196,40 @@
         onMultiCancel = function() {
             $('.' + cssClasses.listingSelected + '.' + cssClasses.listingReserved)
                 .each(function(i,o){
-                    if($(o).data('class-id')){
-                        var $this = $(o);
-                        Parse.Promise.when(
-                            api.deleteClassReservations($(o).data('reservation-id'))
-                        )
-                        .then(function(a) {
-                            $this.removeClass(cssClasses.listingReserved);
-                        });
-                    }
+                    cancelReservation(o);
                 });
             clearListingSelections();
+        },
+
+        // o = listing item
+        saveReservation = function(o) {
+            var $this = $(o),
+                classId = $this.data('class-id'),
+                slotId = $this.data('slot-id');
+            if(classId){
+                Parse.Promise.when(
+                        api.saveClassReservation(currentUser, classId, slotId)
+                    )
+                    .then(function(r) {
+                        $this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);
+                        classesData[slotId].myReservation = r.id;
+                    });
+            }
+        },
+
+        cancelReservation = function(o) {
+            var $this = $(o),
+                classId = $this.data('class-id'),
+                slotId = $this.data('slot-id');
+            if(classId){
+                Parse.Promise.when(
+                        api.deleteClassReservations($(o).data('reservation-id'))
+                    )
+                    .then(function(a) {
+                        $this.removeClass(cssClasses.listingReserved).removeAttr('data-reservation-id');
+                        classesData[slotId].myReservation = false;
+                    });
+            }
         },
 
         clearListingSelections = function() {

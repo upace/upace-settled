@@ -32,6 +32,9 @@
     </section>
 </div>
 
-<script id="class-listings-item" type="text/x-twig-template">
-    {{ source('./partials/listings-item.twig') }}
+{% include './partials/listing-modal.twig' %}
+
+<script id="listing-item-template" type="text/x-twig-template">
+    {{ source('./partials/listing-item.twig') }}
 </script>
+
