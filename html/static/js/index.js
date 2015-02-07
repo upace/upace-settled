@@ -134,7 +134,6 @@
                             'date' : dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate()
                         }
                     onDeckHtml += templates.onDeckItem.render(data);
-                    console.log(dateTime);
                 }
                 $onDeckCarousel.html(onDeckHtml);
                 activateOnDeckCarousel();
