@@ -3,6 +3,8 @@
         <div class="ondecktime">{{ startTime }}</div>
         <div class="ondeckdate">{{ date }}</div>
         <div class="ondeckgear">{{ name }}</div>
+        {% if roomName %}
         <div class="ondeckroom">{{ roomName }}</div>
+        {% endif %}
     </div>
 </a>

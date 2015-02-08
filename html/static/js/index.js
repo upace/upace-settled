@@ -105,12 +105,12 @@
                     api.getClassReservationsByUser(currentUser),
                     api.getEquipmentReservationsByUser(currentUser)
                 ).then(function(a, b) {
-                    if(a.length > 0 || b.length > 0) {
+                    if(a.length || b.length) {
                         reservedClasses = a;
                         reservedEquipment = b;
                         upcomingReservations = reservedClasses.concat(reservedEquipment);
                         upcomingReservations = filterParseResultsByDateAndStartTime(upcomingReservations);
-                        if(upcomingReservations.length > 0) {
+                        if(upcomingReservations.length) {
                             upcomingReservations.sort(sortParseResultsByStartTime);
                             renderOnDeck();
                         }
@@ -119,18 +119,19 @@
         },
 
         renderOnDeck = function() {
-            if(upcomingReservations.length > 0) {
+            if(upcomingReservations.length) {
                 var onDeckHtml = '',
                     timeRegExp = new RegExp(/(^0)|(pm|am)$|\s/ig),
                     dateRegExp = new RegExp(/^([0-9]{2}).([0-9]{2})*./);
                 for(var i = 0; i < upcomingReservations.length; i++) {
-                    var date = upcomingReservations[i].get('date'),
-                        startTime = upcomingReservations[i].get('start_time'),
+                    var isEq = (upcomingReservations[i].get('equipment')),
+                        date = (isEq) ? upcomingReservations[i].get('reservationDate') : upcomingReservations[i].get('date'),
+                        startTime = (isEq) ? upcomingReservations[i].get('slotId').get('start_time') : upcomingReservations[i].get('start_time'),
                         dateTime = new Date(date + ' ' + startTime),
                         data = {
-                            'roomName' : upcomingReservations[i].get('class').get('room').get('name'),
+                            'roomName' : (isEq) ? '' : upcomingReservations[i].get('class').get('room').get('name'),
                             'startTime' : ((dateTime.getHours() + 11) % 12 + 1) + ':' + (dateTime.getMinutes() < 10 ? '0' : '') + dateTime.getMinutes(),
-                            'name' : upcomingReservations[i].get('class').get('name'),
+                            'name' : (isEq) ? upcomingReservations[i].get('equipmentId').get('name') : upcomingReservations[i].get('class').get('name'),
                             'date' : dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate()
                         }
                     onDeckHtml += templates.onDeckItem.render(data);
