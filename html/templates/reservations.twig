@@ -10,56 +10,16 @@
 
 {% block extra_footer_js %}
     <script src="{{ site.js_path }}/date-scroller.js"></script>
+    <script src="{{ site.js_path }}/listings.js"></script>
     <script src="{{ site.js_path }}/reservations.js"></script>
     <script src="{{ site.js_path }}/settings-modal.js"></script>
 {% endblock extra_footer_js %}
 
 {% block content %}
-<nav class="slide">
-    <ul>
-        <li style="margin-top:50px"></li>
-        <li>
-            <a data-toggle="modal" class="reserve-modal" data-target="#search-modal">
-                <div style="width:40px; height:40px; float:left;">
-                    <i class="fa fa-search"></i>
-                </div>
-                <span>Search</span>
-            </a>
-        </li>
-        <li>
-            <a href="/reservations/" class="active">
-                <div style="width:40px; height:40px; float:left">
-                    <i class="fa fa-book"></i>
-                </div>
-                <span>Reservations</span>
-            </a>
-        </li>
-        <li>
-            <a href="/classes/">
-                <div style="width:40px; height:40px; float:left">
-                    <i class="fa fa-users"></i>
-                </div>
-                <span>Classes</span>
-            </a>
-        </li>
-        <li>
-            <a href="/equipment/">
-                <div style="width:40px; height:40px; float:left">
-                    <i class="fa fa-bicycle"></i>
-                </div>
-                <span>Equipment</span>
-            </a>
-        </li>
-        <li>
-            <a data-toggle="modal" class="reserve-modal" data-target="#settings-modal">
-                <div style="width:40px; height:40px; float:left">
-                    <i class="fa fa-cog"></i>
-                </div>
-                <span>Settings</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+
+<!--Nav-->
+    {% include './partials/slide-nav.twig' with {'reservations': true} %}
+<!--/Nav-->
 
 <!--Calendar-->
     {% include './partials/date-scroller.twig' %}

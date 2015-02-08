@@ -88,7 +88,7 @@
             $caro.trigger('to.owl.carousel', [$el.data('pos')]);
             $el.addClass(activeDateClass);
             updateHeaderDate(new Date($el.data('full-date')));
-            $(document).trigger('date_carousel:date_selected', $el);
+            $(document).trigger('date_carousel.date_selected', $el);
         }
 
     initializeDateScroller();

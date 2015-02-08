@@ -11,8 +11,10 @@
             <span>{{ gymName }}</span>
         </div>
         <div class="modal-title-body">
+            {% if date %}
             <span>{{ date }}</span>
             <span>&nbsp;|&nbsp;</span>
+            {% endif %}
             <span>{{ timeRange }}</span>
         </div>
         <div style="color: #fdd400;" class="modal-title-body">{{ status }}</div>

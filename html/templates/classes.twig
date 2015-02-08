@@ -16,114 +16,27 @@
 {% endblock extra_footer_js %}
 
 {% block content %}
-<nav class="slide">
-    <ul>
-        <li style="margin-top:50px"></li>
-        <li>
-            <a data-toggle="modal" class="reserve-modal" data-target="#search-modal">
-                <div style="width:40px; height:40px; float:left;">
-                    <i class="fa fa-search"></i>
-                </div>
-                <span>Search</span>
-            </a>
-        </li>
-        <li>
-            <a href="/reservations/">
-                <div style="width:40px; height:40px; float:left">
-                    <i class="fa fa-book"></i>
-                </div>
-                <span>Reservations</span>
-            </a>
-        </li>
-        <li>
-            <a href="/classes/" class="active">
-                <div style="width:40px; height:40px; float:left">
-                    <i class="fa fa-users"></i>
-                </div>
-                <span>Classes</span>
-            </a>
-        </li>
-        <li>
-            <a href="/equipment/">
-                <div style="width:40px; height:40px; float:left">
-                    <i class="fa fa-bicycle"></i>
-                </div>
-                <span>Equipment</span>
-            </a>
-        </li>
-        <li>
-            <a data-toggle="modal" class="reserve-modal" data-target="#settings-modal">
-                <div style="width:40px; height:40px; float:left">
-                    <i class="fa fa-cog"></i>
-                </div>
-                <span>Settings</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+<!--Nav-->
+{% include './partials/slide-nav.twig' with {'classes': true} %}
 <!--/Nav-->
 
 <!--Calendar-->
 {% include './partials/date-scroller.twig' %}
 <!--/Calendar-->
 
-<!--Classes-->
-{% include './partials/listings.twig' %}
-<!--/Classes-->
+<!--Class Listings-->
+{% include './partials/listings-classes.twig' %}
+<!--/Class Listings-->
 
 <!--Footer Margin-->
-<section class="footer-margin content slide">
-</section>
+<section class="footer-margin content slide"></section>
 <!--/Footer Margin-->
 
 <!-- Navbar Bottom -->
-<div class="navbar navbar-fixed-bottom" style="border:0">
-    <section class="slide collapse" id="collapse-reserve">
-        <div class="container-fluid">
-            <div id="main-multi-select-btn" class="multi-select-btn">
-                <a data-toggle="collapse" href="#collapse-reserve" aria-expanded="false"
-                   aria-controls="collapse-reserve">
-                    <span class="fa fa-times multi-select-btn-close"></span>
-                </a>
-                <span>Multiselect rows</span>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <a class="multi-select-reserve-all-btn col-xs-6 rowselect">Reserve All</a>
-            <a class="multi-select-cancel-all-btn col-xs-6 rowselect">Cancel All</a>
-        </div>
-    </section>
-    <div class="col-xs-3 navbar-icon">
-        <a data-toggle="collapse" href="#collapse-add-time" aria-expanded="false" aria-controls="collapse-add-time">
-            <center><i class="fa fa-clock-o navbar-text"></i></center>
-        </a>
-    </div>
-    <div class="col-xs-3 navbar-icon">
-        {# removed for beta
-            <a data-toggle="modal" class="reserve-modal" data-target="#location-modal">
-                <center><i class="fa fa-sitemap navbar-text"></i></center>
-            </a>
-        #}
-        <center><i class="fa fa-sitemap navbar-text" style="color:#444;"></i></center>
-    </div>
-    <div class="col-xs-3 navbar-icon">
-        {# removed for beta
-            <a data-toggle="modal" class="reserve-modal" data-target="#available-modal">
-                <center><i class="fa fa-plus navbar-text"></i></center>
-            </a>
-        #}
-        <center><i class="fa fa-plus navbar-text" style="color:#444;"></i></center>
-    </div>
-    <div class="col-xs-3 navbar-icon">
-        <a data-toggle="collapse" href="#collapse-reserve" aria-expanded="false" aria-controls="collapse-reserve">
-            <center><i class="fa fa-cogs navbar-text"></i></center>
-        </a>
-    </div>
-</div>
+{% include './partials/listings-filters.twig' %}
 <!-- /Navbar Bottom -->
 
 <!-- Navbar Bottom Content -->
-
 {#
 <!-- Available Times -->
 <div class="modal fade" id="available-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -312,8 +225,6 @@
     </div>
 </div>
 <!-- /Locations -->
-#}
-
 <!-- /Navbar Bottom Content -->
 
 <!-- Location Class Modal -->
@@ -409,6 +320,7 @@
     </div>
 </div>
 <!-- /Share Modal -->
+#}
 
 <!--Search Modal -->
     {% include './partials/search-modal.twig' %}

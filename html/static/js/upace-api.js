@@ -542,17 +542,19 @@ if (!window.api) {
                 }
             ).then(
                 function (slot) {
-                    var o = Parse.Object('equipment_occupancy');
-                    o.set('gymId', gym);
+                    var d = new Date(),
+                        o = Parse.Object('equipment_occupancy'),
+                        date = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
                     o.set('userId', user);
-                    o.set('slotId', slot.id);
-                    o.set('equipmentId', equipment.id);
+                    o.set('slot', slot.id);
+                    o.set('slotId', slot);
+                    o.set('equipment', resEquipment.id);
+                    o.set('equipmentId', resEquipment);
+                    o.set('gymId', resGym);
                     o.set('university', resUniversity);
                     o.set('universityId', resUniversity.id);
                     o.set('universityGymId', resGym.id);
-                    // o.set('reservationDate', moment(dt).format('MM/DD/YYYY'));
-                    o.set('slot', slot);
-                    o.set('equipment', equipment);
+                    o.set('reservationDate', date);
                     return o.save();
                 }
             );
