@@ -43,11 +43,11 @@
                             equipmentByDate = [];
                         }
                         reservedEquipmentSlots = [];
-                        myReservedEquipmentSlots = {};
+                        myReservedEquipmentSlots = [];
                         for (var i = 0; i < b.length; i++) {
                             reservedEquipmentSlots.push(b[i].id);
                             if (b[i].get('userId').id === currentUser.id) {
-                                myReservedEquipmentSlots[b[i].get('slotId')] = b[i].id;
+                                myReservedEquipmentSlots[b[i].get('slot')] = b[i].get('slot');
                             }
                         }
                         renderEquipmentListings();
