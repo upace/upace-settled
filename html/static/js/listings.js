@@ -82,7 +82,7 @@ if (!window.listings) {
                     });
             } else if(equipId) {
                 Parse.Promise.when(
-                        api.saveEquipmentReservation(currentUser, equipId, slotId)
+                        api.saveEquipmentReservation(currentUser, equipId, slotId, listings.selectedDate)
                     )
                     .then(function(r) {
                         $this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);

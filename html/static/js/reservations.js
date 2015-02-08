@@ -4,11 +4,20 @@
         reservedClasses,
         reservedEquipment,
 
-        initializeReservations = function() {
+        initReservations = function() {
+            var parseDate = formatDateForParse(new Date());
+            $(document).on('listings.datechange', handleDateChange);
+            $(document).on('listings.render', renderReservations);
+            getReservations(parseDate);
+        },
+
+        getReservations = function(parseDate) {
             Parse.Promise.when(
-                    api.getClassReservationsByUser(currentUser),
-                    api.getEquipmentReservationsByUser(currentUser)
+                    api.getClassReservationsByUser(currentUser, parseDate),
+                    api.getEquipmentReservationsByUser(currentUser, parseDate)
                 ).then(function(a, b) {
+                    console.log(a);
+                    console.log(b);
                     reservedClasses = a;
                     reservedEquipment = b;
                     renderReservedClasses();
@@ -16,8 +25,11 @@
                 });
         },
 
+        renderReservations = function() {
+
+        },
+
         renderReservedClasses = function() {
-            console.log('Reserved Classes', reservedClasses);
             for (var i = 0; i < reservedClasses.length; i++) {
                 var slotData = {
                     slotId : reservedClasses[i].id,
@@ -32,7 +44,6 @@
         },
 
         renderReservedEquipment = function() {
-            console.log('Reserved Equipment', reservedEquipment);
             for (var i = 0; i < reservedEquipment.length; i++) {
                 var slotData = {
                     slotId : reservedEquipment[i].id,
@@ -44,8 +55,12 @@
                 };
                 // console.log(slotData);
             }
+        },
+
+        handleDateChange = function() {
+
         };
 
-    initializeReservations();
+    initReservations();
 
 })(this, document, jQuery, Parse, api);

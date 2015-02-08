@@ -32,7 +32,7 @@
                             openOnDt = true;
                         try {
                             closeDates = a[0].get('gymId').get('closeDate').split(',');
-                            openOnDt = ($.inArray(date, closeDates) === -1);
+                            openOnDt = ($.inArray(parseDate, closeDates) === -1);
                         }
                         catch (ex) {}
                         if (openOnDt) {

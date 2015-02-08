@@ -329,7 +329,7 @@ if (!window.api) {
             var q = new Parse.Query(o);
             var dbDate = dbFormattedDate(date);
             q.equalTo('universityId', universityId);
-            q.equalTo('date', dbDate);
+            q.equalTo('date', date);
             q.equalTo('isActive', 1);
             q.include('slot');
             q.include('gym');
@@ -344,8 +344,7 @@ if (!window.api) {
             var o = Parse.Object.extend('class_reservation');
             var q = new Parse.Query(o);
             if (date) {
-                var dbDate = dbFormattedDate(date);
-                q.equalTo('date', dbDate);
+                q.equalTo('date', dbFormattedDate(date));
             }
             q.equalTo('user', user);
             q.include('slot');
@@ -379,10 +378,8 @@ if (!window.api) {
         getEquipmentReservationsByUniversityAndDate = api.getEquipmentReservationsByUniversityAndDate = function (universityId, date) {
             var o = Parse.Object.extend('equipment_occupancy');
             var q = new Parse.Query(o);
-            // var dbDate = dbFormattedDate(date);
-            var dbDate = date;
             q.equalTo('universityId', universityId);
-            q.equalTo('reservationDate', dbDate);
+            q.equalTo('reservationDate', date);
             q.include('slotId');
             q.include('slotId.roomId');
             q.include('gymId');
@@ -396,9 +393,7 @@ if (!window.api) {
             var o = Parse.Object.extend('equipment_occupancy');
             var q = new Parse.Query(o);
             if (date) {
-                // var dbDate = dbFormattedDate(date);
-                var dbDate = date;
-                q.equalTo('date', dbDate);
+                q.equalTo('reservationDate', date);
             }
             q.equalTo('userId', user);
             q.include('slotId');
@@ -521,7 +516,7 @@ if (!window.api) {
             );
         },
 
-        saveEquipmentReservation = api.saveEquipmentReservation = function (user, equipmentId, slotId) {
+        saveEquipmentReservation = api.saveEquipmentReservation = function (user, equipmentId, slotId, date) {
             if (!user)
                 user = getCurrentUser();
 
@@ -542,9 +537,9 @@ if (!window.api) {
                 }
             ).then(
                 function (slot) {
-                    var d = new Date(),
-                        o = Parse.Object('equipment_occupancy'),
-                        date = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+                    var d = (date) ? new Date(date) : new Date(),
+                        df = ('0' + (d.getMonth()+1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear(),
+                        o = Parse.Object('equipment_occupancy');
                     o.set('userId', user);
                     o.set('slot', slot.id);
                     o.set('slotId', slot);
@@ -554,7 +549,7 @@ if (!window.api) {
                     o.set('university', resUniversity);
                     o.set('universityId', resUniversity.id);
                     o.set('universityGymId', resGym.id);
-                    o.set('reservationDate', date);
+                    o.set('reservationDate', df);
                     return o.save();
                 }
             );
@@ -660,7 +655,6 @@ if (!window.api) {
         },
 
         dbFormattedDate = function (date) {
-            // Do we need Moment.js for this?
             var s = date.split('/');
             return s[1] + '.' + s[0] + '.' + s[2];
         };

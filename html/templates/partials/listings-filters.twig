@@ -10,8 +10,12 @@
             </div>
         </div>
         <div class="container-fluid">
-            <a class="multi-select-reserve-all-btn col-xs-6 rowselect">Reserve All</a>
-            <a class="multi-select-cancel-all-btn col-xs-6 rowselect">Cancel All</a>
+            {% if reservations %}
+                <a class="multi-select-cancel-all-btn col-xs-12 rowselect">Cancel All</a>
+            {% else %}
+                <a class="multi-select-reserve-all-btn col-xs-6 rowselect">Reserve All</a>
+                <a class="multi-select-cancel-all-btn col-xs-6 rowselect">Cancel All</a>
+            {% endif %}
         </div>
     </section>
     <div class="col-xs-3 navbar-icon">
