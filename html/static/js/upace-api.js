@@ -398,6 +398,7 @@ if (!window.api) {
             q.include('slotId');
             q.include('slotId.roomId');
             q.include('gymId');
+            q.include('slotId.room');
             q.include('equipmentId');
             return q.find();
         },

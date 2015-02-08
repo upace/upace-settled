@@ -105,6 +105,7 @@ if (!window.listings) {
                     .then(function(a) {
                         $this.removeClass(cssClasses.listingReserved).removeAttr('data-reservation-id');
                         listingData[slotId].myReservation = false;
+                        $(document).trigger('listings.cancelled.class', [$this]);
                     });
                 } else if (equipId) {
                     Parse.Promise.when(
@@ -113,6 +114,7 @@ if (!window.listings) {
                     .then(function(a) {
                         $this.removeClass(cssClasses.listingReserved).removeAttr('data-reservation-id');
                         listingData[slotId].myReservation = false;
+                        $(document).trigger('listings.cancelled.equipment', [$this]);
                     });
                 }
             }
