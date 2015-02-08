@@ -254,15 +254,6 @@ if (!window.api) {
             return q.find();
         },
 
-        getGyms = api.getGyms = function () {
-            var o = Parse.Object.extend('university_gym');
-            var q = new Parse.Query(o);
-            q.equalTo('isActive', 1);
-            q.equalTo('isDelete', 0);
-            q.include('university');
-            return q.find();
-        },
-
         getGymsByUniversity = api.getGymsByUniversity = function (universityId) {
             var o = Parse.Object.extend('university_gym');
             var q = new Parse.Query(o);
