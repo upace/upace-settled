@@ -3,30 +3,70 @@
     var currentUser = api.getCurrentUser(),
         currentNotifications,
 
-        initializeSettings = function() {
-            api.getProfileNotificationsByUser(currentUser).then(function(a) {
-                currentNotifications = a;
+        selectors = {
+            'universityItemTemplate': '#university-item-template',
+            'gymItemTemplate': '#gym-item-template',
+            'universityItems': '#university-items'
+        },
+
+        templates = {
+            'universityItem': twig({
+                data: $(selectors.universityItemTemplate).html()
+            }),
+            'gymItem': twig({
+                data: $(selectors.gymItemTemplate).html()
+            })
+        },
+
+        initSettings = function() {
+            var html = '',
+                university;
+            Parse.Promise.when(
+                api.getUniversities(),
+                api.getGyms(),
+                api.getProfileNotificationsByUser(currentUser)
+            ).then(function(a, b, c) {
+                for(var i = 0; i < a.length; i++) {
+                    university = {
+                        'name': a[i].get('name'),
+                        'id': a[i].id,
+                        'counter': i,
+                        'gyms' : ''
+                    };
+                    for(var ii = 0; ii < b.length; ii++) {
+                        if(a[i].id == b[ii].get('universityId')) {
+                            university['gyms'] += templates.gymItem.render({
+                                'id': b[ii].id,
+                                'name': b[ii].get('name')
+                            });
+                        }
+                    }
+                    html += templates.universityItem.render(university);
+                }
+                $(selectors.universityItems).html(html);
+
+                currentNotifications = c;
                 renderProfile();
                 if (currentNotifications) renderNotifications();
             });
-            $("[class='settings-notifications']").bootstrapSwitch();
         },
 
         renderProfile = function() {
             var $profileForm = $('#profilechange-form'),
                 profile = currentUser.attributes;
 
+            console.log(profile);
             for (var k in profile) {
                 if (profile.hasOwnProperty(k)) {
                     var $input = $profileForm.find('input[name=' + k + ']');
                     if ($input.is(':radio')) {
                         $input.filter('[value=' + profile[k] + ']').prop('checked', profile[k]).trigger('change');
-                    }
-                    else {
+                    } else {
                         $input.val(profile[k]);
                     }
                 }
             }
+            $("[class='settings-notifications']").bootstrapSwitch();
         },
 
         renderNotifications = function() {
@@ -110,6 +150,6 @@
         );
     });
 
-    initializeSettings();
+    initSettings();
 
 })(this, document, jQuery, Parse, api);

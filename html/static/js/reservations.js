@@ -57,8 +57,8 @@
             }
         },
 
-        handleDateChange = function() {
-
+        handleDateChange = function(e, parseDate) {
+            getReservations(parseDate);
         };
 
     initReservations();
