@@ -55,12 +55,11 @@
             var $profileForm = $('#profilechange-form'),
                 profile = currentUser.attributes;
 
-            console.log(profile);
             for (var k in profile) {
                 if (profile.hasOwnProperty(k)) {
-                    var $input = $profileForm.find('input[name=' + k + ']');
+                    var $input = $profileForm.find('input[name="' + k + '"]');
                     if ($input.is(':radio')) {
-                        $input.filter('[value=' + profile[k] + ']').prop('checked', profile[k]).trigger('change');
+                        $input.filter('[value="' + profile[k] + '"]').prop('checked', profile[k]).trigger('change');
                     } else {
                         $input.val(profile[k]);
                     }
