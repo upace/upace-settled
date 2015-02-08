@@ -2,7 +2,7 @@
 
     var initClasses = function() {
             var parseDate = formatDateForParse(new Date());
-            listings.fetchClasses(parseDate);
+            listings.getClassListings(parseDate);
         };
 
         initClasses();

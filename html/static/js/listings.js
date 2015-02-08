@@ -155,13 +155,13 @@ if (!window.listings) {
             $reserveModal.modal('hide');
         },
 
-        fetchClasses = listings.fetchClasses = function(parseDate) {
+        getClassListings = listings.getClassListings = function(parseDate) {
             $classListings.html(spinner);
             Parse.Promise.when(
                     api.getClassesByUniversityAndDate(currentUser.get('universityId'), parseDate),
                     api.getClassReservationsByUser(currentUser, parseDate)
                 )
-                .then(function(a, b, c) {
+                .then(function(a, b) {
                     if(a.length) {
                         classesByDate = a;
                         classesByDate.sort(sortParseResultsByStartTime);
@@ -169,14 +169,14 @@ if (!window.listings) {
                         for (var i = 0; i < b.length; i++) {
                             myReservedClassSlots[b[i].get('slotId')] = b[i].id;
                         }
-                        renderClasses();
+                        renderClassListings();
                     } else {
                         noClassesFound();
                     }
                 });
         },
 
-        renderClasses = function() {
+        renderClassListings = function() {
             var renderDates = classesByDate,
                 renderTime;
             if(startTime) {
@@ -230,7 +230,7 @@ if (!window.listings) {
         dateSelected = function(evt, el) {
             var parseDate = $(el).data('parse-date');
             selectedDate = new Date($(el).data('full-date'));
-            fetchClasses(parseDate);
+            getClassListings(parseDate);
         },
 
         noClassesFound = function() {
@@ -258,7 +258,7 @@ if (!window.listings) {
             startTime = null;
             if($input.val() != '') {
                 $input.val('');
-                renderClasses();
+                renderClassListings();
             }
         },
 
@@ -274,11 +274,11 @@ if (!window.listings) {
                     val = val.slice(0, -2) + ' ' + val.slice(-2);
                 }
                 startTime = val;
-                renderClasses();
+                renderClassListings();
             } else {
                 startTime = null;
                 if(val == '') {
-                    renderClasses();
+                    renderClassListings();
                 }
             }
         },

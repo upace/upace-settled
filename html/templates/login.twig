@@ -4,6 +4,16 @@
     <link href="{{ site.css_path }}/login.css" rel="stylesheet">
 {% endblock extra_css %}
 
+{% block extra_footer_js %}
+    <script id="university-item-template" type="text/x-twig-template">
+        {{ source('./partials/form-university-item.twig') }}
+    </script>
+    <script id="gym-item-template" type="text/x-twig-template">
+        {{ source('./partials/form-gym-item.twig') }}
+    </script>
+    <script src="{{ site.js_path }}/login.js"></script>
+{% endblock extra_footer_js %}
+
 {% block content %}
     <section class="login">
         <div class="login-body">
@@ -21,11 +31,11 @@
             <form role="form" id="login-form">
                 <div class="formframe form-group col-xs-10 col-xs-offset-1">
                     <input type="text" name="username" class="form-control" id="InputName signup-input"
-                           placeholder="Username or Email">
+                           placeholder="Username or Email" autocomplete="off" />
 
                     <div>
                         <input type="password" name="password" class="formcontact form-control"
-                               id="signup-input InputEmail" placeholder="Password">
+                               id="signup-input InputEmail" placeholder="Password" autocomplete="off" />
 
                         <div class="col-xs-1 col-xs-push-9 col-sm-1 col-sm-push-10 col-md-1 col-md-push-10">
                             <a data-toggle="modal" class="signup-modal" data-target="#signup-forgot"><span
@@ -71,267 +81,142 @@
     <div class="col-xs-12">
         <h3 style="margin-bottom:.5em">OR</h3>
     </div>
+
     <form role="form">
-    <!-- sakdjfoisd -->
+
     <div class="accordion col-xs-10 col-xs-offset-1" id="accordion1">
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo">
                     <div id="radioformset">
                         <label class="radioform" name="university">
-                            <input type="radio" style="height:54px;" data-label="Undergraduate">
+                            <input type="radio" style="height:54px;" data-label="University" />
                             <span class="group-label">University</span>
-                            </input>
                         </label>
                     </div>
                 </a>
             </div>
             <div id="collapseTwo" class="accordion-body collapse col-xs-10 col-xs-offset-1">
-                <div class="accordion-inner">
-
-                    <!-- Here we insert another nested accordion -->
-
-                    <div class="accordion" id="accordion2">
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
-                                   href="#collapseInnerOne">
-                                    <div id="radioformset">
-                                        <label class="radioform">
-                                            <input type="radio" style="height:54px;">
-                                            <span>American University </span>
-                                            </input>
-                                        </label>
-                                    </div>
-                                </a>
-                            </div>
-                            <div id="collapseInnerOne" class="accordion-body collapse col-xs-10 col-xs-offset-1">
-                                <div class="accordion-inner">
-                                    <div id="radioformset">
-                                        <label class="radioform">
-                                            <input type="radio" name="university" value="hamilton" style="height:54px;"
-                                                   data-label="American University – Hamilton">
-                                            <span>Hamilton</span>
-                                            </input>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion" id="accordion3">
-                        <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3"
-                                   href="#collapseInnerTwo">
-                                    <div id="radioformset">
-                                        <label class="radioform">
-                                            <input type="radio" style="height:54px;">
-                                            <span>Gorilla University </span>
-                                            </input>
-                                        </label>
-                                    </div>
-                                </a>
-                            </div>
-                            <div id="collapseInnerTwo" class="accordion-body collapse col-xs-10 col-xs-offset-1">
-                                <div class="accordion-inner">
-                                    <div id="radioformset">
-                                        <label class="radioform">
-                                            <input type="radio" name="university" value="hamilton" style="height:54px;"
-                                                   data-label="American University – Hamilton">
-                                            <span>Banana</span>
-                                            </input>
-                                        </label>
-                                    </div>
-                                    <div id="radioformset">
-                                        <label class="radioform">
-                                            <input type="radio" name="university" value="hamilton" style="height:54px;"
-                                                   data-label="American University – Hamilton">
-                                            <span>Two Bananas</span>
-                                            </input>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Inner accordion ends here -->
-
+                <div class="accordion-inner" id="university-items">
+                    <!-- populated via js -->
                 </div>
             </div>
         </div>
-
     </div>
-    <!-- sakdjfoisd -->
+
     <div class="col-xs-5 col-xs-offset-1" style="padding-right:2px">
         <input type="text" class="formcontact form-control" id="inputFname signup-input" name="firstname"
-               placeholder="First Name">
+               placeholder="First Name" autocomplete="off" />
     </div>
     <div class="col-xs-5" style="padding-left:2px">
         <input type="text" class="formcontact form-control" id="inputLname signup-input" name="lastname"
-               placeholder="Last Name">
+               placeholder="Last Name" autocomplete="off" />
     </div>
     <div class="col-xs-5 col-xs-offset-1" style="padding-right:2px">
-        <input type="email" name="inputEmail" class="formcontact form-control" id="inputEmail signup-input"
-               placeholder="Email">
+        <input type="text" name="email" class="formcontact form-control" id="inputEmail signup-input"
+               placeholder="Email" autocomplete="off" />
     </div>
     <div class="col-xs-5" style="padding-left:2px">
-        <input type="phone" name="inputPhone" class="formcontact form-control" id="inputPhone signup-input"
-               placeholder="Phone">
+        <input type="text" name="phone" class="formcontact form-control" id="inputPhone signup-input"
+               placeholder="Phone" autocomplete="off" />
     </div>
     <div id="radioformset">
         <div class="col-xs-5 col-xs-offset-1" style="padding-right:2px">
             <label class="radioform">
-                <input type="radio" name="sex" value="male">
-                <span>Male</span></input>
+                <input type="radio" name="sex" value="male" /><span>Male</span>
             </label>
         </div>
         <div class="col-xs-5" style="padding-left:2px">
             <label class="radioform">
-                <input type="radio" name="sex" value="female">
-                <span>Female</span></input>
+                <input type="radio" name="sex" value="female" /><span>Female</span>
             </label>
         </div>
-
     </div>
 
 
-    <!-- Test -->
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
-
-
-        <div class="radioformset" style="margin-bottom:10px" id="accordion" role="tablist" aria-multiselectable="false">
+        <div class="radioformset" style="margin-bottom:10px" id="accordion4" role="tablist" aria-multiselectable="false">
             <!-- Profile-->
 
             <div id="radioformset" style="background-color:#000">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true"
-                   aria-controls="collapseOne">
+                <a data-toggle="collapse" data-parent="#accordion4" href="#collapseFour" aria-expanded="true"
+                   aria-controls="collapseFour">
                     <div class="radioform" style="height:54px" name="memberType" role="tab" id="inputMtype headingOne">
                         <label style="cursor: pointer;"><span class="group-label">Member Type</span></label>
                     </div>
                 </a>
 
-                <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
                         <div id="radioformset">
                             <div class="col-xs-12">
                                 <label class="radioform">
-                                    <input type="radio" name="memberType" value="undergraduate" style="height:54px;"
-                                           data-label="Undergraduate">
-                                    <span>Undergraduate </span></input>
+                                    <input type="radio" name="memberType" value="freshman" style="height:54px;"
+                                           data-label="Freshman" />
+                                    <span>Freshman</span>
                                 </label>
                             </div>
                             <div class="col-xs-12">
                                 <label class="radioform">
-                                    <input type="radio" name="memberType" value="graduate" data-label="Graduate">
-                                    <span>Graduate</span></input>
+                                    <input type="radio" name="memberType" value="sophomore" data-label="Sophomore" />
+                                    <span>Sophomore</span>
                                 </label>
                             </div>
                             <div class="col-xs-12">
                                 <label class="radioform">
-                                    <input type="radio" name="memberType" value="faculty" data-label="Faculty">
-                                    <span>Faculty</span></input>
+                                    <input type="radio" name="memberType" value="junior" data-label="Junior" />
+                                    <span>Junior</span>
                                 </label>
                             </div>
                             <div class="col-xs-12">
                                 <label class="radioform">
-                                    <input type="radio" name="memberType" value="staff" data-label="Staff">
-                                    <span>Staff</span></input>
+                                    <input type="radio" name="memberType" value="senior" data-label="Senior" />
+                                    <span>Senior</span>
+                                </label>
+                            </div>
+                            <div class="col-xs-12">
+                                <label class="radioform">
+                                    <input type="radio" name="memberType" value="graduate" data-label="Graduate Student" />
+                                    <span>Graduate Student</span>
                                 </label>
                             </div>
                             <div class="col-xs-12">
                                 <label class="radioform">
                                     <input type="radio" name="memberType" value="communitymember"
-                                           data-label="Community Member">
-                                    <span>Community Member</span></input>
+                                           data-label="Community Member" />
+                                    <span>Community Member</span>
                                 </label>
                             </div>
-
+                            <div class="col-xs-12">
+                                <label class="radioform">
+                                    <input type="radio" name="memberType" value="staff" data-label="Staff" />
+                                    <span>Staff</span>
+                                </label>
+                            </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 
-    <!--/ Test -->
-
-
-    <!-- Test -->
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
-
-
-        <div class="radioformset" style="margin-bottom:10px" id="accordion" role="tablist" aria-multiselectable="false">
-            <!-- Profile-->
-
-            <div id="radioformset" style="background-color:#000">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true"
-                   aria-controls="collapseOne">
-                    <div class="radioform" style="height:54px" role="tab" name="gymFrequency"
-                         id="inputGfrequency headingOne">
-
-                        <label style="cursor: pointer;"><span class="group-label">Gym Frequency</span></label>
-
-                    </div>
-                </a>
-
-                <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                    <div class="panel-body">
-
-
-                        <div id="radioformset">
-                            <div class="col-xs-12">
-                                <label class="radioform">
-                                    <input type="radio" data-label="Never" value="never" style="height:54px;">
-                                    <span>Never</span></input>
-                                </label>
-                            </div>
-                            <div class="col-xs-12">
-                                <label class="radioform">
-                                    <input type="radio" value="sometimes" data-label="Sometimes">
-                                    <span>Sometimes</span></input>
-                                </label>
-                            </div>
-                            <div class="col-xs-12">
-                                <label class="radioform">
-                                    <input type="radio" data-label="Weekly" value="weekly">
-                                    <span>Weekly</span></input>
-                                </label>
-                            </div>
-                            <div class="col-xs-12">
-                                <label class="radioform">
-                                    <input type="radio" data-label="Daily" value="daily">
-                                    <span>Daily</span></input>
-                                </label>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
+        <input type="text" class="formcontact form-control" id="inputGymFrequency signup-input" name="gymFrequency"
+               placeholder="Gym Frequency" autocomplete="off" />
     </div>
 
-    <!--/ Test -->
-
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
-        <input type="username" class="form-control" name="username" id="InputName signup-input"
-               placeholder="Create Username">
+        <input type="text" class="form-control" name="username" id="InputName signup-input"
+               placeholder="Create Username" autocomplete="off" />
     </div>
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
-        <input type="text" class="form-control" name="password" id="inputPassword signup-input"
-               placeholder="Create Password">
+        <input type="password" class="form-control" name="password" id="inputPassword signup-input"
+               placeholder="Create Password" autocomplete="off" />
     </div>
     <div class="col-xs-10 col-xs-offset-1">
         <button class="btn btn-danger btn-block btn-lg" name="submit"><strong>SUBMIT</strong></button>
     </div>
+
     </form>
     <div class="col-xs-8 col-xs-offset-2" style="margin-top:2em; margin-bottom:2em">
         <center>By clicking the submit button, you are accepting our <a data-toggle="modal" class="signup-modal"
@@ -425,7 +310,3 @@
     <!--/Search Modal-->
 
 {% endblock content %}
-
-{% block extra_footer_js %}
-<script src="{{ site.js_path }}/login.js"></script>
-{% endblock extra_footer_js %}
