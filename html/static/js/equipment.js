@@ -57,7 +57,7 @@
                 });
         },
 
-        // TODO: Try and move this into listings.js
+        // TODO: Refactor this into listings.js
         renderEquipmentListings = function() {
             var renderDates = equipmentByDate,
                 renderTime;
@@ -90,7 +90,8 @@
                             endTime : eq.get('end_time'),
                             timeRange : (s.charAt(0) === '0') ? s.substr(1) : s,
                             myReservation : myReservedEquipmentSlots[eq.id] || false,
-                            available : ($.inArray(eq.id, reservedEquipmentSlots) === -1)
+                            available : ($.inArray(eq.id, reservedEquipmentSlots) === -1),
+                            description: eq.get('equipId').get('notes')
                         };
                     html += listings.templates.listingItem.render(slotData);
                     listings.listingData[eq.id] = slotData;

@@ -6,7 +6,8 @@
         myReservedClassSlots, // My reserved slots ({slotId:reservationId}).
 
         selectors = {
-            'classListings' : '#class-listings'
+            'classListings' : '#class-listings',
+            'equipmentListings' : '#equipment-listings'
         },
 
         // cache selectors where we can
@@ -40,7 +41,7 @@
                 });
         },
 
-        // TODO: Try and move this into listings.js
+        // TODO: Refactor this into listings.js
         renderClassListings = function() {
             var renderDates = classesByDate,
                 renderTime;
@@ -79,9 +80,8 @@
                             description : c.get('class').get('description'),
                             date : c.get('class').get('date')
                         },
-                        dateTime = new Date(slotData.date),
-                        date = dateAbbr[dateTime.getDay()] + ' ' + dateTime.getDate() + '/' + (dateTime.getMonth() + 1);
-                    slotData.date = date;
+                        dateTime = new Date(slotData.date);
+                    slotData.date = dateAbbr[dateTime.getDay()] + ' ' + dateTime.getDate() + '/' + (dateTime.getMonth() + 1);
                     slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
                     html += listings.templates.listingItem.render(slotData);
                     listings.listingData[c.id] = slotData;

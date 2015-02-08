@@ -133,7 +133,6 @@
         </div>
     </div>
 
-
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
         <div class="radioformset" style="margin-bottom:10px" id="accordion4" role="tablist" aria-multiselectable="false">
             <!-- Profile-->
@@ -196,12 +195,49 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
-        <input type="text" class="formcontact form-control" id="inputGymFrequency signup-input" name="gymFrequency"
-               placeholder="Gym Frequency" autocomplete="off" />
+        <div class="radioformset" style="margin-bottom:10px" id="accordion2" role="tablist" aria-multiselectable="false">
+            <div id="radioformset" style="background-color:#000">
+                <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <div class="radioform" style="height:54px" role="tab" name="gymFrequency"
+                         id="inputGfrequency headingOne">
+                        <label style="cursor: pointer;"><span class="group-label">Gym Frequency</span></label>
+                    </div>
+                </a>
+                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                        <div id="radioformset">
+                            <div class="col-xs-12">
+                                <label class="radioform">
+                                    <input type="radio" name="gymFrequency" data-label="Never" value="Never" style="height:54px;" />
+                                    <span>Never</span>
+                                </label>
+                            </div>
+                            <div class="col-xs-12">
+                                <label class="radioform">
+                                    <input type="radio" name="gymFrequency" data-label="Sometimes" value="Sometimes" />
+                                    <span>Sometimes</span>
+                                </label>
+                            </div>
+                            <div class="col-xs-12">
+                                <label class="radioform">
+                                    <input type="radio" name="gymFrequency" data-label="Weekly" value="Weekly" />
+                                    <span>Weekly</span>
+                                </label>
+                            </div>
+                            <div class="col-xs-12">
+                                <label class="radioform">
+                                    <input type="radio" name="gymFrequency" data-label="Daily" value="Daily" />
+                                    <span>Daily</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
