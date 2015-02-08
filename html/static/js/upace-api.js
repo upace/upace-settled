@@ -89,27 +89,31 @@ if (!window.api) {
             user.set('sex', params.sex);
             user.set('username', params.username);
             user.set('password', params.password);
-            user.set('universityId', params.universityId);
-			user.set('universityGymId', params.gymId);
+			user.set('universityGymId', params.universityGymId);
             user.set('memberType', params.memberType);
             user.set('gymFrequency', params.gymFrequency);
             user.set('userType', 'user');
-
-            return user.signUp().then(
-                // TODO: this can be parallel
-                function (user) {
-                    return $.ajax({
-                        url : '/include/ajax.php',
-                        type : 'POST',
-                        data : {
-                            method : 'send_mail_verification',
-                            firstName : params.firstName,
-                            Email : params.email,
-                            userId : user.id
-                        }
-                    });
-                }
-            );
+			
+			return getGymById(params.universityGymId).then(
+				function(result) {
+					user.set('universityId', result.get('universityId'));
+					return user.signUp().then(
+						// TODO: this can be parallel
+						function (user) {
+							return $.ajax({
+								url : '/include/ajax.php',
+								type : 'POST',
+								data : {
+									method : 'send_mail_verification',
+									firstName : params.firstName,
+									Email : params.email,
+									userId : user.id
+								}
+							});
+						}
+					);
+				}
+			);
         },
 
     // Registration found in site.js for Facebook users
@@ -253,6 +257,10 @@ if (!window.api) {
             q.include('university');
             return q.find();
         },
+		
+		getGymById = api.getGymById = function (gymId) {
+			return getRowById(gymId, 'university_gym', ['university']);
+		},
 
         getGymsByUniversity = api.getGymsByUniversity = function (universityId) {
             var o = Parse.Object.extend('university_gym');
@@ -425,14 +433,13 @@ if (!window.api) {
             user.set('sex', settings.sex);
             user.set('memberType', settings.memberType);
             user.set('gymFrequency', settings.gymFrequency);
-            user.set('universityId', settings.universityId);
             user.set('universityGymId', settings.universityGymId);
-            // TODO: are these necessary?
-            // user.set('username', user.get('username'));
-            // user.set('userType', user.get('userType'));
-            // user.set('memberType', user.get('memberType'));
-            // user.set('isActive', user.get('isActive'));
-            return user.save();
+			return getGymById(settings.universityGymId).then(
+				function(result) {
+					user.set('universityId', result.get('universityId'));
+					return user.save();
+				}
+			);
         },
 
         saveUserNotifications = api.saveUserNotifications = function (user, notifications) {

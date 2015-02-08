@@ -74,12 +74,11 @@
         evt.preventDefault();
 
         var f = flattenFormArray($(this).serializeArray());
-        // console.log(f);
 
         api.registerNewUser(f).then(
             function(user) {
                 console.log('user registered');
-                window.location = '/'; // TODO: change this to root
+                // window.location = '/'; // TODO: change this to root
             },
             function() {
                 console.error('registration failed -- handle this in UI');
