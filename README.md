@@ -9,3 +9,7 @@ The following folders were brought over from the previous codebase. Some files m
 - /html/gym
 - /html/include
 - /html/superadmin
+
+TO-DOs:
+
+- Switch to require.js and backbone

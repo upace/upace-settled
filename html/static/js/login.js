@@ -42,7 +42,7 @@
                 }
                 $(selectors.universityItems).html(html);
             });
-        },
+        }
 
 	// Initialize FB login
 	api.initializeFacebookPlugin().then(
