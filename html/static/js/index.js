@@ -120,14 +120,14 @@
 
         renderOnDeck = function() {
             if(upcomingReservations.length) {
-                var onDeckHtml = '',
-                    timeRegExp = new RegExp(/(^0)|(pm|am)$|\s/ig),
-                    dateRegExp = new RegExp(/^([0-9]{2}).([0-9]{2})*./);
+                var onDeckHtml = '';
+                    // timeRegExp = new RegExp(/(^0)|(pm|am)$|\s/ig),
+                    // dateRegExp = new RegExp(/^([0-9]{2}).([0-9]{2})*./);
                 for(var i = 0; i < upcomingReservations.length; i++) {
                     var isEq = (upcomingReservations[i].get('equipment')),
                         date = (isEq) ? upcomingReservations[i].get('reservationDate') : upcomingReservations[i].get('date'),
                         startTime = (isEq) ? upcomingReservations[i].get('slotId').get('start_time') : upcomingReservations[i].get('start_time'),
-                        dateTime = new Date(date + ' ' + startTime),
+                        dateTime = new Date(normalizeDateFromParse(date) + ' ' + startTime),
                         data = {
                             'roomName' : (isEq) ? '' : upcomingReservations[i].get('class').get('room').get('name'),
                             'startTime' : ((dateTime.getHours() + 11) % 12 + 1) + ':' + (dateTime.getMinutes() < 10 ? '0' : '') + dateTime.getMinutes(),
@@ -229,7 +229,7 @@
         activateOnDeckCarousel = function() {
             $onDeckCarousel.owlCarousel({
                 stagePadding: 15,
-                loop: true,
+                loop: false,
                 margin: 0,
                 nav: false,
                 center: false,

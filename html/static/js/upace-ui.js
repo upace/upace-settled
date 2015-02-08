@@ -31,6 +31,15 @@ var
 		var month = ('0' + (date.getMonth() + 1)).slice(-2);
 		return month + '/' + day + '/' + date.getFullYear();
     },
+	
+	normalizeDateFromParse = function(date) {
+		// TODO: get all dates in the DB in the same format so we don't need this.
+		if (date && date.indexOf('.') !== -1) {
+			var s = date.split('.');
+			return s[1] + '/' + s[0] + '/' + s[2];
+		}
+		return date;
+	},
 
     getDates = function(startDate, stopDate) {
         var dateArray = [];
@@ -44,8 +53,10 @@ var
 	
 	sortParseResultsByStartTime = function(a, b) {
 		var aDate = a.get('date') || a.get('reservationDate') || '01/01/2000',
-			bDate = b.get('date') || b.get('reservationDate') || '01/01/2000';
-		return Date.parse(aDate + ' ' + a.get('start_time')) - Date.parse(bDate + ' ' + b.get('start_time'));
+			bDate = b.get('date') || b.get('reservationDate') || '01/01/2000',
+			aStart = a.get('start_time') || a.get('slotId').get('start_time') || '',
+			bStart = b.get('start_time') || b.get('slotId').get('start_time') || '';
+		return Date.parse(normalizeDateFromParse(aDate) + ' ' + aStart) - Date.parse(normalizeDateFromParse(bDate) + ' ' + bStart);
 	},
 	
 	filterParseResultsByStartTime = function(results, earliestTime) {
@@ -69,8 +80,8 @@ var
 		earliestDate = Date.parse(earliestDateAndTime);
 		for (var i = 0; i < results.length; i++) {
 			var date = results[i].get('date') || results[i].get('reservationDate'),
-				start_time = (results[i].get('equipment') ? results[i].get('slotId').get('start_time') : results[i].get('start_time'));
-			if (Date.parse(date + ' ' + start_time) >= earliestDate) {
+				start_time = results[i].get('start_time') || results[i].get('slotId').get('start_time') || '';
+			if (Date.parse(normalizeDateFromParse(date) + ' ' + start_time) >= earliestDate) {
 				filtered.push(results[i]);
 			}
 		}
