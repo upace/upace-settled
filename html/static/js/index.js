@@ -60,8 +60,7 @@
                     currentOccupancy = 0;
                     for (var i = 0; i < currentAllRooms.length; i++) {
 						if (currentAllRooms[i].get('universityGymId') === currentGymId) {
-							currentOccupancy += parseInt(currentAllRooms[i].get('male'));
-							currentOccupancy += parseInt(currentAllRooms[i].get('female'));
+							currentOccupancy += parseInt(currentAllRooms[i].get('reservedOccupancy'));
 						}
                     }
                     renderCurrentGym();
@@ -84,7 +83,7 @@
             var roomHtml = '';
             for (var i = 0; i < currentAllRooms.length; i++) {
 				if (currentAllRooms[i].get('universityGymId') === currentGymId) {
-					var occupiedSpots = parseInt(currentAllRooms[i].get('male')) + parseInt(currentAllRooms[i].get('female')),
+					var occupiedSpots = parseInt(currentAllRooms[i].get('reservedOccupancy')),
 						percentage = Math.floor(occupiedSpots / parseInt(currentAllRooms[i].get('totalOccupancy')) * 100),
 						data = {
 							'roomName' : currentAllRooms[i].get('name'),
@@ -152,7 +151,7 @@
 					if (!occupancyByGym[gymId]) {
 						occupancyByGym[gymId] = 0;
 					}
-					occupancyByGym[gymId] += parseInt(currentAllRooms[i].get('male')) + parseInt(currentAllRooms[i].get('female'));
+					occupancyByGym[gymId] += parseInt(currentAllRooms[i].get('reservedOccupancy'));
 				// }
 			}
 			for (var j = 0; j < currentAllGyms.length; j++) {
