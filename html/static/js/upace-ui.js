@@ -51,12 +51,27 @@ var
         return dateArray;
     },
 	
+	getDayIndex = function(date) {
+		date = new Date(normalizeDateFromParse(date));
+		// TODO: figure out where the week starts -- we're assuming it's Sunday.
+		return date.getDay();
+	},
+	
 	sortParseResultsByStartTime = function(a, b) {
 		var aDate = a.get('date') || a.get('reservationDate') || '01/01/2000',
 			bDate = b.get('date') || b.get('reservationDate') || '01/01/2000',
 			aStart = a.get('start_time') || a.get('slotId').get('start_time') || '',
-			bStart = b.get('start_time') || b.get('slotId').get('start_time') || '';
-		return Date.parse(normalizeDateFromParse(aDate) + ' ' + aStart) - Date.parse(normalizeDateFromParse(bDate) + ' ' + bStart);
+			bStart = b.get('start_time') || b.get('slotId').get('start_time') || '',
+			comparison = Date.parse(normalizeDateFromParse(aDate) + ' ' + aStart) - Date.parse(normalizeDateFromParse(bDate) + ' ' + bStart);
+			/*
+			if (comparison === 0 && a.get('name') && b.get('name')) {
+				var aName = a.get('name').toLowerCase(),
+					bName = b.get('name').toLowerCase();
+				if (aName < bName) return -1;
+				if (aName > bName) return 1;
+			}
+			*/
+			return comparison;
 	},
 	
 	filterParseResultsByStartTime = function(results, earliestTime) {
