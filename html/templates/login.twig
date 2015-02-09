@@ -31,7 +31,7 @@
             <form role="form" id="login-form">
                 <div class="formframe form-group col-xs-10 col-xs-offset-1">
                     <input type="text" name="username" class="form-control" id="InputName signup-input"
-                           placeholder="Username or Email" autocomplete="off" />
+                           placeholder="Username or Email" autocomplete="off" autocapitalize="off" autocorrect="off" />
 
                     <div>
                         <input type="password" name="password" class="formcontact form-control"
@@ -57,7 +57,12 @@
                     </a>
                 </div>
             </form>
+
+            <div id="settings-modal-status-login" class="col-xs-10 col-xs-offset-1"></div>
+            <div id="settings-modal-status-facebook" class="col-xs-10 col-xs-offset-1"></div>
+
     </section>
+
     <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
          aria-hidden="true">
     <div class="modal-dialog">
@@ -242,7 +247,7 @@
 
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
         <input type="text" class="form-control" name="username" id="InputName signup-input"
-               placeholder="Create Username" autocomplete="off" />
+               placeholder="Create Username" autocomplete="off" autocapitalize="off" autocorrect="off" />
     </div>
     <div class="formframe form-group col-xs-10 col-xs-offset-1">
         <input type="password" class="form-control" name="password" id="inputPassword signup-input"
@@ -308,6 +313,8 @@
                         </button>
                     </div>
                 </form>
+
+                <div id="settings-modal-status-signup"></div>
 
             </div>
         </div>

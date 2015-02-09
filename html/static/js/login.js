@@ -4,7 +4,10 @@
         selectors = {
             'universityItemTemplate': '#university-item-template',
             'gymItemTemplate': '#gym-item-template',
-            'universityItems': '#university-items'
+            'universityItems': '#university-items',
+            'statusLogin': '#settings-modal-status-login',
+            'statusFacebook': '#settings-modal-status-facebook',
+            'statusSignup': '#settings-modal-status-signup'
         },
 
         templates = {
@@ -15,6 +18,10 @@
                 data: $(selectors.gymItemTemplate).html()
             })
         },
+
+        $statusLogin = $(selectors.statusLogin),
+        $statusFacebook = $(selectors.statusFacebook),
+        $statusSignup = $(selectors.statusSignup),
 
         initRegistration = function() {
             var html = '',
@@ -42,7 +49,20 @@
                 }
                 $(selectors.universityItems).html(html);
             });
-        }
+        },
+
+        statusMessage = function(target, message, type) {
+            // target - status container (jquery object)
+            // type - warning, danger, success, info
+            target.html('');
+            var $html = $('<div style="margin-top: 1em;" class="alert alert-' + type + '" role="alert"><strong>' + message + '</strong></div>');
+            $html.appendTo(target);
+            window.setTimeout(function() {
+                $html.fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove();
+                });
+            }, 3000);
+        };
 
 	// Initialize FB login
 	api.initializeFacebookPlugin().then(
@@ -50,7 +70,7 @@
 			// TODO: add click event to Facebook button that fires off api.loginWithFacebook()
 		},
 		function() {
-			console.error('failed to load Facebook plugin -- handle this in UI');
+            statusMessage($statusFacebook, 'could not load Facebook plugin.', 'danger');
 		}
 	);
 	
@@ -61,11 +81,10 @@
 
         api.login(f.username, f.password).then(
             function(user) {
-                console.log('user logged in');
                 window.location = '/';
             },
             function() {
-                console.error('login failed -- handle this in UI');
+                statusMessage($statusLogin, 'login failed.', 'danger');
             }
         );
     });
@@ -77,11 +96,13 @@
 
         api.registerNewUser(f).then(
             function(user) {
-                console.log('user registered');
-                window.location = '/';
+                statusMessage($statusSignup, 'you\'ve been registered.  welcome!', 'success');
+                window.setTimeout(function() {
+                    window.location = '/';
+                }, 5000);
             },
             function() {
-                console.error('registration failed -- handle this in UI');
+                statusMessage($statusSignup, 'registration incomplete.', 'danger');
             }
         );
     });
