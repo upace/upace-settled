@@ -78,7 +78,7 @@
         api.registerNewUser(f).then(
             function(user) {
                 console.log('user registered');
-                // window.location = '/'; // TODO: change this to root
+                window.location = '/';
             },
             function() {
                 console.error('registration failed -- handle this in UI');

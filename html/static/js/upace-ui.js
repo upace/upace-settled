@@ -53,7 +53,6 @@ var
 	
 	getDayIndex = function(date) {
 		date = new Date(normalizeDateFromParse(date));
-		// TODO: figure out where the week starts -- we're assuming it's Sunday.
 		return date.getDay();
 	},
 	

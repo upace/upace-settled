@@ -74,7 +74,7 @@
                             timeRange : listings.formatTimeRange(c.get('start_time'), c.get('end_time')),
                             myReservation : myReservedClassSlots[c.id] || false,
                             // TODO: availability and slots do not work currently, there is no c.get('reserved_spots')
-                            available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
+                            // available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
                             totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
                             reservedOccupancy : c.get('class').get('room').get('reservedOccupancy'),
                             description : c.get('class').get('description'),

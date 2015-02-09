@@ -98,8 +98,10 @@ if (!window.api) {
 				function(result) {
 					user.set('universityId', result.get('universityId'));
 					return user.signUp().then(
-						// TODO: this can be parallel
 						function (user) {
+							user.setACL(new Parse.ACL(user));
+							user.save();
+							// TODO: this can be parallel
 							return $.ajax({
 								url : '/include/ajax.php',
 								type : 'POST',
@@ -137,6 +139,8 @@ if (!window.api) {
             // FINISH
             return user.signUp().then(
                 function (user) {
+					user.setACL(new Parse.ACL(user));
+					user.save();
                     if (!Parse.FacebookUtils.isLinked(user)) {
                         Parse.FacebookUtils.link(user, null, {
                             success : function (user) {
@@ -219,13 +223,6 @@ if (!window.api) {
 
         getCurrentUser = api.getCurrentUser = function () {
             return Parse.User.current();
-        },
-
-        getUserByName = api.getUserByName = function (username) {
-            var o = Parse.Object.extend('User');
-            var q = new Parse.Query(o);
-            q.equalTo('username', username);
-            return q.first();
         },
 
         getProfileNotificationsByUser = api.getProfileNotificationsByUser = function (user) {
@@ -454,7 +451,11 @@ if (!window.api) {
             q.equalTo('user', user);
             return q.first().then(
                 function (result) {
-                    var o = Parse.Object('notifications');
+                    var o = result || Parse.Object('notifications'),
+						acl = new Parse.ACL();
+					acl.setReadAccess(user.id, true);
+					acl.setWriteAccess(user.id, true);
+					o.setACL(acl);
                     if (result) {
                         o.id = result.id;
                     }
@@ -498,7 +499,11 @@ if (!window.api) {
                 }
             ).then(
                 function (slot) {
-                    var o = Parse.Object('class_reservation');
+                    var o = Parse.Object('class_reservation'),
+						acl = new Parse.ACL();
+					acl.setPublicReadAccess(true);
+					acl.setWriteAccess(user.id, true);
+					o.setACL(acl);
                     o.set('university', resUniversity);
                     o.set('gym', resGym);
                     o.set('class', resClass);
@@ -541,7 +546,11 @@ if (!window.api) {
                 function (slot) {
                     var d = (date) ? new Date(date) : new Date(),
                         df = ('0' + (d.getMonth()+1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear(),
-                        o = Parse.Object('equipment_occupancy');
+                        o = Parse.Object('equipment_occupancy'),
+						acl = new Parse.ACL();
+					acl.setPublicReadAccess(true);
+					acl.setWriteAccess(user.id, true);
+					o.setACL(acl);
                     o.set('userId', user);
                     o.set('slot', slot.id);
                     o.set('slotId', slot);
@@ -562,7 +571,11 @@ if (!window.api) {
                 user = getCurrentUser();
             return getRowById(eoId, 'equipment_occupancy').then(
                 function (result) {
-                    var o = Parse.Object('equipment_notification');
+                    var o = Parse.Object('equipment_notification'),
+						acl = new Parse.ACL();
+					acl.setPublicReadAccess(false);
+					acl.setWriteAccess(user.id, true);
+					o.setACL(acl);
                     o.set('occupancy', result);
                     o.set('user', user);
                     o.set('occupancyId', result.id);
@@ -576,7 +589,11 @@ if (!window.api) {
             if (!user)
                 user = getCurrentUser();
             var staff = slot.get('instructor');
-            var o = Parse.Object('feedback');
+            var o = Parse.Object('feedback'),
+				acl = new Parse.ACL();
+			acl.setPublicReadAccess(true);
+			acl.setWriteAccess(user.id, true);
+			o.setACL(acl);
             o.set('class', clazz);
             o.set('staff', staff);
             o.set('user', user);
@@ -611,7 +628,10 @@ if (!window.api) {
             q.containedIn('objectId', objIds);
             return q.find().then(
                 function(rows) {
-                    return rows.destroy({});
+					for (var i = 0; i < rows.length; i++) {
+						// Can't return a promise with this one, so we probably won't use it.
+						row[i].destroy({});
+					}
                 }
             );
         },
