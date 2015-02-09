@@ -167,7 +167,13 @@
                 statusMessage($statusNotifications, 'unable to save notifications.', 'danger');
             }
         );
-    });
+    }),
+	
+	$('#logout-button').on('click', function(evt) {
+		evt.preventDefault();
+		api.logout();
+		window.location = '/login';
+	});
 
     initSettings();
 
