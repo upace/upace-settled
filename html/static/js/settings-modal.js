@@ -6,7 +6,10 @@
         selectors = {
             'universityItemTemplate': '#university-item-template',
             'gymItemTemplate': '#gym-item-template',
-            'universityItems': '#university-items'
+            'universityItems': '#university-items',
+            'statusProfile': '#settings-modal-status-profile',
+            'statusPassword': '#settings-modal-status-password',
+            'statusNotifications': '#settings-modal-status-notifications'
         },
 
         templates = {
@@ -17,6 +20,10 @@
                 data: $(selectors.gymItemTemplate).html()
             })
         },
+
+        $statusProfile = $(selectors.statusProfile),
+        $statusPassword = $(selectors.statusPassword),
+        $statusNotifications = $(selectors.statusNotifications),
 
         initSettings = function() {
             var html = '',
@@ -78,6 +85,19 @@
                     $input.prop('checked', notifications[k]).trigger('change');
                 }
             }
+        },
+
+        statusMessage = function(target, message, type) {
+            // target - status container (jquery object)
+            // type - warning, danger, success, info
+            target.html('');
+            var $html = $('<div style="margin-top: 1em;" class="alert alert-' + type + '" role="alert"><strong>' + message + '</strong></div>');
+            $html.appendTo(target);
+            window.setTimeout(function() {
+                $html.fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove();
+                });
+            }, 3000);
         };
 
     $('#profilechange-form').on('submit', function(evt) {
@@ -87,10 +107,10 @@
 
         api.saveUserSettings(null, f).then(
             function(user) {
-                console.log('settings saved');
+                statusMessage($statusProfile, 'settings saved!', 'success');
             },
             function() {
-                console.error('save settings failed -- handle this in UI');
+                statusMessage($statusProfile, 'unable to save settings.', 'danger');
             }
         );
     });
@@ -101,7 +121,7 @@
         var f = flattenFormArray($(this).serializeArray());
 
         if (f.password !== f.retypepassword) {
-            console.error('retyped password does not match -- handle this in UI');
+            statusMessage($statusPassword, 'passwords do not match.', 'danger');
             return;
         }
 
@@ -111,12 +131,12 @@
             function(user) {
                 return api.saveUserPassword(user, f.password).then(
                     function(user) {
-                        console.log('password saved');
+                        statusMessage($statusPassword, 'password saved.', 'success');
                     }
                 );
             },
             function() {
-                console.error('change password failed -- handle this in UI');
+                statusMessage($statusPassword, 'change password failed.', 'danger');
             }
         );
     });
@@ -141,10 +161,10 @@
 
         api.saveUserNotifications(null, notifications).then(
             function(user) {
-                console.log('notifications saved');
+                statusMessage($statusNotifications, 'notifications saved.', 'success');
             },
             function() {
-                console.error('save notifications failed -- handle this in UI');
+                statusMessage($statusNotifications, 'unable to save notifications.', 'danger');
             }
         );
     });
