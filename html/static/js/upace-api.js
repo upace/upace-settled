@@ -353,10 +353,13 @@ if (!window.api) {
             return q.find();
         },
 
-        getEquipmentByUniversity = api.getEquipmentByUniversity = function (universityId) {
+        getEquipmentByUniversity = api.getEquipmentByUniversity = function (universityId, dayIndex) {
             var o = Parse.Object.extend('slots');
             var q = new Parse.Query(o);
             q.equalTo('universityId', universityId);
+			if (typeof dayIndex === 'number') {
+				q.equalTo('dayIndex', dayIndex);
+			}
             q.include('gymId');
             q.include('equipId');
             q.include('roomId');

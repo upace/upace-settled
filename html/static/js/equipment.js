@@ -23,7 +23,7 @@
         getEquipmentListings = listings.getEquipmentListings = function(parseDate) {
             $equipmentListings.html(listings.loadingSpinner);
             Parse.Promise.when(
-                    api.getEquipmentByUniversity(currentUser.get('universityId')),
+					api.getEquipmentByUniversity(currentUser.get('universityId'), getDayIndex(parseDate)),
                     api.getEquipmentReservationsByUniversityAndDate(currentUser.get('universityId'), parseDate)
                 )
                 .then(function(a, b) {
