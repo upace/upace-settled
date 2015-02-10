@@ -2,7 +2,6 @@
 
     var
         currentUser = api.getCurrentUser(),
-		selectedDate = formatDateForParse(new Date()),
         equipmentByDate, // All equipment for provided date (Array of Parse objects).
         reservedEquipmentSlots, // All equipment reservations for provided date (Array of Parse objects).
         myReservedEquipmentSlots, // My reserved slots ({slotId:reservationId}).
@@ -15,16 +14,17 @@
         $equipmentListings = $(selectors.equipmentListings),
 
         initEquipment = function() {
+			var parseDate = formatDateForParse(new Date());
             $(document).on('listings.datechange', handleDateChange);
             $(document).on('listings.render', renderEquipmentListings);
-            getEquipmentListings();
+            getEquipmentListings(parseDate);
         },
 
-        getEquipmentListings = listings.getEquipmentListings = function() {
+        getEquipmentListings = listings.getEquipmentListings = function(parseDate) {
             $equipmentListings.html(listings.loadingSpinner);
             Parse.Promise.when(
-					api.getEquipmentByUniversity(currentUser.get('universityId'), getDayIndex(selectedDate)),
-                    api.getEquipmentReservationsByUniversityAndDate(currentUser.get('universityId'), selectedDate)
+					api.getEquipmentByUniversity(currentUser.get('universityId'), getDayIndex(parseDate)),
+                    api.getEquipmentReservationsByUniversityAndDate(currentUser.get('universityId'), parseDate)
                 )
                 .then(function(a, b) {
                     if(a.length) {
@@ -32,7 +32,7 @@
                             openOnDt = true;
                         try {
                             closeDates = a[0].get('gymId').get('closeDate').split(',');
-                            openOnDt = ($.inArray(selectedDate, closeDates) === -1);
+                            openOnDt = ($.inArray(parseDate, closeDates) === -1);
                         }
                         catch (ex) {}
                         if (openOnDt) {
@@ -64,10 +64,10 @@
             if(listings.startTime) {
                 renderTime = listings.startTime;
             } else {
-                if(!listings.selectedDate) {
+                if(!listings.parseDate) {
                     renderTime = listings.getTodayStartTime();
-                } else if(listings.selectedDate) {
-                    if(isToday(listings.selectedDate)) {
+                } else if(listings.parseDate) {
+                    if(isToday(listings.parseDate)) {
                         renderTime = listings.getTodayStartTime();
                     }
                 }
@@ -92,7 +92,7 @@
                             myReservation : myReservedEquipmentSlots[eq.id] || false,
                             occupied : !!eq.get('is_occupied'),
                             description: eq.get('equipId').get('notes'),
-							date : selectedDate
+							date : listings.parseDate
                         },
 						dateTime = new Date(slotData.date);
 					slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
@@ -105,9 +105,8 @@
             }
         },
 
-        handleDateChange = function(e, date) {
-			selectedDate = date;
-            getEquipmentListings();
+        handleDateChange = function(e, parseDate) {
+            getEquipmentListings(parseDate);
         },
 
         noEquipmentListingsFound = function() {

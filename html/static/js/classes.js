@@ -2,7 +2,6 @@
 
     var
         currentUser = api.getCurrentUser(),
-		selectedDate = formatDateForParse(new Date()),
         classesByDate, // All classes for provided date (Array of Parse objects).
         myReservedClassSlots, // My reserved slots ({slotId:reservationId}).
 
@@ -15,16 +14,17 @@
         $classListings = $(selectors.classListings),
 
         initClasses = function() {
+			var parseDate = formatDateForParse(new Date());
             $(document).on('listings.datechange', handleDateChange);
             $(document).on('listings.render', renderClassListings);
-            getClassListings();
+            getClassListings(parseDate);
         },
 
-        getClassListings = listings.getClassListings = function() {
+        getClassListings = listings.getClassListings = function(parseDate) {
             $classListings.html(listings.loadingSpinner);
             Parse.Promise.when(
-                    api.getClassesByUniversityAndDate(currentUser.get('universityId'), selectedDate),
-                    api.getClassReservationsByUser(currentUser, selectedDate)
+                    api.getClassesByUniversityAndDate(currentUser.get('universityId'), parseDate),
+                    api.getClassReservationsByUser(currentUser, parseDate)
                 )
                 .then(function(a, b) {
                     if(a.length) {
@@ -48,10 +48,10 @@
             if(listings.startTime) {
                 renderTime = listings.startTime;
             } else {
-                if(!listings.selectedDate) {
+                if(!listings.parseDate) {
                     renderTime = listings.getTodayStartTime();
-                } else if(listings.selectedDate) {
-                    if(isToday(listings.selectedDate)) {
+                } else if(listings.parseDate) {
+                    if(isToday(listings.parseDate)) {
                         renderTime = listings.getTodayStartTime();
                     }
                 }
@@ -92,9 +92,8 @@
             }
         },
 
-        handleDateChange = function(e, date) {
-			selectedDate = date;
-            getClassListings();
+        handleDateChange = function(e, parseDate) {
+            getClassListings(parseDate);
         },
 
         noClassListingsFound = function() {

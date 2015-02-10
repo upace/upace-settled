@@ -1,7 +1,6 @@
 (function (window, document, $, Parse, api, listings) {
 
     var currentUser = api.getCurrentUser(),
-		selectedDate = formatDateForParse(new Date()),
         reservedClasses,
         reservedEquipment,
 
@@ -15,19 +14,20 @@
         $equipmentListings = $(selectors.equipmentListings),
 
         initReservations = function() {
+			var parseDate = formatDateForParse(new Date());
             $(document).on('listings.datechange', handleDateChange);
             $(document).on('listings.render', renderReservations);
             $(document).on('listings.cancelled.class', handleClassCancellation);
             $(document).on('listings.cancelled.equipment', handleEquipmentCancellation);
-            getReservations();
+            getReservations(parseDate);
         },
 
-        getReservations = function() {
+        getReservations = function(parseDate) {
             $classListings.html(listings.loadingSpinner);
             $equipmentListings.html(listings.loadingSpinner);
             Parse.Promise.when(
-                    api.getClassReservationsByUser(currentUser, selectedDate),
-                    api.getEquipmentReservationsByUser(currentUser, selectedDate)
+                    api.getClassReservationsByUser(currentUser, parseDate),
+                    api.getEquipmentReservationsByUser(currentUser, parseDate)
                 ).then(function(a, b) {
                     reservedClasses = a.sort(sortParseResultsByStartTime);
                     reservedEquipment = b.sort(sortParseResultsByStartTime);
@@ -47,10 +47,10 @@
             if(listings.startTime) {
                 renderTime = listings.startTime;
             } else {
-                if(!listings.selectedDate) {
+                if(!listings.parseDate) {
                     renderTime = listings.getTodayStartTime();
-                } else if(listings.selectedDate) {
-                    if(isToday(listings.selectedDate)) {
+                } else if(listings.parseDate) {
+                    if(isToday(listings.parseDate)) {
                         renderTime = listings.getTodayStartTime();
                     }
                 }
@@ -98,10 +98,10 @@
             if(listings.startTime) {
                 renderTime = listings.startTime;
             } else {
-                if(!listings.selectedDate) {
+                if(!listings.parseDate) {
                     renderTime = listings.getTodayStartTime();
-                } else if(listings.selectedDate) {
-                    if(isToday(listings.selectedDate)) {
+                } else if(listings.parseDate) {
+                    if(isToday(listings.parseDate)) {
                         renderTime = listings.getTodayStartTime();
                     }
                 }
@@ -126,7 +126,7 @@
 							myReservation : eq.id,
 							description: eq.get('equipmentId').get('notes'),
                             occupied : true,
-							date : selectedDate
+							date : listings.parseDate
                         },
 						dateTime = new Date(slotData.date);
 					slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
@@ -166,9 +166,8 @@
             $equipmentListings.html(html);
         },
 
-        handleDateChange = function(e, date) {
-			selectedDate = date;
-            getReservations();
+        handleDateChange = function(e, parseDate) {
+            getReservations(parseDate);
         };
 
     initReservations();
