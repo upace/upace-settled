@@ -134,6 +134,7 @@ body {
 
 /* remove post-beta */
 .land-other-gym-item {
+    cursor: pointer;
     float: left;
     margin-bottom: 1em;
     width: 50%;

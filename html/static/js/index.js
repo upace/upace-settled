@@ -19,6 +19,7 @@
             'onDeckNoneFound' : '.land-ondeck-none-found',
             'onDeckItemTemplate' : '#on-deck-item-template',
             'reserveModal' : '#reserve-modal',
+            'otherGymItem' : '.land-other-gym-item',
             'otherGymItemTemplate' : '#other-gym-item-template'
         },
 
@@ -42,32 +43,39 @@
         initializeDashboard = function() {
 
             $(document).on('click', selectors.onDeckItem, handleOnDeckClick);
+            $(document).on('click', selectors.otherGymItem, handleOtherGymClick);
 
-            Parse.Promise.when(
-                    api.getUniversityById(currentUniversityId),
-                    api.getGymsByUniversity(currentUniversityId),
-                    api.getRoomsByUniversity(currentUniversityId)
-                ).then(function(a, b, c) {
+            api.getUniversityById(currentUniversityId)
+                .then(function(a) {
                     currentUniversity = a;
-                    currentAllGyms = b;
-                    currentAllRooms = c;
-                    for (var i = 0; i < currentAllGyms.length; i++) {
-                        if (currentAllGyms[i].id === currentGymId) {
-                            currentGym = currentAllGyms[i];
-                            break;
-                        }
-                    }
-                    currentOccupancy = 0;
-                    for (var i = 0; i < currentAllRooms.length; i++) {
-						if (currentAllRooms[i].get('universityGymId') === currentGymId) {
-							currentOccupancy += parseInt(currentAllRooms[i].get('reservedOccupancy'));
-						}
-                    }
-                    renderCurrentGym();
-                    renderRooms();
+                    updateCurrentGym();
                     initOnDeck();
-                    renderOtherGyms();
                 });
+        },
+
+        updateCurrentGym = function() {
+            Parse.Promise.when(
+                api.getGymsByUniversity(currentUniversityId),
+                api.getRoomsByUniversity(currentUniversityId)
+            ).then(function(a, b) {
+                currentAllGyms = a;
+                currentAllRooms = b;
+                currentOccupancy = 0;
+                for (var i = 0; i < currentAllGyms.length; i++) {
+                    if (currentAllGyms[i].id === currentGymId) {
+                        currentGym = currentAllGyms[i];
+                        break;
+                    }
+                }
+                for (var i = 0; i < currentAllRooms.length; i++) {
+                    if (currentAllRooms[i].get('universityGymId') === currentGymId) {
+                        currentOccupancy += parseInt(currentAllRooms[i].get('reservedOccupancy'));
+                    }
+                }
+                renderCurrentGym();
+                renderRooms();
+                renderOtherGyms();
+            });
         },
 
         renderCurrentGym = function() {
@@ -76,7 +84,7 @@
             $('#land-current-member').text(currentOccupancy);
             $('#land-total-member').text(currentGym.get('capacity'));
             $('#land-current-gym').text(currentGym.get('name'));
-            $('#land-data-color').addClass('land-data-' + getOccupancyColor(percentage)).show();
+            $('#land-data-color').removeClass('land-data-r land-data-y land-data-g').addClass('land-data-' + getOccupancyColor(percentage)).show();
         },
 
         renderRooms = function() {
@@ -120,8 +128,6 @@
         renderOnDeck = function() {
             if(upcomingReservations.length) {
                 var onDeckHtml = '';
-                    // timeRegExp = new RegExp(/(^0)|(pm|am)$|\s/ig),
-                    // dateRegExp = new RegExp(/^([0-9]{2}).([0-9]{2})*./);
                 for(var i = 0; i < upcomingReservations.length; i++) {
                     var isEq = (upcomingReservations[i].get('equipment')),
                         date = (isEq) ? upcomingReservations[i].get('reservationDate') : upcomingReservations[i].get('date'),
@@ -175,7 +181,17 @@
             $(selectors.reserveModal).modal('show');
         },
 
+        handleOtherGymClick = function(e) {
+            if(currentGymId !== $(e.currentTarget).data('gym-id')) {
+                currentGymId = $(e.currentTarget).data('gym-id');
+                updateCurrentGym();
+            }
+        },
+
         activateRoomCarousel = function() {
+            if($roomCarousel.hasClass('owl-loaded')){
+                $roomCarousel.trigger('destroy.owl.carousel');
+            }
             $roomCarousel.owlCarousel({
                 stagePadding: 50,
                 loop: true,
