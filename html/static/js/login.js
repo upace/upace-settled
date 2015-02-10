@@ -5,9 +5,8 @@
             'universityItemTemplate': '#university-item-template',
             'gymItemTemplate': '#gym-item-template',
             'universityItems': '#university-items',
-            'statusLogin': '#settings-modal-status-login',
-            'statusFacebook': '#settings-modal-status-facebook',
-            'statusSignup': '#settings-modal-status-signup'
+            'statusLogin': '#login-form',
+            'statusSignup': '#registration-form'
         },
 
         templates = {
@@ -20,7 +19,6 @@
         },
 
         $statusLogin = $(selectors.statusLogin),
-        $statusFacebook = $(selectors.statusFacebook),
         $statusSignup = $(selectors.statusSignup),
 
         initRegistration = function() {
@@ -49,19 +47,6 @@
                 }
                 $(selectors.universityItems).html(html);
             });
-        },
-
-        statusMessage = function(target, message, type) {
-            // target - status container (jquery object)
-            // type - warning, danger, success, info
-            target.html('');
-            var $html = $('<div style="margin-top: 1em;" class="alert alert-' + type + '" role="alert"><strong>' + message + '</strong></div>');
-            $html.appendTo(target);
-            window.setTimeout(function() {
-                $html.fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove();
-                });
-            }, 3000);
         };
 
 	// Initialize FB login
@@ -70,7 +55,7 @@
 			// TODO: add click event to Facebook button that fires off api.loginWithFacebook()
 		},
 		function() {
-            statusMessage($statusFacebook, 'could not load Facebook plugin.', 'danger');
+            statusMessage($statusLogin, 'could not load Facebook plugin.', 'danger');
 		}
 	);
 	

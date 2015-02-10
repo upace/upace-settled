@@ -19,7 +19,21 @@ var
 		return flattened;
 	},
 
-	getUrlParameter = function (name) {
+    statusMessage = function(target, message, type) {
+        // target {jquery object} - container to append bootstrap message to
+        // type - warning, danger, success, info
+        var $html = $('<div style="margin-top: 1em;" class="alert alert-' + type + '" role="alert"><strong>' + message + '</strong></div>');
+        target.after($html);
+        /*
+        window.setTimeout(function() {
+            $html.fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove();
+            });
+        }, 3000);
+        */
+    },
+
+    getUrlParameter = function (name) {
 	    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
 	    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
 	        results = regex.exec(location.search);

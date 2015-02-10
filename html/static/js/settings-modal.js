@@ -7,9 +7,9 @@
             'universityItemTemplate': '#university-item-template',
             'gymItemTemplate': '#gym-item-template',
             'universityItems': '#university-items',
-            'statusProfile': '#settings-modal-status-profile',
-            'statusPassword': '#settings-modal-status-password',
-            'statusNotifications': '#settings-modal-status-notifications'
+            'statusProfile': '#profilechange-form',
+            'statusPassword': '#passwordchange-form',
+            'statusNotifications': '#notificationchange-form'
         },
 
         templates = {
@@ -85,19 +85,6 @@
                     $input.prop('checked', notifications[k]).trigger('change');
                 }
             }
-        },
-
-        statusMessage = function(target, message, type) {
-            // target - status container (jquery object)
-            // type - warning, danger, success, info
-            target.html('');
-            var $html = $('<div style="margin-top: 1em;" class="alert alert-' + type + '" role="alert"><strong>' + message + '</strong></div>');
-            $html.appendTo(target);
-            window.setTimeout(function() {
-                $html.fadeTo(500, 0).slideUp(500, function(){
-                    $(this).remove();
-                });
-            }, 3000);
         };
 
     $('#profilechange-form').on('submit', function(evt) {
