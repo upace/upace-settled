@@ -48,10 +48,11 @@
             if(listings.startTime) {
                 renderTime = listings.startTime;
             } else {
-                if(!listings.parseDate) {
+                if(!listings.selectedDate) {
+                    listings.selectedDate = new Date();
                     renderTime = listings.getTodayStartTime();
-                } else if(listings.parseDate) {
-                    if(isToday(listings.parseDate)) {
+                } else if(listings.selectedDate) {
+                    if(isToday(listings.selectedDate)) {
                         renderTime = listings.getTodayStartTime();
                     }
                 }

@@ -47,10 +47,11 @@
             if(listings.startTime) {
                 renderTime = listings.startTime;
             } else {
-                if(!listings.parseDate) {
+                if(!listings.selectedDate) {
+                    listings.selectedDate = new Date();
                     renderTime = listings.getTodayStartTime();
-                } else if(listings.parseDate) {
-                    if(isToday(listings.parseDate)) {
+                } else if(listings.selectedDate) {
+                    if(isToday(listings.selectedDate)) {
                         renderTime = listings.getTodayStartTime();
                     }
                 }
@@ -98,10 +99,11 @@
             if(listings.startTime) {
                 renderTime = listings.startTime;
             } else {
-                if(!listings.parseDate) {
+                if(!listings.selectedDate) {
+                    listings.selectedDate = new Date();
                     renderTime = listings.getTodayStartTime();
-                } else if(listings.parseDate) {
-                    if(isToday(listings.parseDate)) {
+                } else if(listings.selectedDate) {
+                    if(isToday(listings.selectedDate)) {
                         renderTime = listings.getTodayStartTime();
                     }
                 }
@@ -126,7 +128,7 @@
 							myReservation : eq.id,
 							description: eq.get('equipmentId').get('notes'),
                             occupied : true,
-							date : listings.parseDate
+							date : listings.selectedDate
                         },
 						dateTime = new Date(slotData.date);
 					slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();

@@ -17,6 +17,7 @@
 			var parseDate = formatDateForParse(new Date());
             $(document).on('listings.datechange', handleDateChange);
             $(document).on('listings.render', renderEquipmentListings);
+            $(document).on('listings.reserved.equipment', handleEquipmentReservation);
             getEquipmentListings(parseDate);
         },
 
@@ -64,10 +65,11 @@
             if(listings.startTime) {
                 renderTime = listings.startTime;
             } else {
-                if(!listings.parseDate) {
+                if(!listings.selectedDate) {
+                    listings.selectedDate = new Date();
                     renderTime = listings.getTodayStartTime();
-                } else if(listings.parseDate) {
-                    if(isToday(listings.parseDate)) {
+                } else if(listings.selectedDate) {
+                    if(isToday(listings.selectedDate)) {
                         renderTime = listings.getTodayStartTime();
                     }
                 }
@@ -92,7 +94,7 @@
                             myReservation : myReservedEquipmentSlots[eq.id] || false,
                             occupied : !!eq.get('is_occupied'),
                             description: eq.get('equipId').get('notes'),
-							date : listings.parseDate
+							date : listings.selectedDate
                         },
 						dateTime = new Date(slotData.date);
 					slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
@@ -107,6 +109,10 @@
 
         handleDateChange = function(e, parseDate) {
             getEquipmentListings(parseDate);
+        },
+
+        handleEquipmentReservation = function(e, o) {
+            o.remove();
         },
 
         noEquipmentListingsFound = function() {

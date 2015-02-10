@@ -77,6 +77,7 @@ if (!window.listings) {
 					function(r) {
 						$this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);
 						listings.listingData[slotId].myReservation = r.id;
+                        $(document).trigger('listings.reserved.class', [$this]);
 					},
 					function(err) {
 						console.error('already reserved -- handle in UI');
@@ -87,6 +88,7 @@ if (!window.listings) {
 					function(r) {
 						$this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);
 						listings.listingData[slotId].myReservation = r.id;
+                        $(document).trigger('listings.reserved.equipment', [$this]);
 					},
 					function(err) {
 						console.error('already reserved -- handle in UI');
