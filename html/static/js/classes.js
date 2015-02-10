@@ -73,16 +73,16 @@
                             endTime : c.get('end_time'),
                             timeRange : listings.formatTimeRange(c.get('start_time'), c.get('end_time')),
                             myReservation : myReservedClassSlots[c.id] || false,
-                            // TODO: availability and slots do not work currently, there is no c.get('reserved_spots')
-                            // available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
-                            totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
-                            reservedOccupancy : c.get('class').get('room').get('reservedOccupancy'),
+                            totalSpots : c.get('class').get('spots'),
                             description : c.get('class').get('description'),
                             date : c.get('class').get('date')
                         },
                         dateTime = new Date(slotData.date);
                     slotData.date = dateAbbr[dateTime.getDay()] + ' ' + dateTime.getDate() + '/' + (dateTime.getMonth() + 1);
-                    slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
+					slotData.spotsRemaining = slotData.totalSpots;
+					if (c.get('reserved_spots')) {
+						slotData.spotsRemaining -= c.get('reserved_spots');
+					}
                     html += listings.templates.listingItem.render(slotData);
                     listings.listingData[c.id] = slotData;
                 }

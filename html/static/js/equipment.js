@@ -90,7 +90,7 @@
                             endTime : eq.get('end_time'),
                             timeRange : (s.charAt(0) === '0') ? s.substr(1) : s,
                             myReservation : myReservedEquipmentSlots[eq.id] || false,
-                            available : ($.inArray(eq.id, reservedEquipmentSlots) === -1),
+                            available : !eq.get('is_occupied'),
                             description: eq.get('equipId').get('notes')
                         };
                     html += listings.templates.listingItem.render(slotData);

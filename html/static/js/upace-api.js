@@ -319,6 +319,14 @@ if (!window.api) {
             q.include('class.room');
             return q.find();
         },
+		
+		getClassSlotReservationCount = api.getClassSlotReservationCount = function (slotId) {
+		    var o = Parse.Object.extend('class_reservation');
+            var q = new Parse.Query(o);
+            q.equalTo('slotId', slotId);
+            q.equalTo('isActive', true);
+            return q.count();
+		},
 
         getClassReservationsByUniversityAndDate = api.getClassReservationsByUniversityAndDate = function (universityId, date) {
             var o = Parse.Object.extend('class_reservation');
@@ -482,23 +490,50 @@ if (!window.api) {
             if (!user)
                 user = getCurrentUser();
 
-            var resUniversity,
+            var promise = new Parse.Promise.as(),
+				resUniversity,
                 resGym,
-                resClass;
+                resClass,
+				resCount,
+				resSlot;
 
-            return getRowById(classId, 'classes').then(
+			promise = promise.then(
+				function() {
+					return getRowById(classId, 'classes');
+				}
+			);
+			
+            promise = promise.then(
                 function (clazz) {
                     resClass = clazz;
                     return getRowById(user.get('universityGymId'), 'university_gym', ['university']);
                 }
-            ).then(
+            );
+			
+			promise = promise.then(
                 function (gym) {
                     resGym = gym;
                     resUniversity = resGym.get('university');
+					return getClassSlotReservationCount(slotId);
+				}	
+			);
+			
+			promise = promise.then(
+				function (reservationCount) {
+					var totalSpots = parseInt(resClass.get('spots'));
+					resCount = reservationCount;
+					if (resCount >= totalSpots) {
+						// TODO: figure out how to reject this properly.
+						promise.reject('All class spots are reserved.');
+						return;
+					}
                     return getRowById(slotId, 'class_slot');
                 }
-            ).then(
+            );
+			
+			promise = promise.then(
                 function (slot) {
+					resSlot = slot;
                     var o = Parse.Object('class_reservation'),
 						acl = new Parse.ACL();
 					acl.setPublicReadAccess(true);
@@ -521,29 +556,59 @@ if (!window.api) {
                     return o.save();
                 }
             );
+			
+			promise = promise.then(
+				function (reservation) {
+					if (reservation) {
+						resSlot.set('reserved_spots', resCount + 1);
+						resSlot.save();
+					}
+					return reservation;
+				}
+			);
+			
+			return promise;
         },
 
         saveEquipmentReservation = api.saveEquipmentReservation = function (user, equipmentId, slotId, date) {
             if (!user)
                 user = getCurrentUser();
 
-            var resUniversity,
+            var promise = new Parse.Promise.as(),
+				resUniversity,
                 resGym,
-                resEquipment;
+                resEquipment,
+				resSlot;
 
-            return getRowById(equipmentId, 'gym_equipment').then(
+            promise = promise.then(
+				function () {
+					return getRowById(equipmentId, 'gym_equipment');
+				}
+			);
+			
+			promise = promise.then(
                 function (equipment) {
                     resEquipment = equipment;
                     return getRowById(user.get('universityGymId'), 'university_gym', ['university']);
                 }
-            ).then(
+            );
+			
+			promise = promise.then(
                 function (gym) {
                     resGym = gym;
                     resUniversity = gym.get('university');
                     return getRowById(slotId, 'slots');
                 }
-            ).then(
+            );
+			
+			promise = promise.then(
                 function (slot) {
+					resSlot = slot;
+					if (resSlot.get('is_occupied')) {
+						// TODO: figure out how to reject this properly.
+						promise.reject('Equipment is already reserved.');
+						return;
+					}
                     var d = (date) ? new Date(date) : new Date(),
                         df = ('0' + (d.getMonth()+1)).slice(-2) + '/' + ('0' + d.getDate()).slice(-2) + '/' + d.getFullYear(),
                         o = Parse.Object('equipment_occupancy'),
@@ -564,6 +629,20 @@ if (!window.api) {
                     return o.save();
                 }
             );
+			
+			promise = promise.then(
+				function (reservation) {
+					if (reservation) {
+						resSlot.set('is_occupied', true);
+						resSlot.set('occupancy', reservation);
+						resSlot.set('occupancyId', reservation.id);
+						resSlot.save();
+					}
+					return reservation;
+				}
+			);
+			
+			return promise;
         },
 
         saveNotifyOfEquipmentAvailability = api.saveNotifyOfEquipmentAvailability = function(user, eoId) {

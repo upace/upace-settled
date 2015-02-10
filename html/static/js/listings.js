@@ -73,21 +73,26 @@ if (!window.listings) {
                 slotId = $this.data('slot-id'),
                 equipId = $this.data('equipment-id');
             if(classId){
-                Parse.Promise.when(
-                        api.saveClassReservation(currentUser, classId, slotId)
-                    )
-                    .then(function(r) {
-                        $this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);
-                        listings.listingData[slotId].myReservation = r.id;
-                    });
+                api.saveClassReservation(currentUser, classId, slotId).then(
+					function(r) {
+						console.log(r);
+						$this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);
+						listings.listingData[slotId].myReservation = r.id;
+					},
+					function(err) {
+						console.error('already reserved -- handle in UI');
+					}
+				);
             } else if(equipId) {
-                Parse.Promise.when(
-                        api.saveEquipmentReservation(currentUser, equipId, slotId, listings.selectedDate)
-                    )
-                    .then(function(r) {
-                        $this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);
-                        listings.listingData[slotId].myReservation = r.id;
-                    });
+				api.saveEquipmentReservation(currentUser, equipId, slotId, listings.selectedDate).then(
+					function(r) {
+						$this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);
+						listings.listingData[slotId].myReservation = r.id;
+					},
+					function(err) {
+						console.error('already reserved -- handle in UI');
+					}
+				);
             }
         },
 
@@ -99,19 +104,13 @@ if (!window.listings) {
                 resId = $this.data('reservation-id');
             if(resId) {
                 if(classId) {
-                    Parse.Promise.when(
-                        api.deleteClassReservations(resId)
-                    )
-                    .then(function(a) {
+                    api.deleteClassReservations(resId).then(function(a) {
                         $this.removeClass(cssClasses.listingReserved).removeAttr('data-reservation-id');
                         listingData[slotId].myReservation = false;
                         $(document).trigger('listings.cancelled.class', [$this]);
                     });
                 } else if (equipId) {
-                    Parse.Promise.when(
-                        api.deleteEquipmentReservations(resId)
-                    )
-                    .then(function(a) {
+                    api.deleteEquipmentReservations(resId).then(function(a) {
                         $this.removeClass(cssClasses.listingReserved).removeAttr('data-reservation-id');
                         listingData[slotId].myReservation = false;
                         $(document).trigger('listings.cancelled.equipment', [$this]);
