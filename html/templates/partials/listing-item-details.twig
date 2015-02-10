@@ -47,10 +47,24 @@
     </div>
     <div class="container-fluid">
         <div class="col-xs-12">
-            <button class="btn reserve-modal-reserve-btn btn-reserve btn-primary btn-block btn-lg" {% if myReservation %}style="display:none"{% endif %}>Reserve Class</button>
-        </div>
-        <div class="col-xs-12">
-            <button class="btn reserve-modal-cancel-btn btn-danger btn-block btn-lg" {% if not myReservation %}style="display:none;{% endif %}">Cancel Reservation</button>
+            {% if classId %}
+                {% if not spotsRemaining and not myReservation %}
+                    <button class="btn reserve-modal-notify-btn btn-warning btn-block btn-lg disabled" disabled="disabled">Class Full</button>
+                {% endif %}
+                {% if myReservation %}
+                    <button class="btn reserve-modal-cancel-btn btn-danger btn-block btn-lg">Cancel Reservation</button>
+                {% endif %}
+                {% if spotsRemaining and not myReservation %}
+                    <button class="btn reserve-modal-reserve-btn btn-reserve btn-primary btn-block btn-lg">Reserve Class</button>
+                {% endif %}
+            {% endif %}
+            {% if equipId %}
+                {% if myReservation %}
+                    <button class="btn reserve-modal-cancel-btn btn-danger btn-block btn-lg">Cancel Reservation</button>
+                {% else %}
+                    <button class="btn reserve-modal-reserve-btn btn-reserve btn-primary btn-block btn-lg">Reserve Equipment</button>
+                {% endif %}
+            {% endif %}
         </div>
     {# removed for beta
         <div class="upace-reserve-pick col-xs-12" style="margin-top:20%">

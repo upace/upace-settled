@@ -112,7 +112,11 @@
         },
 
         handleEquipmentReservation = function(e, o) {
-            o.remove();
+            window.setTimeout(function() {
+                o.fadeTo(500, 0).slideUp(500, function(){
+                    o.remove();
+                });
+            }, 800);
         },
 
         noEquipmentListingsFound = function() {

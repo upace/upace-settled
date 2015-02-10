@@ -80,7 +80,7 @@
                         },
                         dateTime = new Date(slotData.date);
                     slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
-					slotData.spotsRemaining = slotData.totalSpots;
+                    slotData.spotsRemaining = slotData.totalSpots;
 					if (c.get('reserved_spots')) {
 						slotData.spotsRemaining -= c.get('reserved_spots');
 					}
