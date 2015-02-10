@@ -1,6 +1,7 @@
 (function (window, document, $, Parse, api, listings) {
 
     var currentUser = api.getCurrentUser(),
+		selectedDate = formatDateForParse(new Date()),
         reservedClasses,
         reservedEquipment,
 
@@ -14,20 +15,19 @@
         $equipmentListings = $(selectors.equipmentListings),
 
         initReservations = function() {
-            var parseDate = formatDateForParse(new Date());
             $(document).on('listings.datechange', handleDateChange);
             $(document).on('listings.render', renderReservations);
             $(document).on('listings.cancelled.class', handleClassCancellation);
             $(document).on('listings.cancelled.equipment', handleEquipmentCancellation);
-            getReservations(parseDate);
+            getReservations();
         },
 
-        getReservations = function(parseDate) {
+        getReservations = function() {
             $classListings.html(listings.loadingSpinner);
             $equipmentListings.html(listings.loadingSpinner);
             Parse.Promise.when(
-                    api.getClassReservationsByUser(currentUser, parseDate),
-                    api.getEquipmentReservationsByUser(currentUser, parseDate)
+                    api.getClassReservationsByUser(currentUser, selectedDate),
+                    api.getEquipmentReservationsByUser(currentUser, selectedDate)
                 ).then(function(a, b) {
                     reservedClasses = a.sort(sortParseResultsByStartTime);
                     reservedEquipment = b.sort(sortParseResultsByStartTime);
@@ -63,15 +63,15 @@
                 for (var i = 0; i < renderDates.length; i++) {
                     var c = renderDates[i],
                         slotData = {
-                            classId : c.get('classId'),
-                            slotId : c.id,
+                            myReservation : c.id,
+							classId : c.get('classId'),
+							slotId : c.get('slotId'),
                             listingName : c.get('class').get('name'),
                             roomName : c.get('class').get('room').get('name'),
                             gymName : c.get('gym').get('name'),
                             startTime : c.get('start_time'),
                             endTime : c.get('end_time'),
                             timeRange : listings.formatTimeRange(c.get('start_time'), c.get('end_time')),
-                            myReservation : myReservedClassSlots[c.id] || false,
                             totalSpots : c.get('class').get('spots'),
                             description : c.get('class').get('description'),
                             date : normalizeDateFromParse(c.get('class').get('date'))
@@ -115,17 +115,17 @@
                     var eq = renderDates[i],
                         s = eq.get('slotId').get('start_time'),
                         slotData = {
-                            slotId : eq.id,
-                            equipId : eq.get('equipId').id,
-                            listingName : eq.get('equipId').get('name'),
-                            roomName : eq.get('roomId').get('name'),
+                            slotId : eq.get('slot'),
+							equipId : eq.get('equipment'),
+							listingName : eq.get('equipmentId').get('name'),
+							roomName : eq.get('slotId').get('roomId').get('name'),
                             gymName : eq.get('gymId').get('name'),
                             startTime : s,
-                            endTime : eq.get('end_time'),
+                            endTime : eq.get('slotId').get('end_time'),
                             timeRange : (s.charAt(0) === '0') ? s.substr(1) : s,
-                            myReservation : myReservedEquipmentSlots[eq.id] || false,
-                            occupied : !!eq.get('is_occupied'),
-                            description: eq.get('equipId').get('notes'),
+							myReservation : eq.id,
+							description: eq.get('equipmentId').get('notes'),
+                            occupied : true,
 							date : selectedDate
                         },
 						dateTime = new Date(slotData.date);
@@ -166,8 +166,9 @@
             $equipmentListings.html(html);
         },
 
-        handleDateChange = function(e, parseDate) {
-            getReservations(parseDate);
+        handleDateChange = function(e, date) {
+			selectedDate = date;
+            getReservations();
         };
 
     initReservations();
