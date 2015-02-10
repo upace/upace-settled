@@ -75,7 +75,6 @@ if (!window.listings) {
             if(classId){
                 api.saveClassReservation(currentUser, classId, slotId).then(
 					function(r) {
-						console.log(r);
 						$this.addClass(cssClasses.listingReserved).attr('data-reservation-id', r.id);
 						listings.listingData[slotId].myReservation = r.id;
 					},

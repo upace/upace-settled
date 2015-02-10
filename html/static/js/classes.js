@@ -2,6 +2,7 @@
 
     var
         currentUser = api.getCurrentUser(),
+		selectedDate = formatDateForParse(new Date()),
         classesByDate, // All classes for provided date (Array of Parse objects).
         myReservedClassSlots, // My reserved slots ({slotId:reservationId}).
 
@@ -14,17 +15,16 @@
         $classListings = $(selectors.classListings),
 
         initClasses = function() {
-            var parseDate = formatDateForParse(new Date());
             $(document).on('listings.datechange', handleDateChange);
             $(document).on('listings.render', renderClassListings);
-            getClassListings(parseDate);
+            getClassListings();
         },
 
-        getClassListings = listings.getClassListings = function(parseDate) {
+        getClassListings = listings.getClassListings = function() {
             $classListings.html(listings.loadingSpinner);
             Parse.Promise.when(
-                    api.getClassesByUniversityAndDate(currentUser.get('universityId'), parseDate),
-                    api.getClassReservationsByUser(currentUser, parseDate)
+                    api.getClassesByUniversityAndDate(currentUser.get('universityId'), selectedDate),
+                    api.getClassReservationsByUser(currentUser, selectedDate)
                 )
                 .then(function(a, b) {
                     if(a.length) {
@@ -75,10 +75,10 @@
                             myReservation : myReservedClassSlots[c.id] || false,
                             totalSpots : c.get('class').get('spots'),
                             description : c.get('class').get('description'),
-                            date : c.get('class').get('date')
+                            date : normalizeDateFromParse(c.get('class').get('date'))
                         },
                         dateTime = new Date(slotData.date);
-                    slotData.date = dateAbbr[dateTime.getDay()] + ' ' + dateTime.getDate() + '/' + (dateTime.getMonth() + 1);
+                    slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
 					slotData.spotsRemaining = slotData.totalSpots;
 					if (c.get('reserved_spots')) {
 						slotData.spotsRemaining -= c.get('reserved_spots');
@@ -92,8 +92,9 @@
             }
         },
 
-        handleDateChange = function(e, parseDate) {
-            getClassListings(parseDate);
+        handleDateChange = function(e, date) {
+			selectedDate = date;
+            getClassListings();
         },
 
         noClassListingsFound = function() {
