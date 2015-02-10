@@ -18,8 +18,13 @@
             <span>{{ timeRange }}</span>
         </div>
         <div style="color: #fdd400;" class="modal-title-body">
-			{% if spotsRemaining %}
+			{% if equipId and occupied %}
+				<span>Occupied</span>
+			{% endif %}
+			{% if classId and spotsRemaining %}
 				<span>{{ spotsRemaining }} Spots</span>
+			{% elseif classId and not spotsRemaining %}
+				<span>Full</span>
 			{% endif %}
 		</div>
         <br/>

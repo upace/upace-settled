@@ -63,25 +63,25 @@
                 for (var i = 0; i < renderDates.length; i++) {
                     var c = renderDates[i],
                         slotData = {
-                            myReservation : c.id,
                             classId : c.get('classId'),
-                            slotId : c.get('slotId'),
+                            slotId : c.id,
                             listingName : c.get('class').get('name'),
                             roomName : c.get('class').get('room').get('name'),
                             gymName : c.get('gym').get('name'),
                             startTime : c.get('start_time'),
                             endTime : c.get('end_time'),
                             timeRange : listings.formatTimeRange(c.get('start_time'), c.get('end_time')),
-                            // TODO: availability and slots do not work currently, there is no c.get('reserved_spots')
-                            available : (parseInt(c.get('reserved_spots')) < parseInt(c.get('class').get('spots'))),
-                            totalOccupancy : c.get('class').get('room').get('totalOccupancy'),
-                            reservedOccupancy : c.get('class').get('room').get('reservedOccupancy'),
+                            myReservation : myReservedClassSlots[c.id] || false,
+                            totalSpots : c.get('class').get('spots'),
                             description : c.get('class').get('description'),
-                            date : c.get('class').get('date')
+                            date : normalizeDateFromParse(c.get('class').get('date'))
                         },
                         dateTime = new Date(slotData.date);
-                    slotData.date = dateAbbr[dateTime.getDay()] + ' ' + dateTime.getDate() + '/' + (dateTime.getMonth() + 1);
-                    slotData.spotsRemaining = slotData.totalOccupancy - slotData.reservedOccupancy || 0;
+                    slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
+					slotData.spotsRemaining = slotData.totalSpots;
+					if (c.get('reserved_spots')) {
+						slotData.spotsRemaining -= c.get('reserved_spots');
+					}
                     html += listings.templates.listingItem.render(slotData);
                     listings.listingData[c.get('slotId')] = slotData;
                 }
@@ -115,17 +115,24 @@
                     var eq = renderDates[i],
                         s = eq.get('slotId').get('start_time'),
                         slotData = {
-                            slotId : eq.get('slot'),
-                            equipId : eq.get('equipment'),
-                            listingName : eq.get('equipmentId').get('name'),
-                            roomName : eq.get('slotId').get('roomId').get('name'),
+                            slotId : eq.id,
+                            equipId : eq.get('equipId').id,
+                            listingName : eq.get('equipId').get('name'),
+                            roomName : eq.get('roomId').get('name'),
                             gymName : eq.get('gymId').get('name'),
                             startTime : s,
-                            endTime : eq.get('slotId').get('end_time'),
+                            endTime : eq.get('end_time'),
                             timeRange : (s.charAt(0) === '0') ? s.substr(1) : s,
-                            myReservation : eq.id,
-                            description: eq.get('equipmentId').get('notes')
-                        };
+                            myReservation : myReservedEquipmentSlots[eq.id] || false,
+                            occupied : !!eq.get('is_occupied'),
+                            description: eq.get('equipId').get('notes'),
+							date : selectedDate
+                        },
+						dateTime = new Date(slotData.date);
+					slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
+					if (slotData.myReservation || slotData.occupied) {
+						slotData.status = 'Occupied';
+					}
                     html += listings.templates.listingItem.render(slotData);
                     listings.listingData[eq.get('slot')] = slotData;
                 }
