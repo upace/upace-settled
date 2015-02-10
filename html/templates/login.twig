@@ -15,6 +15,7 @@
 {% endblock extra_footer_js %}
 
 {% block content %}
+<div class="login-wrap">
     <section class="login">
         <div class="login-body">
             <h3>LOGIN</h3>
@@ -27,40 +28,34 @@
             </div>
             <div class="col-xs-12">
                 <h3 style="margin-bottom:.5em">OR</h3>
-            </div>
-            <form role="form" id="login-form">
-                <div class="formframe form-group col-xs-10 col-xs-offset-1">
-                    <input type="text" name="username" class="form-control" id="InputName signup-input"
-                           placeholder="Username or Email" autocomplete="off" autocapitalize="off" autocorrect="off" />
+                <form role="form" id="login-form">
+                    <div class="formframe form-group login-form-group col-xs-10 col-xs-offset-1">
+                        <input type="text" name="username" class="form-control" id="InputName signup-input"
+                               placeholder="Username or Email" autocomplete="off" autocapitalize="off" autocorrect="off" />
+                        <div>
+                            <input type="password" name="password" class="formcontact form-control"
+                                   id="signup-input InputEmail" placeholder="Password" autocomplete="off" />
 
-                    <div>
-                        <input type="password" name="password" class="formcontact form-control"
-                               id="signup-input InputEmail" placeholder="Password" autocomplete="off" />
-
-                        <div class="col-xs-1 col-xs-push-9 col-sm-1 col-sm-push-10 col-md-1 col-md-push-10">
-                            <a data-toggle="modal" class="signup-modal" data-target="#signup-forgot"><span
-                                        style="position: absolute; z-index: 99; margin-top: -45px; color:#5abbcb"
-                                        class="forgot">FORGOT</span></a>
+                            <div class="col-xs-1 col-xs-push-9 col-sm-1 col-sm-push-10 col-md-1 col-md-push-10">
+                                <a data-toggle="modal" class="signup-modal" data-target="#signup-forgot"><span
+                                            style="position: absolute; z-index: 99; margin-top: -45px; color:#5abbcb"
+                                            class="forgot">FORGOT</span></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <a href="/">
-                    <div class="col-xs-10 col-xs-offset-1 col-md-5 col-md-offset-1 login">
+                    <div class="col-xs-10 col-xs-offset-1 col-md-5 col-md-offset-1 login-btn-wrap">
                         <button class="btn btn-primary btn-block btn-lg" type="submit" name="submit">
-                            <strong>LOGIN</strong></button>
+                            <strong>LOGIN</strong>
+                        </button>
                     </div>
-                </a>
-
-                <div class="col-xs-10 col-xs-offset-1 col-md-5 signup">
-                    <a data-toggle="modal" class="signup-modal" id="registrationid" data-target="#signup-modal">
-                        <button class="btn btn-danger btn-block btn-lg"><strong>SIGN UP NOW</strong></button>
-                    </a>
-                </div>
-            </form>
-
-            <div id="settings-modal-status-login" class="col-xs-10 col-xs-offset-1"></div>
-            <div id="settings-modal-status-facebook" class="col-xs-10 col-xs-offset-1"></div>
-
+                    <div class="col-xs-10 col-xs-offset-1 col-md-5 signup">
+                        <a data-toggle="modal" class="signup-modal" id="registrationid" data-target="#signup-modal">
+                            <button class="btn btn-danger btn-block btn-lg"><strong>SIGN UP NOW</strong></button>
+                        </a>
+                    </div>
+                    <div class="clear"></div>
+                </form>
+            </div>
     </section>
 
     <div class="modal fade" id="signup-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -87,9 +82,10 @@
         <h3 style="margin-bottom:.5em">OR</h3>
     </div>
 
+<div class="registration-form-wrap col-xs-12">
     <form role="form" id="registration-form">
 
-    <div class="accordion col-xs-10 col-xs-offset-1" id="accordion1">
+    <div class="accordion col-xs-12" id="accordion1">
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo">
@@ -101,7 +97,7 @@
                     </div>
                 </a>
             </div>
-            <div id="collapseTwo" class="accordion-body collapse col-xs-10 col-xs-offset-1">
+            <div id="collapseTwo" class="accordion-body collapse col-xs-12">
                 <div class="accordion-inner" id="university-items">
                     <!-- populated via js -->
                 </div>
@@ -109,36 +105,36 @@
         </div>
     </div>
 
-    <div class="col-xs-5 col-xs-offset-1" style="padding-right:2px">
+    <div class="col-xs-6" style="padding-right:2px">
         <input type="text" class="formcontact form-control" id="inputFname signup-input" name="firstname"
                placeholder="First Name" autocomplete="off" />
     </div>
-    <div class="col-xs-5" style="padding-left:2px">
+    <div class="col-xs-6" style="padding-left:2px">
         <input type="text" class="formcontact form-control" id="inputLname signup-input" name="lastname"
                placeholder="Last Name" autocomplete="off" />
     </div>
-    <div class="col-xs-5 col-xs-offset-1" style="padding-right:2px">
+    <div class="col-xs-6" style="padding-right:2px">
         <input type="text" name="email" class="formcontact form-control" id="inputEmail signup-input"
                placeholder="Email" autocomplete="off" />
     </div>
-    <div class="col-xs-5" style="padding-left:2px">
+    <div class="col-xs-6" style="padding-left:2px">
         <input type="text" name="phone" class="formcontact form-control" id="inputPhone signup-input"
                placeholder="Phone" autocomplete="off" />
     </div>
     <div id="radioformset">
-        <div class="col-xs-5 col-xs-offset-1" style="padding-right:2px">
+        <div class="col-xs-6" style="padding-right:2px">
             <label class="radioform">
                 <input type="radio" name="sex" value="male" /><span>Male</span>
             </label>
         </div>
-        <div class="col-xs-5" style="padding-left:2px">
+        <div class="col-xs-6" style="padding-left:2px">
             <label class="radioform">
                 <input type="radio" name="sex" value="female" /><span>Female</span>
             </label>
         </div>
     </div>
 
-    <div class="formframe form-group col-xs-10 col-xs-offset-1">
+    <div class="formframe form-group col-xs-12">
         <div class="radioformset" style="margin-bottom:10px" id="accordion4" role="tablist" aria-multiselectable="false">
             <!-- Profile-->
             <div id="radioformset" style="background-color:#000">
@@ -202,7 +198,7 @@
         </div>
     </div>
 
-    <div class="formframe form-group col-xs-10 col-xs-offset-1">
+    <div class="formframe form-group col-xs-12">
         <div class="radioformset" style="margin-bottom:10px" id="accordion2" role="tablist" aria-multiselectable="false">
             <div id="radioformset" style="background-color:#000">
                 <a data-toggle="collapse" data-parent="#accordion2" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -245,19 +241,23 @@
         </div>
     </div>
 
-    <div class="formframe form-group col-xs-10 col-xs-offset-1">
+    <div class="formframe form-group col-xs-12">
         <input type="text" class="form-control" name="username" id="InputName signup-input"
                placeholder="Create Username" autocomplete="off" autocapitalize="off" autocorrect="off" />
     </div>
-    <div class="formframe form-group col-xs-10 col-xs-offset-1">
+    <div class="formframe form-group col-xs-12">
         <input type="password" class="form-control" name="password" id="inputPassword signup-input"
                placeholder="Create Password" autocomplete="off" />
     </div>
-    <div class="col-xs-10 col-xs-offset-1">
+    <div class="col-xs-12">
         <button class="btn btn-danger btn-block btn-lg" name="submit"><strong>SUBMIT</strong></button>
     </div>
 
+    <div class="clear"></div>
+
     </form>
+</div>
+
     <div class="col-xs-8 col-xs-offset-2" style="margin-top:2em; margin-bottom:2em">
         <center>By clicking the submit button, you are accepting our <a data-toggle="modal" class="signup-modal"
                                                                         data-target="#signup-terms"
@@ -312,6 +312,9 @@
                             SUBMIT
                         </button>
                     </div>
+
+                    <div class="clear"></div>
+
                 </form>
 
                 <div id="settings-modal-status-signup"></div>
@@ -350,5 +353,6 @@
     </div>
     <!--/Search Modal-->
     #}
-
+    <div class="clear"></div>
+</div>
 {% endblock content %}
