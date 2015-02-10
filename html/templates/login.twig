@@ -20,11 +20,15 @@
         <div class="login-body">
             <h3>LOGIN</h3>
 
-            <div class="col-xs-5 col-xs-offset-1 facebook">
-                <button class="btn btn-primary btn-block btn-lg">FACEBOOK</button>
-            </div>
-            <div class="col-xs-5 twitter">
-                <button class="btn btn-danger btn-block btn-lg">TWITTER</button>
+            <div class="col-xs-12">
+                <div class="col-xs-8 col-xs-offset-2 facebook" style="float: none; margin: 0 auto; padding: 0;">
+                    <button class="btn btn-primary btn-block btn-lg">FACEBOOK</button>
+                </div>
+            {# removed for beta
+                <div class="col-xs-5 twitter">
+                    <button class="btn btn-danger btn-block btn-lg">TWITTER</button>
+                </div>
+            #}
             </div>
             <div class="col-xs-12">
                 <h3 style="margin-bottom:.5em">OR</h3>
@@ -72,12 +76,14 @@
             </a>
         </center>
     </div>
-    <div class="col-xs-5 col-xs-offset-1 facebook">
+    <div class="col-xs-8 facebook" style="padding:0; margin: 0 auto; float: none;">
         <button class="btn btn-primary btn-block btn-lg" name="facebook" id="facebooksignup"></a>FACEBOOK</button>
     </div>
+    {# removed for beta
     <div class="col-xs-5 twitter">
         <button class="btn btn-danger btn-block btn-lg" name="twitter" id="twittersignup">TWITTER</button>
     </div>
+    #}
     <div class="col-xs-12">
         <h3 style="margin-bottom:.5em">OR</h3>
     </div>
