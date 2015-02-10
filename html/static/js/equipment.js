@@ -96,8 +96,9 @@
                             description: eq.get('equipId').get('notes'),
 							date : listings.selectedDate
                         },
-						dateTime = new Date(slotData.date);
+                    dateTime = new Date(slotData.date);
 					slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
+                    slotData.daysFromToday = dateDiffInDays(new Date(), dateTime);
                     html += listings.templates.listingItem.render(slotData);
                     listings.listingData[eq.id] = slotData;
                 }

@@ -78,9 +78,10 @@
                             description : c.get('class').get('description'),
                             date : normalizeDateFromParse(c.get('class').get('date'))
                         },
-                        dateTime = new Date(slotData.date);
+                    dateTime = new Date(slotData.date);
                     slotData.date = dateAbbr[dateTime.getDay()] + ' ' + (dateTime.getMonth() + 1) + '/' + dateTime.getDate();
                     slotData.spotsRemaining = slotData.totalSpots;
+                    slotData.daysFromToday = dateDiffInDays(new Date(), dateTime);
 					if (c.get('reserved_spots')) {
 						slotData.spotsRemaining -= c.get('reserved_spots');
 					}

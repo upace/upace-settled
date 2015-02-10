@@ -54,15 +54,22 @@
                 {% if myReservation %}
                     <button class="btn reserve-modal-cancel-btn btn-danger btn-block btn-lg">Cancel Reservation</button>
                 {% endif %}
-                {% if spotsRemaining and not myReservation %}
+                {% if spotsRemaining and not myReservation and daysFromToday < 31 %}
                     <button class="btn reserve-modal-reserve-btn btn-reserve btn-primary btn-block btn-lg">Reserve Class</button>
+                {% endif %}
+                {% if daysFromToday >= 31 %}
+                    <div class="reserve-modal-status">We currently don't allow registration for classes beyond 30 days out.</div>
                 {% endif %}
             {% endif %}
             {% if equipId %}
                 {% if myReservation %}
                     <button class="btn reserve-modal-cancel-btn btn-danger btn-block btn-lg">Cancel Reservation</button>
-                {% else %}
+                {% endif %}
+                {% if not myReservation and daysFromToday < 31 %}
                     <button class="btn reserve-modal-reserve-btn btn-reserve btn-primary btn-block btn-lg">Reserve Equipment</button>
+                {% endif %}
+                {% if daysFromToday >= 31 %}
+                    <div class="reserve-modal-status">We currently don't allow registration for equipment beyond 30 days.</div>
                 {% endif %}
             {% endif %}
         </div>

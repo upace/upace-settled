@@ -127,6 +127,13 @@ a:focus {
     cursor: pointer
 }
 
+.reserve-modal-status {
+    font-size: 1.5em;
+    margin: 1.5em 0;
+    text-align: center;
+    color: #fdd400;
+}
+
 .modal {
     background: rgba(0, 0, 0, .8)
 }
@@ -532,6 +539,11 @@ form {
 /* media queries */
 
 @media (max-width:480px) {
+
+    .reserve-modal-status {
+        font-size: 1em;
+    }
+
     .navchev,
     .navfabar {
         margin-top: 0.5em;

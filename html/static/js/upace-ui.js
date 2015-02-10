@@ -10,8 +10,9 @@ var
     months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
               'November', 'December'],
     dateAbbr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    msPerDay = 1000 * 60 * 60 * 24,
 
-	flattenFormArray = function(arr) {
+    flattenFormArray = function(arr) {
 		var flattened = {};
 		for (var i = 0; i < arr.length; i++) {
 			flattened[arr[i].name] = arr[i].value;
@@ -52,6 +53,13 @@ var
 		}
 		return date;
 	},
+
+    dateDiffInDays = function(a, b) {
+        // a and b are date objects
+        var utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+        var utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+        return Math.floor((utc2 - utc1) / msPerDay);
+    },
 
     getDates = function(startDate, stopDate) {
         var dateArray = [];
