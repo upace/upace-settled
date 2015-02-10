@@ -224,7 +224,9 @@ if (!window.listings) {
                 return '';
             }
             var s = start.replace(/\s+|pm|am/gi, ''),
-                e = end.replace(/\s+/g, '');
+                // e = end.replace(/\s+/g, '');
+				e = end;
+			console.log(s, e);
             if (s.charAt(0) === '0') s = s.substr(1);
             if (e.charAt(0) === '0') e = e.substr(1);
             return s + '-' + e;

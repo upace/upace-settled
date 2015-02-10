@@ -7,7 +7,7 @@
         <div class="modal-title">{{ listingName }}</div>
         <div class="modal-title-body">
             <span>{{ roomName }}</span>
-            <span>&nbsp;|&nbsp;
+            <span>&nbsp;|&nbsp;</span>
             <span>{{ gymName }}</span>
         </div>
         <div class="modal-title-body">
@@ -17,7 +17,11 @@
             {% endif %}
             <span>{{ timeRange }}</span>
         </div>
-        <div style="color: #fdd400;" class="modal-title-body">{{ status }}</div>
+        <div style="color: #fdd400;" class="modal-title-body">
+			{% if spotsRemaining %}
+				<span>{{ spotsRemaining }} Spots</span>
+			{% endif %}
+		</div>
         <br/>
         <div style="margin-top:1em" class="modal-title-body">{{ description }}</div>
     </div>
