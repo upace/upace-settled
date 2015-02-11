@@ -31,7 +31,7 @@
             Parse.Promise.when(
                 api.getUniversities(),
                 api.getGyms(),
-                api.getProfileNotificationsByUser(currentUser)
+                api.getProfileNotifications()
             ).then(function(a, b, c) {
                 for(var i = 0; i < a.length; i++) {
                     university = {
@@ -92,7 +92,7 @@
 
         var f = flattenFormArray($(this).serializeArray());
 
-        api.saveUserSettings(null, f).then(
+        api.saveUserSettings(f).then(
             function(user) {
                 statusMessage($statusProfile, 'settings saved!', 'success');
             },
@@ -116,7 +116,7 @@
         // Parse is to log in again in the background.
         api.login(api.getCurrentUser().getUsername(), f.oldpassword).then(
             function(user) {
-                return api.saveUserPassword(user, f.password).then(
+                return api.saveUserPassword(f.password).then(
                     function(user) {
                         statusMessage($statusPassword, 'password saved.', 'success');
                     }
@@ -146,7 +146,7 @@
             }
         }
 
-        api.saveUserNotifications(null, notifications).then(
+        api.saveUserNotifications(notifications).then(
             function(user) {
                 statusMessage($statusNotifications, 'notifications saved.', 'success');
             },
