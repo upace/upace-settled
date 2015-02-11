@@ -239,6 +239,7 @@ if (!window.api) {
             var q = new Parse.Query(o);
             q.notEqualTo('is_deleted', true);
             q.equalTo('isActive', 1);
+			q.limit(1000);
             return q.find();
         },
 
@@ -252,6 +253,7 @@ if (!window.api) {
             q.equalTo('isActive', 1);
             q.equalTo('isDelete', 0);
             q.include('university');
+			q.limit(1000);
             return q.find();
         },
 		
@@ -294,6 +296,7 @@ if (!window.api) {
             var dbDate = dbFormattedDate(date);
             q.equalTo('universityId', universityId);
             q.equalTo('date', dbDate);
+			q.limit(1000);
             return q.find().then(function(results) {
                 return getClassSlotsByClasses(results);
             });
@@ -305,6 +308,7 @@ if (!window.api) {
             var dbDate = dbFormattedDate(date);
             q.equalTo('gymId', gymId);
             q.equalTo('date', dbDate);
+			q.limit(1000);
             return q.find().then(function(results) {
                 return getClassSlotsByClasses(results);
             });
@@ -314,6 +318,7 @@ if (!window.api) {
             var o = Parse.Object.extend('class_slot');
             var q = new Parse.Query(o);
             q.containedIn('class', classes);
+			q.limit(1000);
             q.include('gym');
             q.include('class');
             q.include('class.room');
@@ -335,6 +340,7 @@ if (!window.api) {
             q.equalTo('universityId', universityId);
             q.equalTo('date', date);
             q.equalTo('isActive', 1);
+			q.limit(1000);
             q.include('slot');
             q.include('gym');
             q.include('class');
@@ -351,6 +357,7 @@ if (!window.api) {
                 q.equalTo('date', dbFormattedDate(date));
             }
             q.equalTo('user', user);
+			q.limit(1000);
             q.include('slot');
             q.include('gym');
             q.include('class');
@@ -365,6 +372,7 @@ if (!window.api) {
 			if (typeof dayIndex === 'number') {
 				q.equalTo('dayIndex', dayIndex);
 			}
+			q.limit(1000);
             q.include('gymId');
             q.include('equipId');
             q.include('roomId');
@@ -376,6 +384,7 @@ if (!window.api) {
             var o = Parse.Object.extend('slots');
             var q = new Parse.Query(o);
             q.equalTo('gymId', gymId);
+			q.limit(1000);
             q.include('equipId');
             q.include('roomId');
             q.descending('equipId');
@@ -387,6 +396,7 @@ if (!window.api) {
             var q = new Parse.Query(o);
             q.equalTo('universityId', universityId);
             q.equalTo('reservationDate', date);
+			q.limit(1000);
             q.include('slotId');
             q.include('slotId.roomId');
             q.include('gymId');
@@ -403,6 +413,7 @@ if (!window.api) {
                 q.equalTo('reservationDate', date);
             }
             q.equalTo('userId', user);
+			q.limit(1000);
             q.include('slotId');
             q.include('slotId.roomId');
             q.include('gymId');
