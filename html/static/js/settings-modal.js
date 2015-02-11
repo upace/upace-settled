@@ -90,7 +90,23 @@
     $('#profilechange-form').on('submit', function(evt) {
         evt.preventDefault();
 
-        var f = flattenFormArray($(this).serializeArray());
+		// TODO: improve validation process.
+		var required = ['firstname', 'lastname', 'email', 'phone', 'memberType', 'universityGymId', 'sex'],
+			f = flattenFormArray($(this).serializeArray()),
+			missingMsg = 'some of your information is missing:',
+			valid = true;
+		
+		for (var i = 0; i < required.length; i++) {
+			if (!f[required[i]]) {
+				missingMsg += '<br>- ' + required[i];
+				valid = false;
+			}
+		}
+		
+		if (!valid) {
+			statusMessage($statusProfile, missingMsg, 'danger');
+			return;
+		}
 
         api.saveUserSettings(f).then(
             function(user) {

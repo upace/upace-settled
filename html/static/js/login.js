@@ -86,18 +86,18 @@
 		// TODO: improve validation process.
 		var required = ['universityGymId', 'firstname', 'lastname', 'email', 'phone', 'sex', 'memberType', 'gymFrequency', 'username', 'password'],
 			f = flattenFormArray($(this).serializeArray()),
-			message = 'some of your information is missing:',
+			missingMsg = 'some of your information is missing:',
 			valid = true;
 		
 		for (var i = 0; i < required.length; i++) {
 			if (!f[required[i]]) {
-				message += '<br>- ' + required[i];
+				missingMsg += '<br>- ' + required[i];
 				valid = false;
 			}
 		}
 		
 		if (!valid) {
-			statusMessage($statusSignup, message, 'danger');
+			statusMessage($statusSignup, missingMsg, 'danger');
 			return;
 		}
 
